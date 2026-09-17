@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | Les Braid It</title>
+<meta name="description" content="Get in touch with Les Braid It - register for the Perfect Sew In classes, enquire about collaborations, or follow along on social.">
+<!-- Fonts: Playfair Display and Montserrat, provided by Google Fonts (fonts.google.com) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html"><img src="assets/images/logo.png" alt="Les Braid It" class="logo"></a>
+  <nav class="main-nav">
+    <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+    <ul>
+      <li><a href="index.html"><img src="assets/images/icons/nav-home.png" alt="">Home</a></li>
+      <li><a href="portfolio.html"><img src="assets/images/icons/nav-portfolio.png" alt="">Portfolio</a></li>
+      <li><a href="contact.html" aria-current="page"><img src="assets/images/icons/nav-contact.png" alt="">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero" style="padding-bottom:20px;">
+    <h1>Let&rsquo;s connect</h1>
+    <p style="text-transform:uppercase;letter-spacing:2px;font-size:13px;">Classes &middot; Collaborations &middot; Bookings</p>
+  </section>
+
+  <nav class="tabs" aria-label="Contact form type">
+    <div class="tab-btn-wrap">
+      <button class="tab" type="button" data-target="classes" aria-pressed="false">The &lsquo;Perfect&rsquo; Sew In Classes</button>
+      <button class="info-toggle" type="button" data-info-target="classes-info" aria-label="More information about the Perfect Sew In classes">i</button>
+    </div>
+    <div class="tab-btn-wrap">
+      <button class="tab" type="button" data-target="collab" aria-pressed="false">Collaborations / Shoots</button>
+      <button class="info-toggle" type="button" data-info-target="collab-info" aria-label="More information about collaborations">i</button>
+    </div>
+  </nav>
+
+  <div class="tab-info-panel" id="classes-info" style="max-width:640px;margin:-30px auto 30px;">This form is for those interested in The &lsquo;perfect&rsquo; sew in classes coming in September.
+
+You will be the first to receive a full brief once details are finalised.</div>
+  <div class="tab-info-panel" id="collab-info" style="max-width:640px;margin:-30px auto 30px;">This form is for those interested in collaborations / photoshoots / events.
+
+Send an enquiry with full details.</div>
+
+  <section class="about-strip" id="about">
+    <h2 style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);">About</h2>
+    <img src="assets/images/about-photo.jpg" alt="Lilian, founder of Les Braid It" class="about-photo">
+    <p><strong>Hi, I&rsquo;m Lilian.</strong> I have over 10 years of experience.<br>
+    Hairstyling is my form of creative expression - a space where I can experiment, push boundaries, and turn traditional styles into something new.<br>
+    I love working with different textures and braids, discovering just how versatile hair can truly be.<br>
+    My goal is to share that versatility with every client, creating something that feels personal, creative, and uniquely theirs.<br>
+    It&rsquo;s always more than just hair.</p>
+    <div class="contact-icons">
+      <a href="https://www.instagram.com/lesbraidit/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/images/icons/social-instagram.png" alt=""></a>
+      <a href="https://uk.pinterest.com/lesbraidit/" target="_blank" rel="noopener noreferrer" aria-label="Pinterest"><img src="assets/images/icons/social-pinterest.png" alt=""></a>
+      <a href="https://www.tiktok.com/@lesbraidit" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><img src="assets/images/icons/social-tiktok.png" alt=""></a>
+      <a href="mailto:lesbraidit@outlook.com" aria-label="Email"><img src="assets/images/icons/social-email.png" alt=""></a>
+    </div>
+  </section>
+
+  <section class="form-section" id="classes">
+    <h2>The &lsquo;Perfect&rsquo; Sew In Classes</h2>
+    <p class="form-sub">Register your interest for the next class intake. You&rsquo;ll be the first to know once dates and full details are confirmed.</p>
+    <div class="form-card">
+      <form>
+        <div class="field">
+          <label for="c-name">Full name</label>
+          <input type="text" id="c-name" name="c-name" placeholder="Your full name">
+        </div>
+        <div class="field">
+          <label for="c-email">Email address</label>
+          <input type="email" id="c-email" name="c-email" placeholder="name@example.com">
+        </div>
+        <div class="field">
+          <label for="c-phone">Phone number</label>
+          <input type="tel" id="c-phone" name="c-phone" placeholder="07123 456789">
+        </div>
+        <div class="field">
+          <label>Why are you interested in this service?</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="reason" value="hairstylist">
+              I&rsquo;m a hairstylist looking to expand my skills
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="reason" value="business-owner">
+              I&rsquo;m a business owner / salon owner
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="reason" value="personal-use">
+              Personal use &mdash; I want to learn for myself
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="reason" value="other" id="c-other-radio">
+              Other
+            </label>
+          </div>
+          <div class="other-input">
+            <input type="text" id="c-other-text" placeholder="Tell us a bit more">
+          </div>
+        </div>
+        <div class="field">
+          <label for="c-message">Anything else we should know?</label>
+          <textarea id="c-message" name="c-message" placeholder="Optional message"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Save my spot</button>
+        <p class="form-note">We&rsquo;ll email you as soon as dates are confirmed.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="form-section" id="collab">
+    <h2>Collaborations &amp; Shoots</h2>
+    <p class="form-sub">For brands, photographers and content creators interested in working together. Tell me a bit about the shoot and I&rsquo;ll get back to you.</p>
+    <div class="form-card">
+      <form>
+        <div class="field">
+          <label for="s-name">Full name</label>
+          <input type="text" id="s-name" name="s-name" placeholder="Your full name">
+        </div>
+        <div class="field">
+          <label for="s-brand">Brand / company (if applicable)</label>
+          <input type="text" id="s-brand" name="s-brand" placeholder="Brand or company name">
+        </div>
+        <div class="field">
+          <label for="s-email">Email address</label>
+          <input type="email" id="s-email" name="s-email" placeholder="name@example.com">
+        </div>
+        <div class="field">
+          <label for="s-social">Instagram / social handle</label>
+          <input type="text" id="s-social" name="s-social" placeholder="@yourhandle">
+        </div>
+        <div class="field">
+          <label for="s-about">What is this shoot about?</label>
+          <textarea id="s-about" name="s-about" placeholder="Tell us about the concept, date, location and what you're looking for"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send enquiry</button>
+        <p class="form-note">You&rsquo;ll receive a full brief once details are finalised.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>&copy; 2026 Les Braid It. All rights reserved.</p>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
