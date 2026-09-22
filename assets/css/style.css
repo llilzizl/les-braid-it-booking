@@ -884,15 +884,14 @@ section.form-section h2 {
 }
 
 .policies-banner {
-  height: clamp(108px, 17vw, 190px);
   overflow: hidden;
   background: var(--pink);
   color: var(--black);
   font-family: 'Montserrat', sans-serif;
-  font-size: clamp(90px, 18vw, 220px);
-  font-weight: 600;
-  letter-spacing: -7px;
-  line-height: 0.86;
+  font-size: 20vw;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.6;
   text-align: center;
   white-space: nowrap;
 }
@@ -1050,11 +1049,6 @@ section.form-section h2 {
   }
   .lightbox-prev { left: 4px; }
   .lightbox-next { right: 4px; }
-  .policies-banner {
-    height: 92px;
-    font-size: 78px;
-    letter-spacing: -4px;
-  }
   .prep-grid {
     grid-template-columns: 1fr;
   }
