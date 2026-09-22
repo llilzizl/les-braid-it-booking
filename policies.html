@@ -30,8 +30,19 @@
       <p>Please read the policies below carefully before booking your appointment.</p>
     </section>
 
+    <div class="policy-filters" role="group" aria-label="Filter policies">
+      <button type="button" class="tab" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="tab" data-filter="booking-rescheduling" aria-pressed="false">Booking &amp; Rescheduling</button>
+      <button type="button" class="tab" data-filter="deposit" aria-pressed="false">Deposit</button>
+      <button type="button" class="tab" data-filter="lateness" aria-pressed="false">Lateness</button>
+      <button type="button" class="tab" data-filter="appointments" aria-pressed="false">Appointments</button>
+      <button type="button" class="tab" data-filter="cancellation" aria-pressed="false">Cancellation</button>
+      <button type="button" class="tab" data-filter="extras" aria-pressed="false">Extras</button>
+      <button type="button" class="tab" data-filter="hair-prep" aria-pressed="false">Hair Prep</button>
+    </div>
+
     <div class="policy-layout">
-      <section class="policy-section" aria-labelledby="booking-rescheduling-title">
+      <section class="policy-section" data-category="booking-rescheduling" aria-labelledby="booking-rescheduling-title">
         <h1 id="booking-rescheduling-title">Booking &amp; Rescheduling</h1>
         <ul>
           <li>Appointments are typically released on the 15th of each month. Occasionally, last-minute availability may also appear.</li>
@@ -41,7 +52,7 @@
         </ul>
       </section>
 
-      <section class="policy-section" aria-labelledby="deposit-title">
+      <section class="policy-section" data-category="deposit" aria-labelledby="deposit-title">
         <h2 id="deposit-title">Deposit</h2>
         <ul>
           <li>Your deposit will be deducted from the final service price.</li>
@@ -50,7 +61,7 @@
         </ul>
       </section>
 
-      <section class="policy-section" aria-labelledby="late-title">
+      <section class="policy-section" data-category="lateness" aria-labelledby="late-title">
         <h2 id="late-title">Lateness</h2>
         <ul>
           <li>Clients are expected to arrive on time for their appointment.</li>
@@ -59,7 +70,7 @@
         </ul>
       </section>
 
-      <section class="policy-section" aria-labelledby="appointments-title">
+      <section class="policy-section" data-category="appointments" aria-labelledby="appointments-title">
         <h2 id="appointments-title">Appointments</h2>
         <ul>
           <li>Appointments may be rescheduled once, provided the new date is within one month of the original booking.</li>
@@ -67,7 +78,7 @@
         </ul>
       </section>
 
-      <section class="policy-section" aria-labelledby="cancellation-title">
+      <section class="policy-section" data-category="cancellation" aria-labelledby="cancellation-title">
         <h2 id="cancellation-title">Cancellation Policy</h2>
         <ul>
           <li>Appointments can be cancelled up to 48 hours in advance.</li>
@@ -75,7 +86,7 @@
         </ul>
       </section>
 
-      <section class="policy-section" aria-labelledby="extras-title">
+      <section class="policy-section" data-category="extras" aria-labelledby="extras-title">
         <h2 id="extras-title">Extras</h2>
         <ul>
           <li>No plus ones are allowed.</li>
@@ -89,7 +100,7 @@
       </section>
     </div>
 
-    <section class="hair-prep" aria-labelledby="hair-prep-title">
+    <section class="hair-prep" data-category="hair-prep" aria-labelledby="hair-prep-title">
       <div class="hair-prep-heading">
         <p class="policy-kicker">Before your appointment</p>
         <h1 id="hair-prep-title">Hair Prep</h1>

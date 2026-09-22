@@ -909,6 +909,21 @@ section.form-section h2 {
   font-size: 14px;
 }
 
+.policy-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 16px;
+  column-gap: 14px;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 22px 6% 8px;
+}
+
+.policy-filters .tab {
+  padding: 8px 18px;
+}
+
 .policy-layout,
 .hair-prep {
   max-width: 860px;
@@ -919,6 +934,7 @@ section.form-section h2 {
 .policy-section {
   padding: 34px 0;
   border-bottom: 1px solid var(--border);
+  scroll-margin-top: 90px;
 }
 
 .policy-section h1,
@@ -957,6 +973,7 @@ section.form-section h2 {
   padding-bottom: 50px;
   border-top: 1px solid var(--pink);
   background: linear-gradient(180deg, rgba(232, 85, 143, 0.08), transparent 38%);
+  scroll-margin-top: 90px;
 }
 
 .hair-prep-heading {

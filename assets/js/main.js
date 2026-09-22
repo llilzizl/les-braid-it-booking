@@ -360,6 +360,30 @@ infoToggles.forEach(function (btn) {
     });
   }
 
+  /* ---------------- Policies page: filter sections ---------------- */
+  var policyFilterBtns = Array.prototype.slice.call(document.querySelectorAll('.policy-filters .tab[data-filter]'));
+  var policySections = Array.prototype.slice.call(document.querySelectorAll('[data-category]'));
+
+  if (policyFilterBtns.length && policySections.length) {
+    policyFilterBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var filterValue = btn.getAttribute('data-filter');
+
+        policyFilterBtns.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+        btn.setAttribute('aria-pressed', 'true');
+
+        policySections.forEach(function (section) {
+          section.hidden = filterValue !== 'all' && section.getAttribute('data-category') !== filterValue;
+        });
+
+        if (filterValue !== 'all') {
+          var target = policySections.filter(function (section) { return section.getAttribute('data-category') === filterValue; })[0];
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  }
+
   /* ---------------- Mobile nav toggle ---------------- */
   var navToggle = document.querySelector('.nav-toggle');
   var mainNav = document.querySelector('.main-nav');
