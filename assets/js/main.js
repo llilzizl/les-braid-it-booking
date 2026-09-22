@@ -130,12 +130,76 @@ infoToggles.forEach(function (btn) {
   });
 });
 
+  /* ---------------- Booking page: add-ons and availability ---------------- */
+  var bookingModal = document.querySelector('.booking-modal');
+  var openBookingBtns = Array.prototype.slice.call(document.querySelectorAll('.open-booking-modal'));
+  var closeBookingBtn = document.querySelector('.booking-modal-close');
+  var continueBookingBtn = document.querySelector('.continue-booking');
+  var availability = document.querySelector('.availability');
+  var selectedAddons = document.querySelector('.selected-addons');
+  var selectedServiceName = document.querySelector('.selected-service-name');
+  var modalServiceName = document.querySelector('.modal-service-name');
+  var modalServicePrice = document.querySelector('.modal-service-price');
+  var selectedService = 'Boho French Curl';
+
+  function closeBookingModal() {
+    if (!bookingModal) return;
+    bookingModal.classList.remove('is-open');
+    bookingModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('lightbox-active');
+  }
+
+  if (bookingModal && openBookingBtns.length) {
+    openBookingBtns.forEach(function (openBookingBtn) {
+      openBookingBtn.addEventListener('click', function () {
+        selectedService = openBookingBtn.getAttribute('data-service') || 'Boho French Curl';
+        if (selectedServiceName) selectedServiceName.textContent = selectedService;
+        if (modalServiceName) modalServiceName.textContent = selectedService;
+        if (modalServicePrice) modalServicePrice.textContent = openBookingBtn.getAttribute('data-price') || 'From £120';
+        bookingModal.classList.add('is-open');
+        bookingModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('lightbox-active');
+      });
+    });
+    closeBookingBtn.addEventListener('click', closeBookingModal);
+    bookingModal.addEventListener('click', function (e) {
+      if (e.target === bookingModal) closeBookingModal();
+    });
+  }
+
+  if (continueBookingBtn && availability) {
+    continueBookingBtn.addEventListener('click', function () {
+      var chosen = Array.prototype.slice.call(document.querySelectorAll('.addon-option input:checked'));
+      selectedAddons.textContent = chosen.length ? 'Add-ons: ' + chosen.map(function (input) { return input.value; }).join(', ') : 'No add-ons selected';
+      closeBookingModal();
+      availability.classList.add('is-visible');
+      availability.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  document.querySelectorAll('.calendar-grid button').forEach(function (day) {
+    day.addEventListener('click', function () {
+      document.querySelectorAll('.calendar-grid button').forEach(function (otherDay) { otherDay.classList.remove('is-selected'); });
+      day.classList.add('is-selected');
+    });
+  });
+
+  var editBookingBtn = document.querySelector('[data-edit-booking]');
+  if (editBookingBtn && bookingModal) {
+    editBookingBtn.addEventListener('click', function () {
+      bookingModal.classList.add('is-open');
+      bookingModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lightbox-active');
+    });
+  }
+
   /* ---------------- Mobile nav toggle ---------------- */
   var navToggle = document.querySelector('.nav-toggle');
   var mainNav = document.querySelector('.main-nav');
   if (navToggle && mainNav) {
     navToggle.addEventListener('click', function () {
       mainNav.classList.toggle('is-open');
+      navToggle.setAttribute('aria-expanded', mainNav.classList.contains('is-open') ? 'true' : 'false');
     });
   }
 
