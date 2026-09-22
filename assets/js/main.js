@@ -130,6 +130,124 @@ infoToggles.forEach(function (btn) {
   });
 });
 
+  /* ---------------- Booking page: services data ---------------- */
+  var SERVICES = {
+    'Extra Small Layered Box Braid': { price: 200, hrs: '7.5 hrs', hairNote: 'Hair included in the price.', addons: [
+      { label: 'Colour #1' }, { label: 'Colour #1B' }, { label: 'Colour #2' }, { label: 'Colour #4' },
+      { label: 'Other colour (add description/reference to booking form)' },
+      { label: 'Waist/Hip length', extra: '+£40 · +1hr 30 mins' }
+    ] },
+    'Small Layered Knotless Braids': { price: 150, hrs: '6 hrs', hairNote: 'Hair included in the price.', addons: [
+      { label: 'Colour #1' }, { label: 'Colour #1B' }, { label: 'Colour #2' }, { label: 'Colour #4' },
+      { label: 'Other colour (add description/reference to booking form)' },
+      { label: 'Waist/Hip length', extra: '+£35 · +1hr' }
+    ] },
+    'Smedium Layered Knotless Braids': { price: 130, hrs: '5 hrs', hairNote: 'Hair included in the price.', addons: [
+      { label: 'Colour #1' }, { label: 'Colour #1B' }, { label: 'Colour #2' }, { label: 'Colour #4' },
+      { label: 'Other colour (add description/reference to booking form)' },
+      { label: 'Waist/Hip length', extra: '+£30 · +40 mins' }
+    ] },
+    "The 'Perfect' U Part Install": { price: 90, hrs: '4 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
+      { label: 'Layers' }, { label: 'Curls' }, { label: 'Crimp' }, { label: 'Straighten' }
+    ] },
+    "The 'Perfect' Sew In": { price: 130, hrs: '5 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
+      { label: 'Layers' }, { label: 'Curls' }, { label: 'Crimp' }, { label: 'Straighten' },
+      { label: '2 Part Sew In', extra: '+£50 · +1hr' },
+      { label: 'Flip Over', extra: '+£30 · +30 mins' }
+    ] },
+    'Flip Over (Minimal leave out - Ivy Method)': { price: 120, hrs: '4 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
+      { label: 'Layers' }, { label: 'Curl' }, { label: 'Define curls' }, { label: 'Crimp' }, { label: 'Straighten' }
+    ] },
+    'Micro Braids w/Sew In': { price: 130, hrs: '6 hrs', hairNote: 'Braiding hair included in the price.', addons: [
+      { label: 'Colour #1' }, { label: 'Colour #1B' }, { label: 'Colour #2' }, { label: 'Colour #4' },
+      { label: 'Other colour (add description/reference to booking form)' }
+    ] },
+    'Fulani Sew in': { price: 85, hrs: '3 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
+      { label: 'No gel' }, { label: 'Crimp' }, { label: 'Curl' }, { label: 'Define curls' }, { label: 'Straighten' }, { label: 'Layers' }
+    ] },
+    'Cassie Sew In': { price: 85, hrs: '3 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
+      { label: 'No gel' }, { label: 'Crimp' }, { label: 'Curl' }, { label: 'Define curls' }, { label: 'Straighten' }, { label: 'Layers' }
+    ] },
+    'Patewo/Shuku and Base': { price: 100, hrs: '4 hrs', hairNote: 'Hair included in the price.', addons: [
+      { label: 'Colour #1' }, { label: 'Colour #2' }, { label: 'Colour #1B' }, { label: 'Colour #4' },
+      { label: 'Other colour (add description/reference to booking form)' },
+      { label: 'French Curl (hair included)', extra: '+£10' }
+    ] },
+    'Small lemonade braids': { price: 100, hrs: '4 hrs', hairNote: 'Hair included in the price.', addons: [
+      { label: 'Colour #1' }, { label: 'Colour #2' }, { label: 'Colour #1B' }, { label: 'Colour #4' },
+      { label: 'Other colour (add description/reference to booking form)' },
+      { label: '5–6 rows of braids in the back', extra: '+£10 · +20 mins' }
+    ] },
+    'Straight Pick & Drop Boho Braids': { price: 140, hrs: '6.5 hrs', hairNote: 'Hair included in the price.', addons: [
+      { label: 'Layers' }
+    ] },
+    "'Cassie' Small Knotless BOHO French Curl": { price: 110, hrs: '5 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
+      { label: 'No gel' }, { label: 'Bangs' }
+    ] },
+    'Small Knotless BOHO French Curl': { price: 130, hrs: '7 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
+      { label: 'No gel' }, { label: 'Bangs' }
+    ] },
+    'Smedium Knotless BOHO French Curl': { price: 120, hrs: '5.5 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
+      { label: 'No gel' }, { label: 'Bangs' }
+    ] },
+    'Fulani Style': { price: 30, hrs: '1.5 hrs', addons: [
+      { label: 'No gel' }, { label: 'Marley hair (included)', extra: '+£5' }
+    ] },
+    'Flat Twist': { price: 30, hrs: '2 hrs', addons: [
+      { label: 'No gel' }, { label: 'Marley hair (included)', extra: '+£5' }
+    ] },
+    'Small Mini Twist / Mini Braids': { price: 40, hrs: '2 hrs', addons: [
+      { label: 'No gel' }, { label: 'Marley hair (included)', extra: '+£5' }
+    ] },
+    'Shuku/Patewo (and Base)': { price: 30, hrs: '1.5 hrs', addons: [
+      { label: 'No gel' }, { label: 'Marley hair (included)', extra: '+£5' }
+    ] },
+    'Extra Small Layered Braids Takedown': { price: 55, hrs: '3 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
+    "The 'perfect' sew in Takedown": { price: 30, hrs: '2 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
+    'Fulani Crotchet': { price: 60, hrs: '2.25 hrs', addons: [] },
+    "The 'Perfect' Sew In Classes": { price: 650, hrs: '~8 hrs', hairNote: 'Hair not included — please bring your own. Equipment included.', addons: [
+      { label: '2 Part Sew In', extra: '+£200' },
+      { label: 'Flip Over', extra: '+£200' },
+      { label: 'Both 2 Part Sew In and Flip Over', extra: '+£350' }
+    ] }
+  };
+
+  /* ---------------- Booking page: sort + filter services ---------------- */
+  var serviceGrid = document.querySelector('.booking-service-grid');
+  var serviceSort = document.getElementById('serviceSort');
+  var serviceFilter = document.getElementById('serviceFilter');
+
+  if (serviceGrid) {
+    var serviceCards = Array.prototype.slice.call(serviceGrid.querySelectorAll('.booking-service-card'));
+
+    var applyServiceControls = function () {
+      var sortValue = serviceSort ? serviceSort.value : 'popular';
+      var filterValue = serviceFilter ? serviceFilter.value : 'all';
+
+      var visible = serviceCards.filter(function (card) {
+        return filterValue === 'all' || card.getAttribute('data-category') === filterValue;
+      });
+
+      visible.sort(function (a, b) {
+        if (sortValue === 'price-asc') return Number(a.getAttribute('data-price')) - Number(b.getAttribute('data-price'));
+        if (sortValue === 'price-desc') return Number(b.getAttribute('data-price')) - Number(a.getAttribute('data-price'));
+        var popularA = a.getAttribute('data-popular') === 'true' ? 0 : 1;
+        var popularB = b.getAttribute('data-popular') === 'true' ? 0 : 1;
+        return popularA - popularB;
+      });
+
+      serviceCards.forEach(function (card) { card.hidden = true; });
+      visible.forEach(function (card) {
+        card.hidden = false;
+        serviceGrid.appendChild(card);
+      });
+    };
+
+    if (serviceSort) serviceSort.addEventListener('change', applyServiceControls);
+    if (serviceFilter) serviceFilter.addEventListener('change', applyServiceControls);
+    applyServiceControls();
+  }
+
   /* ---------------- Booking page: add-ons and availability ---------------- */
   var bookingModal = document.querySelector('.booking-modal');
   var openBookingBtns = Array.prototype.slice.call(document.querySelectorAll('.open-booking-modal'));
@@ -140,7 +258,11 @@ infoToggles.forEach(function (btn) {
   var selectedServiceName = document.querySelector('.selected-service-name');
   var modalServiceName = document.querySelector('.modal-service-name');
   var modalServicePrice = document.querySelector('.modal-service-price');
-  var selectedService = 'Boho French Curl';
+  var modalServiceHrs = document.querySelector('.modal-service-hrs');
+  var modalServiceHairNote = document.querySelector('.modal-service-hair-note');
+  var addonsLabel = document.querySelector('.addons-label');
+  var addonList = document.querySelector('.addon-list');
+  var selectedService = null;
 
   function closeBookingModal() {
     if (!bookingModal) return;
@@ -149,13 +271,32 @@ infoToggles.forEach(function (btn) {
     document.body.classList.remove('lightbox-active');
   }
 
+  function renderAddons(addons) {
+    if (!addonList) return;
+    addonList.innerHTML = '';
+    var hasAddons = addons && addons.length;
+    if (addonsLabel) addonsLabel.hidden = !hasAddons;
+    addonList.hidden = !hasAddons;
+    if (!hasAddons) return;
+    addons.forEach(function (addon) {
+      var label = document.createElement('label');
+      label.className = 'addon-option';
+      label.innerHTML = '<span><input type="checkbox" value="' + addon.label + '">' + addon.label + '</span><span>' + (addon.extra || '') + '</span>';
+      addonList.appendChild(label);
+    });
+  }
+
   if (bookingModal && openBookingBtns.length) {
     openBookingBtns.forEach(function (openBookingBtn) {
       openBookingBtn.addEventListener('click', function () {
-        selectedService = openBookingBtn.getAttribute('data-service') || 'Boho French Curl';
+        selectedService = openBookingBtn.getAttribute('data-service');
+        var service = SERVICES[selectedService] || {};
         if (selectedServiceName) selectedServiceName.textContent = selectedService;
         if (modalServiceName) modalServiceName.textContent = selectedService;
-        if (modalServicePrice) modalServicePrice.textContent = openBookingBtn.getAttribute('data-price') || 'From £120';
+        if (modalServicePrice) modalServicePrice.textContent = '£' + service.price;
+        if (modalServiceHrs) modalServiceHrs.textContent = service.hrs ? '· ' + service.hrs : '';
+        if (modalServiceHairNote) modalServiceHairNote.textContent = service.hairNote || '';
+        renderAddons(service.addons);
         bookingModal.classList.add('is-open');
         bookingModal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('lightbox-active');
@@ -164,6 +305,32 @@ infoToggles.forEach(function (btn) {
     closeBookingBtn.addEventListener('click', closeBookingModal);
     bookingModal.addEventListener('click', function (e) {
       if (e.target === bookingModal) closeBookingModal();
+    });
+  }
+
+  /* ---------------- Booking page: custom style request modal ---------------- */
+  var customModal = document.querySelector('.custom-modal');
+  var openCustomModalBtns = Array.prototype.slice.call(document.querySelectorAll('.open-custom-modal'));
+  var closeCustomModalBtn = document.querySelector('.custom-modal-close');
+
+  function closeCustomModal() {
+    if (!customModal) return;
+    customModal.classList.remove('is-open');
+    customModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('lightbox-active');
+  }
+
+  if (customModal && openCustomModalBtns.length) {
+    openCustomModalBtns.forEach(function (openCustomModalBtn) {
+      openCustomModalBtn.addEventListener('click', function () {
+        customModal.classList.add('is-open');
+        customModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('lightbox-active');
+      });
+    });
+    if (closeCustomModalBtn) closeCustomModalBtn.addEventListener('click', closeCustomModal);
+    customModal.addEventListener('click', function (e) {
+      if (e.target === customModal) closeCustomModal();
     });
   }
 
