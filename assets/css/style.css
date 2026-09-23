@@ -363,6 +363,7 @@ img {
 .addon-option { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(255, 252, 249, 0.28); color: var(--white); font-size: 13px; }
 .addon-option span { display: flex; align-items: center; gap: 10px; }
 .addon-option input, .time-option input { accent-color: var(--pink); }
+.addon-option input[type="checkbox"] { width: 20px; height: 20px; flex-shrink: 0; cursor: pointer; }
 .booking-modal-note { margin: 0 0 8px; color: var(--pink-light); font-size: 13px; }
 .modal-service-hair-note { margin: 0 0 8px; color: rgba(255, 252, 249, 0.7); font-size: 12px; font-style: italic; }
 .modal-service-hair-note:empty, .addons-label[hidden], .addon-list[hidden] { display: none; }
@@ -397,6 +398,14 @@ img {
   .service-control { flex: 1 1 0; min-width: 0; }
   .service-control select { width: 100%; padding: 8px 6px; }
   .booking-service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 8px; gap: 10px; border-radius: 18px; }
+  .booking-modal { padding: 16px; }
+  .booking-modal-panel { padding: 30px 20px 26px; }
+  .booking-modal h2 { font-size: 18px; }
+  .booking-modal-note { font-size: 13px; line-height: 1.5; }
+  .addon-list { gap: 4px; }
+  .addon-option { flex-wrap: wrap; row-gap: 4px; padding: 12px 0; }
+  .addon-option span:first-child { flex: 1 1 100%; font-size: 13px; }
+  .addon-option span:last-child { flex: 1 1 100%; padding-left: 30px; color: var(--pink-light); font-size: 12px; }
   .booking-service-card { padding: 12px; }
   .booking-service-card h3 { min-height: 48px; font-size: 11px; }
 }

@@ -284,9 +284,57 @@ infoToggles.forEach(function (btn) {
     addons.forEach(function (addon) {
       var label = document.createElement('label');
       label.className = 'addon-option';
-      label.innerHTML = '<span><input type="checkbox" value="' + addon.label + '">' + addon.label + '</span><span>' + (addon.extra || '') + '</span>';
+      var extraAttr = addon.extra ? ' data-extra="' + addon.extra + '"' : '';
+      label.innerHTML = '<span><input type="checkbox" value="' + addon.label + '"' + extraAttr + '>' + addon.label + '</span><span>' + (addon.extra || '') + '</span>';
       addonList.appendChild(label);
     });
+  }
+
+  function parseAddonPrice(extra) {
+    var match = extra && extra.match(/£(\d+(?:\.\d+)?)/);
+    return match ? parseFloat(match[1]) : 0;
+  }
+
+  function parseAddonHours(extra) {
+    if (!extra) return 0;
+    var hrMatch = extra.match(/(\d+(?:\.\d+)?)\s*hr/);
+    var minMatch = extra.match(/(\d+)\s*min/);
+    var hours = hrMatch ? parseFloat(hrMatch[1]) : 0;
+    var minutes = minMatch ? parseFloat(minMatch[1]) : 0;
+    return hours + minutes / 60;
+  }
+
+  function formatDuration(totalHours) {
+    var totalMinutes = Math.round(totalHours * 60);
+    var hrs = Math.floor(totalMinutes / 60);
+    var mins = totalMinutes % 60;
+    if (mins === 0) return hrs + (hrs === 1 ? ' hr' : ' hrs');
+    if (mins === 30) return (hrs + 0.5) + ' hrs';
+    var parts = [];
+    if (hrs) parts.push(hrs + (hrs === 1 ? 'hr' : 'hrs'));
+    parts.push(mins + ' mins');
+    return parts.join(' ');
+  }
+
+  function updateModalTotals() {
+    if (!selectedService) return;
+    var service = SERVICES[selectedService] || {};
+    var baseHoursMatch = service.hrs && service.hrs.match(/(\d+(?:\.\d+)?)/);
+    var totalPrice = service.price || 0;
+    var totalHours = baseHoursMatch ? parseFloat(baseHoursMatch[1]) : 0;
+
+    Array.prototype.slice.call(addonList.querySelectorAll('input:checked')).forEach(function (input) {
+      var extra = input.getAttribute('data-extra');
+      totalPrice += parseAddonPrice(extra);
+      totalHours += parseAddonHours(extra);
+    });
+
+    if (modalServicePrice) modalServicePrice.textContent = '£' + totalPrice;
+    if (modalServiceHrs) modalServiceHrs.textContent = totalHours ? '· ' + formatDuration(totalHours) : '';
+  }
+
+  if (addonList) {
+    addonList.addEventListener('change', updateModalTotals);
   }
 
   if (bookingModal && openBookingBtns.length) {
@@ -296,10 +344,9 @@ infoToggles.forEach(function (btn) {
         var service = SERVICES[selectedService] || {};
         if (selectedServiceName) selectedServiceName.textContent = selectedService;
         if (modalServiceName) modalServiceName.textContent = selectedService;
-        if (modalServicePrice) modalServicePrice.textContent = '£' + service.price;
-        if (modalServiceHrs) modalServiceHrs.textContent = service.hrs ? '· ' + service.hrs : '';
         if (modalServiceHairNote) modalServiceHairNote.textContent = service.hairNote || '';
         renderAddons(service.addons);
+        updateModalTotals();
         bookingModal.classList.add('is-open');
         bookingModal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('lightbox-active');
