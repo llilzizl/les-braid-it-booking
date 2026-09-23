@@ -1,5 +1,61 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+  /* ---------------- Service detail page: image gallery ---------------- */
+  Array.prototype.slice.call(document.querySelectorAll('.service-gallery')).forEach(function (gallery) {
+    var img = gallery.querySelector('img');
+    var prevBtn = gallery.querySelector('.service-gallery-prev');
+    var nextBtn = gallery.querySelector('.service-gallery-next');
+    var images = (gallery.getAttribute('data-images') || '').split('|').filter(Boolean);
+    if (!img || images.length < 2) return;
+    var index = 0;
+
+    function renderGalleryImage() { img.src = images[index]; }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () {
+      index = (index - 1 + images.length) % images.length;
+      renderGalleryImage();
+    });
+    if (nextBtn) nextBtn.addEventListener('click', function () {
+      index = (index + 1) % images.length;
+      renderGalleryImage();
+    });
+  });
+
+  /* ---------------- Service detail page: click image to enlarge ---------------- */
+  var serviceGalleryImgs = Array.prototype.slice.call(document.querySelectorAll('.service-gallery img'));
+  var serviceLightbox = document.querySelector('.lightbox');
+  if (serviceGalleryImgs.length && serviceLightbox) {
+    var slImg = serviceLightbox.querySelector('.lightbox-img');
+    var slCaption = serviceLightbox.querySelector('.lightbox-caption');
+    var slClose = serviceLightbox.querySelector('.lightbox-close');
+
+    function openServiceLightbox(sourceImg) {
+      slImg.src = sourceImg.src;
+      slImg.alt = sourceImg.alt;
+      if (slCaption) slCaption.textContent = sourceImg.alt;
+      serviceLightbox.classList.add('is-open');
+      serviceLightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lightbox-active');
+    }
+
+    function closeServiceLightbox() {
+      serviceLightbox.classList.remove('is-open');
+      serviceLightbox.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lightbox-active');
+    }
+
+    serviceGalleryImgs.forEach(function (img) {
+      img.addEventListener('click', function () { openServiceLightbox(img); });
+    });
+    if (slClose) slClose.addEventListener('click', closeServiceLightbox);
+    serviceLightbox.addEventListener('click', function (e) {
+      if (e.target === serviceLightbox) closeServiceLightbox();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (serviceLightbox.classList.contains('is-open') && e.key === 'Escape') closeServiceLightbox();
+    });
+  }
+
   /* ---------------- Portfolio lightbox ---------------- */
   var items = Array.prototype.slice.call(document.querySelectorAll('.portfolio-item'));
   var lightbox = document.querySelector('.lightbox');
@@ -165,7 +221,7 @@ infoToggles.forEach(function (btn) {
       { label: 'Colour #1' }, { label: 'Colour #1B' }, { label: 'Colour #2' }, { label: 'Colour #4' },
       { label: 'Other colour (add description/reference to booking form)' }
     ] },
-    'Fulani Sew in': { price: 85, hrs: '3 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
+    'Fulani Sew In': { price: 85, hrs: '3 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
       { label: 'No gel' }, { label: 'Crimp' }, { label: 'Curl' }, { label: 'Define curls' }, { label: 'Straighten' }, { label: 'Layers' }
     ] },
     'Cassie Sew In': { price: 85, hrs: '3 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
@@ -176,7 +232,7 @@ infoToggles.forEach(function (btn) {
       { label: 'Other colour (add description/reference to booking form)' },
       { label: 'French Curl (hair included)', extra: '+£10' }
     ] },
-    'Small lemonade braids': { price: 100, hrs: '4 hrs', hairNote: 'Hair included in the price.', addons: [
+    'Small Lemonade Braids': { price: 100, hrs: '4 hrs', hairNote: 'Hair included in the price.', addons: [
       { label: 'Colour #1' }, { label: 'Colour #2' }, { label: 'Colour #1B' }, { label: 'Colour #4' },
       { label: 'Other colour (add description/reference to booking form)' },
       { label: '5–6 rows of braids in the back', extra: '+£10 · +20 mins' }
@@ -206,7 +262,7 @@ infoToggles.forEach(function (btn) {
       { label: 'No gel' }, { label: 'Marley hair (included)', extra: '+£5' }
     ] },
     'Extra Small Layered Braids Takedown': { price: 55, hrs: '3 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
-    "The 'perfect' sew in Takedown": { price: 30, hrs: '2 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
+    "The 'Perfect' Sew In Takedown": { price: 30, hrs: '2 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
     'Fulani Crotchet': { price: 60, hrs: '2.25 hrs', addons: [] },
     "The 'Perfect' Sew In Classes": { price: 650, hrs: '~8 hrs', hairNote: 'Hair not included — please bring your own. Equipment included.', addons: [
       { label: '2 Part Sew In', extra: '+£200' },
@@ -390,7 +446,8 @@ infoToggles.forEach(function (btn) {
       selectedAddons.textContent = chosen.length ? 'Add-ons: ' + chosen.map(function (input) { return input.value; }).join(', ') : 'No add-ons selected';
       closeBookingModal();
       availability.classList.add('is-visible');
-      availability.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var calendarCard = availability.querySelector('.calendar-card');
+      (calendarCard || availability).scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
