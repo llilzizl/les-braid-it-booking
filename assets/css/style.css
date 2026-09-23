@@ -146,6 +146,18 @@ img {
   .main-nav.is-open ul {
     display: flex;
   }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .hero-actions .btn-primary,
+  .hero-actions .btn-outline {
+    padding: 18px 30px;
+    font-size: 14px;
+  }
 }
 
 /* ---------- buttons ---------- */
@@ -373,17 +385,22 @@ img {
 .availability h2 { font-size: 28px; }
 .selected-service { margin: 22px 0; padding: 18px; border: 1px solid var(--pink); border-radius: 12px; }
 .selected-service strong { display: block; margin-bottom: 6px; color: var(--pink-light); text-transform: uppercase; }
-.calendar-card { padding: 22px; border: 1px solid var(--border); border-radius: 18px; background: var(--card); }
+.calendar-card { padding: 22px; border: 1px solid var(--pink-light); border-radius: 18px; background: var(--card); }
 .calendar-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .calendar-heading h3 { margin: 0; font-size: 22px; }
-.calendar-heading .lightbox-nav { position: static; transform: none; width: 34px; height: 34px; border: 0; background: transparent; color: var(--white); font-size: 28px; }
+.calendar-heading .lightbox-nav { position: static; transform: none; width: 34px; height: 34px; border: 0; background: transparent; color: var(--white); font-size: 28px; cursor: pointer; }
 .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
 .calendar-grid span, .calendar-grid button { min-height: 44px; padding: 5px; border: 0; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--black); color: var(--grey); font: inherit; font-size: 11px; text-align: right; }
 .calendar-grid .weekday { min-height: auto; color: var(--pink-light); font-size: 9px; font-weight: 600; text-align: center; }
-.calendar-grid button.is-available { background: rgba(232, 85, 143, 0.42); color: var(--white); cursor: pointer; }
+.calendar-grid button.is-available { background: rgba(232, 85, 143, 0.42); color: var(--white); cursor: pointer; transition: background 0.15s ease; }
+.calendar-grid button.is-available:hover,
+.calendar-grid button.is-selected { background: rgba(232, 85, 143, 0.22); }
 .calendar-grid button.is-selected { outline: 2px solid var(--pink-light); outline-offset: -2px; }
-.time-options { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-.time-option { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border: 1px solid var(--white); border-radius: 20px; color: var(--white); font-family: 'Playfair Display', serif; font-style: italic; cursor: pointer; }
+.time-options-heading { margin: 20px 0 0; color: var(--pink-light); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; }
+.time-options { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; min-height: 0; }
+.time-option { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border: 1px solid var(--pink); border-radius: 20px; background: rgba(232, 85, 143, 0.42); color: var(--white); font-family: 'Playfair Display', serif; font-style: italic; cursor: pointer; transition: background 0.15s ease; }
+.time-option:hover,
+.time-option.is-selected { background: rgba(232, 85, 143, 0.22); }
 
 @media (max-width: 720px) {
   .booking-service, .availability-layout { grid-template-columns: 1fr; }

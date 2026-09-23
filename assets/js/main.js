@@ -394,12 +394,99 @@ infoToggles.forEach(function (btn) {
     });
   }
 
-  document.querySelectorAll('.calendar-grid button').forEach(function (day) {
-    day.addEventListener('click', function () {
-      document.querySelectorAll('.calendar-grid button').forEach(function (otherDay) { otherDay.classList.remove('is-selected'); });
-      day.classList.add('is-selected');
+  /* ---------------- Booking page: calendar navigation ---------------- */
+  var calendarGrid = document.querySelector('.calendar-grid');
+  var calendarHeading = document.querySelector('.calendar-heading h3');
+  var calendarNavBtns = Array.prototype.slice.call(document.querySelectorAll('.calendar-heading .lightbox-nav'));
+  var prevMonthBtn = calendarNavBtns[0];
+  var nextMonthBtn = calendarNavBtns[1];
+  var timeOptionsHeading = document.querySelector('.time-options-heading');
+  var timeOptionsContainer = document.querySelector('.time-options');
+  var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var AVAILABLE_DAYS = [1, 2, 4, 5, 8, 11, 14, 16, 21, 24, 29];
+  var TIME_POOL = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'];
+  var calendarDate = new Date(2026, 8, 1);
+
+  function displayTime(value) {
+    var parts = value.split(':');
+    return parseInt(parts[0], 10) + ':' + parts[1];
+  }
+
+  function timesForDay(day) {
+    var count = 4 + (day % 3);
+    var start = (day * 2) % (TIME_POOL.length - count);
+    return TIME_POOL.slice(start, start + count);
+  }
+
+  function resetTimeOptions() {
+    if (!timeOptionsContainer) return;
+    timeOptionsContainer.innerHTML = '';
+    if (timeOptionsHeading) timeOptionsHeading.textContent = 'Select a date to see available times';
+  }
+
+  function renderTimeOptions(day, monthLabel) {
+    if (!timeOptionsContainer) return;
+    var times = timesForDay(day);
+    if (timeOptionsHeading) timeOptionsHeading.textContent = 'Available times for ' + monthLabel + ' ' + day;
+    timeOptionsContainer.innerHTML = times.map(function (t) {
+      return '<label class="time-option"><input type="radio" name="time" value="' + t + '">' + displayTime(t) + '</label>';
+    }).join('');
+  }
+
+  function renderCalendar() {
+    if (!calendarGrid || !calendarHeading) return;
+    var year = calendarDate.getFullYear();
+    var month = calendarDate.getMonth();
+    var monthLabel = MONTH_NAMES[month] + ' ' + year;
+    calendarHeading.textContent = monthLabel;
+    calendarGrid.setAttribute('aria-label', monthLabel + ' calendar');
+
+    var html = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(function (d) {
+      return '<span class="weekday">' + d + '</span>';
+    }).join('');
+
+    var firstDay = new Date(year, month, 1).getDay();
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (var i = 0; i < firstDay; i++) html += '<span></span>';
+    for (var day = 1; day <= daysInMonth; day++) {
+      html += AVAILABLE_DAYS.indexOf(day) !== -1
+        ? '<button class="is-available" type="button">' + day + '</button>'
+        : '<span>' + day + '</span>';
+    }
+
+    calendarGrid.innerHTML = html;
+    resetTimeOptions();
+  }
+
+  if (calendarGrid) {
+    renderCalendar();
+
+    calendarGrid.addEventListener('click', function (e) {
+      if (e.target.tagName !== 'BUTTON') return;
+      Array.prototype.slice.call(calendarGrid.querySelectorAll('button')).forEach(function (btn) { btn.classList.remove('is-selected'); });
+      e.target.classList.add('is-selected');
+      renderTimeOptions(parseInt(e.target.textContent, 10), MONTH_NAMES[calendarDate.getMonth()]);
     });
-  });
+
+    if (prevMonthBtn) prevMonthBtn.addEventListener('click', function () {
+      calendarDate.setMonth(calendarDate.getMonth() - 1);
+      renderCalendar();
+    });
+    if (nextMonthBtn) nextMonthBtn.addEventListener('click', function () {
+      calendarDate.setMonth(calendarDate.getMonth() + 1);
+      renderCalendar();
+    });
+  }
+
+  /* ---------------- Booking page: time slot selection ---------------- */
+  if (timeOptionsContainer) {
+    timeOptionsContainer.addEventListener('change', function (e) {
+      if (e.target.tagName !== 'INPUT') return;
+      Array.prototype.slice.call(timeOptionsContainer.querySelectorAll('.time-option')).forEach(function (opt) { opt.classList.remove('is-selected'); });
+      e.target.closest('.time-option').classList.add('is-selected');
+    });
+  }
 
   var editBookingBtn = document.querySelector('[data-edit-booking]');
   if (editBookingBtn && bookingModal) {
