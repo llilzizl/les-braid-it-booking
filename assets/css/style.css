@@ -388,6 +388,14 @@ img {
   .booking-service, .availability-layout { grid-template-columns: 1fr; }
   .booking-service-image { max-width: 340px; margin: 0 auto; }
   .booking-services-heading { align-items: flex-start; flex-direction: column; }
+  .heading-actions { flex-wrap: nowrap; width: 100%; gap: 10px; }
+  .booking-services-heading .portfolio-cta,
+  .custom-request-wrap { flex: 1 1 0; min-width: 0; }
+  .portfolio-cta,
+  .custom-request-btn { width: 100%; padding: 10px 8px; font-size: 10.5px; text-align: center; }
+  .service-controls { flex-wrap: nowrap; gap: 10px; }
+  .service-control { flex: 1 1 0; min-width: 0; }
+  .service-control select { width: 100%; padding: 8px 6px; }
   .booking-service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 8px; gap: 10px; border-radius: 18px; }
   .booking-service-card { padding: 12px; }
   .booking-service-card h3 { min-height: 48px; font-size: 11px; }

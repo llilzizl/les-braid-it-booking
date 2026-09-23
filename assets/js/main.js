@@ -126,7 +126,10 @@ infoToggles.forEach(function (btn) {
     });
 
     // then reopen this one, unless it was already open (so clicking it again closes it)
-    if (panel && !isCurrentlyOpen) panel.classList.add('is-open');
+    if (panel && !isCurrentlyOpen) {
+      panel.classList.add('is-open');
+      panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   });
 });
 
