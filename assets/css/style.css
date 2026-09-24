@@ -409,11 +409,12 @@ img {
 
 .service-hero { max-width: 480px; margin: 0 auto; padding: 30px 6% 50px; text-align: center; }
 
-.service-gallery { position: relative; width: 100%; max-width: 380px; margin: 0 auto 22px; }
+.service-gallery { position: relative; width: 100%; max-width: 300px; margin: 0 auto 22px; }
 .service-gallery img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border: 1px solid var(--pink-light); border-radius: 20px; cursor: zoom-in; }
-.service-gallery .lightbox-nav { top: 50%; }
-.service-gallery-prev { left: 10px; }
-.service-gallery-next { right: 10px; }
+.service-gallery .lightbox-nav { top: 50%; width: 40px; height: 40px; background: var(--pink-light); border-color: var(--pink); }
+.service-gallery .lightbox-nav svg { width: 20px; height: 20px; stroke: var(--pink); }
+.service-gallery-prev { left: -24px; }
+.service-gallery-next { right: -24px; }
 
 .service-title { margin: 0 0 14px; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(24px, 5vw, 32px); letter-spacing: 3px; text-transform: uppercase; }
 
