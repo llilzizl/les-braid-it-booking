@@ -278,10 +278,19 @@ infoToggles.forEach(function (btn) {
 
   if (serviceGrid) {
     var serviceCards = Array.prototype.slice.call(serviceGrid.querySelectorAll('.booking-service-card'));
+    var siteLogo = document.querySelector('.site-header .logo');
+    var defaultLogo = siteLogo ? { src: siteLogo.getAttribute('src'), alt: siteLogo.alt } : null;
 
     var applyServiceControls = function () {
       var sortValue = serviceSort ? serviceSort.value : 'popular';
       var filterValue = serviceFilter ? serviceFilter.value : 'all';
+
+      // Classes belong to the academy, so show the academy logo while that category is filtered
+      if (siteLogo) {
+        var isClasses = filterValue === 'Classes';
+        siteLogo.setAttribute('src', isClasses ? 'assets/images/acadamy-logo.png' : defaultLogo.src);
+        siteLogo.alt = isClasses ? 'Les Braid It Academy' : defaultLogo.alt;
+      }
 
       var visible = serviceCards.filter(function (card) {
         return filterValue === 'all' || card.getAttribute('data-category') === filterValue;
@@ -304,6 +313,16 @@ infoToggles.forEach(function (btn) {
 
     if (serviceSort) serviceSort.addEventListener('change', applyServiceControls);
     if (serviceFilter) serviceFilter.addEventListener('change', applyServiceControls);
+
+    // Pre-select a category when linked from the home page, e.g. booking.html?category=Weave%20Styles
+    var categoryParam = new URLSearchParams(window.location.search).get('category');
+    if (serviceFilter && categoryParam) {
+      var matchingOption = Array.prototype.slice.call(serviceFilter.options).filter(function (opt) {
+        return opt.value === categoryParam;
+      })[0];
+      if (matchingOption) serviceFilter.value = categoryParam;
+    }
+
     applyServiceControls();
   }
 
@@ -587,5 +606,40 @@ infoToggles.forEach(function (btn) {
       navToggle.setAttribute('aria-expanded', mainNav.classList.contains('is-open') ? 'true' : 'false');
     });
   }
+
+  /* ---------------- Service highlights slider ---------------- */
+  document.querySelectorAll('.specialty-slider').forEach(function (slider) {
+    var track = slider.querySelector('.specialty-track');
+    var prev = slider.querySelector('.specialty-prev');
+    var next = slider.querySelector('.specialty-next');
+    if (!track) return;
+
+    var step = function () {
+      var card = track.querySelector('.specialty-card');
+      return card ? card.offsetWidth + 24 : track.clientWidth;
+    };
+
+    var update = function () {
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      slider.classList.toggle('is-scrollable', maxScroll > 2);
+      if (prev) prev.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = track.scrollLeft >= maxScroll - 2;
+    };
+
+    if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
+    if (next) next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
+    track.addEventListener('scroll', update);
+    window.addEventListener('resize', update);
+    update();
+  });
+
+  /* ---------------- Before / after slider ---------------- */
+  document.querySelectorAll('.before-after').forEach(function (slider) {
+    var range = slider.querySelector('.before-after-range');
+    if (!range) return;
+    range.addEventListener('input', function () {
+      slider.style.setProperty('--pos', range.value + '%');
+    });
+  });
 
 });

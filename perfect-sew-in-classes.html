@@ -11,7 +11,7 @@
 </head>
 <body>
   <header class="site-header">
-    <a href="index.html"><img src="assets/images/logo.png" alt="Les Braid It" class="logo"></a>
+    <a href="index.html"><img src="assets/images/acadamy-logo.png" alt="Les Braid It Academy" class="logo"></a>
     <nav class="main-nav">
       <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
       <ul>
@@ -30,12 +30,14 @@
 
   <main class="service-page">
     <section class="service-hero">
-      <div class="service-gallery">
-        <div class="service-photo-placeholder" role="img" aria-label="The Perfect Sew In Classes – photo coming soon">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
-          <span class="placeholder-brand">Les Braid It</span>
-          <span class="placeholder-note">Photo coming soon</span>
-        </div>
+      <div class="service-gallery" data-images="assets/images/booknow/perfect-sew-in-classes-cover.jpg|assets/images/booknow/perfect-sew-in-classes-1.jpg">
+        <button class="lightbox-nav service-gallery-prev" type="button" aria-label="Previous image">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <img src="assets/images/booknow/perfect-sew-in-classes-cover.jpg" alt="The &lsquo;Perfect&rsquo; Sew In Classes">
+        <button class="lightbox-nav service-gallery-next" type="button" aria-label="Next image">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
       </div>
 
       <h1 class="service-title">The &lsquo;Perfect&rsquo; Sew In Classes</h1>
@@ -51,11 +53,31 @@
           <li>Hands-on 'Perfect' Sew In training</li>
           <li>Equipment included</li>
           <li>2 part sew in & flip over add-ons available</li>
-          <li>Bring your own hair</li>
+          <li>Full sew in kit provided</li>
         </ul>
       </div>
 
       <p class="service-description">Learn the 'Perfect' Sew In technique hands-on in this full training session, with all equipment included. Perfect for stylists in London wanting to add this no leave-out, no-lace method to their skillset.</p>
+
+      <div class="service-kit" aria-labelledby="kit-title">
+        <h2 id="kit-title" class="service-kit-title">What&rsquo;s included</h2>
+        <p class="service-kit-intro">This class includes all the equipment you need &mdash; just turn up ready to learn.</p>
+        <ul class="service-kit-list">
+          <li><span class="service-kit-name">Needle</span></li>
+          <li><span class="service-kit-name">Bonded nylon thread</span></li>
+          <li><span class="service-kit-name">Carbon rattail comb</span></li>
+          <li><span class="service-kit-name">Hair net</span></li>
+          <li class="service-kit-hair">
+            <span class="service-kit-name">Synthetic hair</span>
+            <span class="service-kit-swatches" aria-label="Available in colours 1, 1B, 2 and 4">
+              <span class="kit-swatch" style="--swatch: #0a0a0a">1</span>
+              <span class="kit-swatch" style="--swatch: #1f1814">1B</span>
+              <span class="kit-swatch" style="--swatch: #2e1c13">2</span>
+              <span class="kit-swatch" style="--swatch: #4b2c1a">4</span>
+            </span>
+          </li>
+        </ul>
+      </div>
 
       <button type="button" class="btn-primary service-book-now open-booking-modal" data-service="The 'Perfect' Sew In Classes">Book The &lsquo;Perfect&rsquo; Sew In Classes Now</button>
     </section>
