@@ -353,6 +353,14 @@ img {
 .booking-service-card { padding: 16px; border: 2px solid var(--pink-light); border-radius: 22px; background: var(--card); text-align: center; }
 .booking-service-card-link { display: block; color: inherit; text-decoration: none; }
 .booking-service-card img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border: 1px solid var(--pink-light); border-radius: 14px; }
+.service-photo-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%; aspect-ratio: 2 / 3; padding: 16px; border: 1px dashed var(--pink); border-radius: 14px; background: radial-gradient(circle at 50% 38%, rgba(232, 85, 143, 0.28), transparent 62%), repeating-linear-gradient(135deg, rgba(251, 228, 239, 0.04) 0 10px, transparent 10px 20px), var(--card); transition: border-color 0.2s ease; }
+.service-photo-placeholder svg { width: 38px; height: 38px; fill: var(--pink); opacity: 0.9; }
+.service-photo-placeholder .placeholder-brand { color: var(--pink-light); font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; line-height: 1.2; }
+.service-photo-placeholder .placeholder-note { color: var(--grey); font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
+.booking-service-card-link:hover .service-photo-placeholder { border-color: var(--pink-light); }
+.service-gallery .service-photo-placeholder { aspect-ratio: 4 / 5; border-radius: 20px; }
+.service-gallery .service-photo-placeholder svg { width: 48px; height: 48px; }
+.service-gallery .service-photo-placeholder .placeholder-brand { font-size: 26px; }
 .booking-service-card h3 { min-height: 42px; margin: 14px 0 4px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 13px; font-style: normal; letter-spacing: 0.7px; line-height: 1.4; text-transform: uppercase; }
 .booking-service-card p { margin: 0 0 14px; color: var(--pink-light); font-size: 14px; }
 .booking-service-card .service-hair-note { margin: 0 0 2px; color: var(--grey); font-size: 12px; }
