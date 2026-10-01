@@ -11,6 +11,7 @@ login page shows a "being set up" message and the forms are disabled.
 ## 2. Create the tables
 Go to **SQL Editor → New query**, then paste and run each file in this folder in order:
 - `01_profiles.sql`: member profiles
+- `02_bookings.sql`: appointments made from the booking calendar (guests and members)
 
 ## 3. Connect the website
 Go to **Project Settings → API** and copy the **Project URL** and the **anon public** key

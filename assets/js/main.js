@@ -482,6 +482,8 @@ infoToggles.forEach(function (btn) {
   var AVAILABLE_DAYS = [1, 2, 4, 5, 8, 11, 14, 16, 21, 24, 29];
   var TIME_POOL = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'];
   var calendarDate = new Date(2026, 8, 1);
+  var selectedDay = null;
+  var bookingForm = document.querySelector('.booking-details-form');
 
   function displayTime(value) {
     var parts = value.split(':');
@@ -498,6 +500,7 @@ infoToggles.forEach(function (btn) {
     if (!timeOptionsContainer) return;
     timeOptionsContainer.innerHTML = '';
     if (timeOptionsHeading) timeOptionsHeading.textContent = 'Select a date to see available times';
+    if (bookingForm) bookingForm.hidden = true;
   }
 
   function renderTimeOptions(day, monthLabel) {
@@ -507,6 +510,7 @@ infoToggles.forEach(function (btn) {
     timeOptionsContainer.innerHTML = times.map(function (t) {
       return '<label class="time-option"><input type="radio" name="time" value="' + t + '">' + displayTime(t) + '</label>';
     }).join('');
+    if (bookingForm) bookingForm.hidden = true;
   }
 
   function renderCalendar() {
@@ -532,6 +536,7 @@ infoToggles.forEach(function (btn) {
     }
 
     calendarGrid.innerHTML = html;
+    selectedDay = null;
     resetTimeOptions();
   }
 
@@ -542,7 +547,8 @@ infoToggles.forEach(function (btn) {
       if (e.target.tagName !== 'BUTTON') return;
       Array.prototype.slice.call(calendarGrid.querySelectorAll('button')).forEach(function (btn) { btn.classList.remove('is-selected'); });
       e.target.classList.add('is-selected');
-      renderTimeOptions(parseInt(e.target.textContent, 10), MONTH_NAMES[calendarDate.getMonth()]);
+      selectedDay = parseInt(e.target.textContent, 10);
+      renderTimeOptions(selectedDay, MONTH_NAMES[calendarDate.getMonth()]);
     });
 
     if (prevMonthBtn) prevMonthBtn.addEventListener('click', function () {
@@ -561,6 +567,82 @@ infoToggles.forEach(function (btn) {
       if (e.target.tagName !== 'INPUT') return;
       Array.prototype.slice.call(timeOptionsContainer.querySelectorAll('.time-option')).forEach(function (opt) { opt.classList.remove('is-selected'); });
       e.target.closest('.time-option').classList.add('is-selected');
+      if (bookingForm) bookingForm.hidden = false;
+    });
+  }
+
+  /* ---------------- Booking: your details + save to Supabase ---------------- */
+  if (bookingForm) {
+    var bookingStatus = bookingForm.querySelector('.member-status');
+    var lbiConfig = window.LBI_SUPABASE || {};
+    var bookingDb = null;
+    var bookingMemberId = null;
+    if (window.supabase && lbiConfig.url && lbiConfig.anonKey) {
+      bookingDb = window.supabase.createClient(lbiConfig.url, lbiConfig.anonKey);
+    }
+
+    var showBookingStatus = function (message, type) {
+      bookingStatus.textContent = message;
+      bookingStatus.className = 'member-status is-' + (type || 'error');
+      bookingStatus.hidden = false;
+    };
+
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+
+    if (!bookingDb) {
+      showBookingStatus('Online booking is being set up and will be available soon. Please get in touch on the contact page to book.', 'info');
+      bookingForm.querySelector('[type="submit"]').disabled = true;
+    } else {
+      // Logged in members: fill in their details and link the booking to their account
+      bookingDb.auth.getSession().then(function (result) {
+        var session = result.data.session;
+        if (!session) return;
+        var details = session.user.user_metadata || {};
+        bookingMemberId = session.user.id;
+        if (!bookingForm.fullname.value) bookingForm.fullname.value = details.full_name || '';
+        if (!bookingForm.email.value) bookingForm.email.value = session.user.email || '';
+        if (!bookingForm.phone.value) bookingForm.phone.value = details.phone || '';
+      });
+    }
+
+    bookingForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!bookingDb) return;
+      bookingStatus.hidden = true;
+
+      var time = timeOptionsContainer.querySelector('input:checked');
+      var name = bookingForm.fullname.value.trim();
+      var email = bookingForm.email.value.trim();
+      var phone = bookingForm.phone.value.trim();
+      if (!selectedService || !selectedDay || !time) return showBookingStatus('Please choose a service, date and time first.');
+      if (!name) return showBookingStatus('Please enter your full name.');
+      if (!/^\S+@\S+\.\S+$/.test(email)) return showBookingStatus('Please enter a valid email address.');
+      if (!phone) return showBookingStatus('Please enter your phone number.');
+
+      var addons = Array.prototype.slice.call(addonList.querySelectorAll('input:checked')).map(function (input) { return input.value; });
+      var submitBtn = bookingForm.querySelector('[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Please wait…';
+
+      bookingDb.from('bookings').insert({
+        member_id: bookingMemberId,
+        name: name,
+        email: email,
+        phone: phone,
+        service_type: selectedService,
+        addons: addons.length ? addons.join(', ') : null,
+        booking_date: calendarDate.getFullYear() + '-' + pad(calendarDate.getMonth() + 1) + '-' + pad(selectedDay),
+        booking_time: time.value
+      }).then(function (result) {
+        submitBtn.textContent = 'Confirm booking';
+        if (result.error) {
+          submitBtn.disabled = false;
+          if (result.error.code === '23505') return showBookingStatus('Sorry, that time has just been booked. Please choose another time.');
+          return showBookingStatus('Something went wrong and your booking wasn’t saved. Please try again.');
+        }
+        Array.prototype.slice.call(bookingForm.querySelectorAll('.field, .submit-btn, .form-note')).forEach(function (el) { el.hidden = true; });
+        showBookingStatus('Booking received! ' + selectedService + ' on ' + selectedDay + ' ' + MONTH_NAMES[calendarDate.getMonth()] + ' at ' + displayTime(time.value) + '. I’ll confirm by email shortly.', 'success');
+      });
     });
   }
 

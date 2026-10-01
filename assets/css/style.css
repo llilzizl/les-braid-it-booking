@@ -579,6 +579,11 @@ img {
 .time-option { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border: 1px solid var(--pink); border-radius: 20px; background: rgba(232, 85, 143, 0.42); color: var(--white); font-family: 'Playfair Display', serif; font-style: italic; cursor: pointer; transition: background 0.15s ease; }
 .time-option:hover,
 .time-option.is-selected { background: rgba(232, 85, 143, 0.22); }
+.booking-details-form { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--border); }
+.booking-details-form[hidden] { display: none; }
+.booking-details-title { margin: 0 0 18px; font-size: 22px; }
+.booking-details-form .member-status { margin-bottom: 18px; }
+.booking-details-form .form-note a { color: var(--pink); font-weight: 600; }
 
 /* ---------- service detail page ---------- */
 .service-top-cta { display: flex; justify-content: center; padding: 20px 6% 0; }

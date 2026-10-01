@@ -89,6 +89,24 @@
           </div>
           <p class="time-options-heading">Select a date to see available times</p>
           <div class="time-options" aria-label="Available times"></div>
+          <form class="booking-details-form" novalidate hidden>
+            <h3 class="booking-details-title">Your details</h3>
+            <p class="member-status" role="status" aria-live="polite" hidden></p>
+            <div class="field">
+              <label for="booking-name">Full name</label>
+              <input type="text" id="booking-name" name="fullname" autocomplete="name" placeholder="Your full name" required>
+            </div>
+            <div class="field">
+              <label for="booking-email">Email address</label>
+              <input type="email" id="booking-email" name="email" autocomplete="email" placeholder="name@example.com" required>
+            </div>
+            <div class="field">
+              <label for="booking-phone">Phone number</label>
+              <input type="tel" id="booking-phone" name="phone" autocomplete="tel" placeholder="07123 456789" required>
+            </div>
+            <button class="submit-btn" type="submit">Confirm booking</button>
+            <p class="form-note">Have a member account? <a href="login.html">Log in</a> first so this visit counts towards your loyalty card.</p>
+          </form>
         </div>
       </div>
     </section>
@@ -116,6 +134,8 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>
