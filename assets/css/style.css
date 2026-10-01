@@ -1330,3 +1330,171 @@ section.form-section h2 {
     padding: 24px 20px;
   }
 }
+
+/* ---------- member area ---------- */
+.member-page {
+  padding: 50px 6% 80px;
+}
+
+.member-intro {
+  max-width: 520px;
+  margin: 0 auto 30px;
+  text-align: center;
+}
+.member-intro h1 {
+  font-size: clamp(32px, 5vw, 46px);
+}
+.member-intro p:last-child {
+  color: var(--grey);
+  font-size: 14px;
+  margin: 0;
+}
+
+.member-card {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 30px 28px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--pink);
+  border-radius: 20px;
+}
+
+.member-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.member-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+.member-tabs .tab {
+  width: 100%;
+}
+.member-auth:has(.member-panel[data-panel="forgot"]:not([hidden])) .member-tabs {
+  display: none;
+}
+
+.member-panel-title {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.field input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+}
+
+.field-optional {
+  color: var(--grey);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.password-field {
+  position: relative;
+}
+.password-field input {
+  padding-right: 70px !important;
+}
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--pink);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.link-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--pink);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.link-btn:hover {
+  color: var(--pink-light);
+}
+
+.member-forgot {
+  display: block;
+  margin: -8px 0 22px auto;
+  font-size: 12px;
+}
+
+.member-switch {
+  margin: 22px 0 0;
+  color: var(--grey);
+  font-size: 13px;
+  text-align: center;
+}
+
+.member-status {
+  margin: 0 0 22px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.member-status.is-error {
+  background: rgba(232, 85, 143, 0.12);
+  border: 1px solid var(--pink);
+  color: var(--pink-light);
+}
+.member-status.is-success {
+  background: rgba(120, 200, 150, 0.1);
+  border: 1px solid #5FB98A;
+  color: #CFEEDC;
+}
+.member-status.is-info {
+  background: var(--black);
+  border: 1px solid var(--border);
+  color: var(--grey);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.member-guest {
+  margin: 26px 0 0;
+  color: var(--grey);
+  font-size: 13px;
+  text-align: center;
+}
+.member-guest a {
+  color: var(--pink);
+  font-weight: 600;
+}
+
+/* hide members-only pages until the login check has passed */
+body[data-members-only]:not(.is-member-ready) main {
+  visibility: hidden;
+}

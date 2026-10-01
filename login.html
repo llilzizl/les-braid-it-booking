@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in or Sign up | Les Braid It Members</title>
+  <meta name="description" content="Log in to your Les Braid It member account to manage bookings, track your loyalty card and save your style preferences.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&family=Montserrat:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html"><img src="assets/images/membership-logo.png" alt="Les Braid It Members" class="logo"></a>
+    <nav class="main-nav">
+      <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <ul>
+        <li><a href="booking.html"><img src="assets/images/icons/nav-book-now.png" alt="">Book now</a></li>
+        <li><a href="index.html"><img src="assets/images/icons/nav-home.png" alt="">Home</a></li>
+        <li><a href="portfolio.html"><img src="assets/images/icons/nav-portfolio.png" alt="">Portfolio</a></li>
+        <li><a href="policies.html"><img src="assets/images/icons/nav-policies.png" alt="">Policies</a></li>
+        <li><a href="contact.html"><img src="assets/images/icons/nav-contact.png" alt="">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="member-page">
+    <section class="member-intro">
+      <p class="hero-eyebrow">Les Braid It Members</p>
+      <h1>Welcome</h1>
+      <p>Manage your bookings, collect loyalty stamps and get 30% off every 5th visit.</p>
+    </section>
+
+    <section class="member-card member-auth" aria-label="Log in or sign up">
+      <div class="member-tabs" role="group" aria-label="Choose log in or sign up">
+        <button class="tab" type="button" data-panel="login" aria-pressed="true">Log in</button>
+        <button class="tab" type="button" data-panel="signup" aria-pressed="false">Sign up</button>
+      </div>
+
+      <p class="member-status" role="status" aria-live="polite" hidden></p>
+
+      <!-- Log in -->
+      <div class="member-panel" data-panel="login">
+        <form class="member-form" id="login-form" novalidate>
+          <div class="field">
+            <label for="login-email">Email address</label>
+            <input type="email" id="login-email" name="email" autocomplete="email" placeholder="name@example.com" required>
+          </div>
+          <div class="field">
+            <label for="login-password">Password</label>
+            <div class="password-field">
+              <input type="password" id="login-password" name="password" autocomplete="current-password" placeholder="Your password" required>
+              <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+            </div>
+          </div>
+          <button class="link-btn member-forgot" type="button" data-show-panel="forgot">Forgot password?</button>
+          <button class="submit-btn" type="submit">Log in</button>
+        </form>
+        <p class="member-switch">New here? <button class="link-btn" type="button" data-show-panel="signup">Create an account</button></p>
+      </div>
+
+      <!-- Sign up -->
+      <div class="member-panel" data-panel="signup" hidden>
+        <form class="member-form" id="signup-form" novalidate>
+          <div class="field">
+            <label for="signup-name">Full name</label>
+            <input type="text" id="signup-name" name="fullname" autocomplete="name" placeholder="Your full name" required>
+          </div>
+          <div class="field">
+            <label for="signup-email">Email address</label>
+            <input type="email" id="signup-email" name="email" autocomplete="email" placeholder="name@example.com" required>
+          </div>
+          <div class="field">
+            <label for="signup-phone">Phone number <span class="field-optional">(optional)</span></label>
+            <input type="tel" id="signup-phone" name="phone" autocomplete="tel" placeholder="07123 456789">
+          </div>
+          <div class="field">
+            <label for="signup-password">Password</label>
+            <div class="password-field">
+              <input type="password" id="signup-password" name="password" autocomplete="new-password" placeholder="At least 8 characters" minlength="8" required>
+              <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="signup-confirm">Confirm password</label>
+            <input type="password" id="signup-confirm" name="confirm" autocomplete="new-password" placeholder="Type it again" required>
+          </div>
+          <button class="submit-btn" type="submit">Create my account</button>
+          <p class="form-note">Booked with me before as a guest? Sign up with the same email and your past visits will count towards your loyalty card.</p>
+        </form>
+        <p class="member-switch">Already a member? <button class="link-btn" type="button" data-show-panel="login">Log in</button></p>
+      </div>
+
+      <!-- Forgot password -->
+      <div class="member-panel" data-panel="forgot" hidden>
+        <h2 class="member-panel-title">Reset your password</h2>
+        <p class="form-sub">Enter the email you signed up with and we&rsquo;ll send you a link to choose a new password.</p>
+        <form class="member-form" id="forgot-form" novalidate>
+          <div class="field">
+            <label for="forgot-email">Email address</label>
+            <input type="email" id="forgot-email" name="email" autocomplete="email" placeholder="name@example.com" required>
+          </div>
+          <button class="submit-btn" type="submit">Send reset link</button>
+        </form>
+        <p class="member-switch"><button class="link-btn" type="button" data-show-panel="login">&larr; Back to log in</button></p>
+      </div>
+    </section>
+
+    <p class="member-guest">Just want to book? <a href="booking.html">Book as a guest</a> &mdash; no account needed.</p>
+  </main>
+
+  <footer class="site-footer"><p>&copy; 2026 Les Braid It. All rights reserved.</p></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/member.js"></script>
+</body>
+</html>

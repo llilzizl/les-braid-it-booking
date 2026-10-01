@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard | Les Braid It Members</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&family=Montserrat:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-members-only>
+  <header class="site-header">
+    <a href="index.html"><img src="assets/images/membership-logo.png" alt="Les Braid It Members" class="logo"></a>
+    <nav class="main-nav">
+      <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <ul>
+        <li><a href="booking.html"><img src="assets/images/icons/nav-book-now.png" alt="">Book now</a></li>
+        <li><a href="index.html"><img src="assets/images/icons/nav-home.png" alt="">Home</a></li>
+        <li><a href="portfolio.html"><img src="assets/images/icons/nav-portfolio.png" alt="">Portfolio</a></li>
+        <li><a href="policies.html"><img src="assets/images/icons/nav-policies.png" alt="">Policies</a></li>
+        <li><a href="contact.html"><img src="assets/images/icons/nav-contact.png" alt="">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Placeholder: the full dashboard (loyalty card, next booking, quick links) is the next page to build -->
+  <main class="member-page">
+    <section class="member-intro">
+      <p class="hero-eyebrow">Les Braid It Members</p>
+      <h1>Hi, <span data-member-name>there</span></h1>
+      <p>You&rsquo;re logged in. Your dashboard, bookings and loyalty card are coming soon.</p>
+    </section>
+
+    <section class="member-card member-center">
+      <a class="btn-primary" href="booking.html">Book a style</a>
+      <button class="link-btn" type="button" data-sign-out>Log out</button>
+    </section>
+  </main>
+
+  <footer class="site-footer"><p>&copy; 2026 Les Braid It. All rights reserved.</p></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/member.js"></script>
+</body>
+</html>
