@@ -12,6 +12,7 @@ login page shows a "being set up" message and the forms are disabled.
 Go to **SQL Editor → New query**, then paste and run each file in this folder in order:
 - `01_profiles.sql`: member profiles
 - `02_bookings.sql`: appointments made from the booking calendar (guests and members)
+- `03_availability.sql`: styles (deposit, length, gap), working hours, blocked days and the live calendar data
 
 ## 3. Connect the website
 Go to **Project Settings → API** and copy the **Project URL** and the **anon public** key
@@ -41,3 +42,8 @@ Sign up on the site with your own email, then run this in the SQL Editor:
 update public.profiles set is_admin = true
 where id = (select id from auth.users where email = 'lesbraidit@outlook.com');
 ```
+
+## 7. Admin page
+Open `admin.html` and sign in with your admin account. From there you can set your working hours,
+block off days and see upcoming bookings. Anyone else who signs in sees "No access", and the database
+rules stop non-admins from changing hours or blocked days. Don't link to this page from the public menu.

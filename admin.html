@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Les Braid It Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c0c; --card: #171717; --field: #101010; --line: #2c2c2c;
+      --text: #f6f1f2; --muted: #a99fa3; --pink: #e8558e; --pink-dark: #c93f78;
+      --ok: #6fcf97; --warn: #f2c14e; --bad: #ef6b6b;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Montserrat', system-ui, sans-serif; line-height: 1.5; }
+    .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+    .brand { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.4rem; }
+    .brand span { font-family: 'Montserrat', sans-serif; font-style: normal; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--pink); margin-left: 10px; }
+    main { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--pink); border-radius: 18px; padding: 22px; margin-bottom: 22px; }
+    h1, h2 { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; margin: 0 0 6px; }
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.5rem; }
+    .hint { color: var(--muted); font-size: .88rem; margin: 0 0 16px; }
+    .muted { color: var(--muted); font-size: .9rem; }
+    label.field { display: block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    input[type=text], input[type=email], input[type=password], input[type=date], input[type=time] {
+      width: 100%; margin-top: 6px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--field); color: var(--text); font: inherit; font-size: 16px; color-scheme: dark;
+    }
+    input:disabled { opacity: .35; }
+    input:focus-visible, button:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
+    button { font: inherit; cursor: pointer; }
+    .btn { background: var(--pink); color: #160a10; border: 0; border-radius: 999px; padding: 12px 26px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .8rem; }
+    .btn:hover { background: var(--pink-dark); }
+    .btn:disabled { opacity: .5; cursor: default; }
+    .btn-ghost { background: none; border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 8px 16px; font-size: .8rem; }
+    .btn-ghost:hover { border-color: var(--pink); }
+    .msg { margin: 14px 0 0; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); font-size: .9rem; }
+    .msg.ok { border-color: var(--ok); color: var(--ok); }
+    .msg.error { border-color: var(--bad); color: var(--bad); }
+    .msg.info { border-color: var(--warn); color: var(--warn); }
+
+    .hours-row { display: grid; grid-template-columns: 120px 90px 1fr 1fr; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .hours-row input[type=time] { margin-top: 0; }
+    .hours-day { font-weight: 600; }
+    .switch { display: flex; align-items: center; gap: 8px; font-size: .85rem; }
+    .switch input { width: 20px; height: 20px; accent-color: var(--pink); }
+    .actions { margin-top: 18px; }
+
+    .form-row { display: grid; grid-template-columns: 200px 1fr auto; gap: 12px; align-items: end; }
+    .form-row label.field { margin-bottom: 0; }
+    .list { list-style: none; margin: 18px 0 0; padding: 0; }
+    .list li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+
+    .booking { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; display: grid; gap: 4px; }
+    .booking-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .when { font-weight: 700; }
+    .svc { font-weight: 500; }
+    .booking a { color: var(--pink); text-decoration: none; }
+    .booking a:hover { text-decoration: underline; }
+    .badge { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+    .badge.confirmed { color: var(--ok); border-color: var(--ok); }
+    .badge.pending { color: var(--warn); border-color: var(--warn); }
+    .badge.completed { color: var(--text); border-color: var(--text); }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .toolbar label { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); }
+    .toolbar input { width: 18px; height: 18px; accent-color: var(--pink); }
+
+    @media (max-width: 600px) {
+      .hours-row { grid-template-columns: 1fr 1fr; }
+      .hours-row .switch { justify-self: end; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-row .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">Les Braid It<span>Admin</span></div>
+    <button class="btn-ghost" id="signout" type="button" hidden>Sign out</button>
+  </header>
+
+  <main>
+    <section class="card" id="login" hidden>
+      <h1>Admin login</h1>
+      <p class="hint">Sign in with your admin account.</p>
+      <form id="login-form">
+        <label class="field">Email
+          <input type="email" id="login-email" autocomplete="username" required>
+        </label>
+        <label class="field">Password
+          <input type="password" id="login-password" autocomplete="current-password" required>
+        </label>
+        <button class="btn" id="login-btn" type="submit">Sign in</button>
+      </form>
+      <p class="msg" id="login-msg" hidden></p>
+    </section>
+
+    <section class="card" id="denied" hidden>
+      <h1>No access</h1>
+      <p class="hint">This account is not an admin. Sign out and use your admin account.</p>
+    </section>
+
+    <section class="card" id="notice" hidden>
+      <h1>Something is not set up</h1>
+      <p class="msg error" id="notice-msg"></p>
+    </section>
+
+    <div id="app" hidden>
+      <section class="card">
+        <h2>Working hours</h2>
+        <p class="hint">Clients can only book on open days, between these times. A style must finish before closing time. Changing hours does not move bookings that already exist.</p>
+        <div id="hours-list"></div>
+        <div class="actions">
+          <button class="btn" id="save-hours" type="button">Save hours</button>
+        </div>
+        <p class="msg" id="hours-msg" hidden></p>
+      </section>
+
+      <section class="card">
+        <h2>Block off a day</h2>
+        <p class="hint">Use this for holidays and days off. Blocking a day hides it from the booking calendar. It does not cancel bookings that already exist.</p>
+        <div class="form-row">
+          <label class="field">Date
+            <input type="date" id="block-date">
+          </label>
+          <label class="field">Reason (only you see this)
+            <input type="text" id="block-reason" maxlength="80" placeholder="e.g. Holiday">
+          </label>
+          <button class="btn" id="add-block" type="button">Block day</button>
+        </div>
+        <p class="msg" id="block-msg" hidden></p>
+        <ul class="list" id="block-list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>Upcoming bookings</h2>
+        <div class="toolbar">
+          <span class="muted" id="booking-count"></span>
+          <label><input type="checkbox" id="hide-old" checked> Hide cancelled and expired</label>
+        </div>
+        <div id="booking-list"></div>
+        <p class="msg" id="booking-msg" hidden></p>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script>
+  (function () {
+    var cfg = window.LBI_SUPABASE || {};
+    var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];   // show Monday first, Sunday last
+    var PENDING_HOLD_MINUTES = 30;            // must match the 30 minutes in get_busy_slots
+    var bookings = [];
+    var db = null;
+
+    function $(id) { return document.getElementById(id); }
+    function show(id, on) { $(id).hidden = !on; }
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function todayKey() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+    function shortTime(t) { return String(t || '').slice(0, 5); }
+    function toMinutes(t) { var p = String(t).split(':'); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); }
+    function minutesToTime(m) { m = m % 1440; return pad(Math.floor(m / 60)) + ':' + pad(m % 60); }
+
+    function formatDate(key) {
+      var p = String(key).split('-');
+      return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    // The older bookings table stores created_at without a time zone, as UTC
+    function parseDbTime(s) {
+      s = String(s || '');
+      return /[zZ]$|[+-]\d\d(:?\d\d)?$/.test(s.slice(10)) ? s : s + 'Z';
+    }
+
+    // Everything user-supplied goes in as text, never as HTML
+    function make(tag, cls, text) {
+      var node = document.createElement(tag);
+      if (cls) node.className = cls;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+
+    function setMessage(id, text, type) {
+      var node = $(id);
+      if (!text) { node.hidden = true; return; }
+      node.textContent = text;
+      node.className = 'msg ' + (type || 'info');
+      node.hidden = false;
+    }
+
+    function showOnly(which) {
+      ['login', 'denied', 'notice', 'app'].forEach(function (id) { show(id, id === which); });
+      show('signout', which === 'denied' || which === 'app');
+    }
+
+    /* ---------------- Start up and login ---------------- */
+    if (!window.supabase || !cfg.url || !cfg.anonKey) {
+      $('notice-msg').textContent = 'The Supabase connection is not set up. Check that assets/js/supabase-config.js has your URL and key.';
+      showOnly('notice');
+      return;
+    }
+    db = window.supabase.createClient(cfg.url, cfg.anonKey);
+
+    function checkAdmin(user) {
+      return db.from('profiles').select('is_admin').eq('id', user.id).maybeSingle().then(function (res) {
+        if (res.error) {
+          $('notice-msg').textContent = 'Could not check your account: ' + res.error.message;
+          showOnly('notice');
+          return;
+        }
+        if (!res.data || !res.data.is_admin) { showOnly('denied'); return; }
+        showOnly('app');
+        loadAll();
+      });
+    }
+
+    db.auth.getSession().then(function (res) {
+      var session = res.data && res.data.session;
+      if (!session) { showOnly('login'); return; }
+      return checkAdmin(session.user);
+    }).catch(function () { showOnly('login'); });
+
+    $('login-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = $('login-btn');
+      btn.disabled = true;
+      setMessage('login-msg', '');
+      db.auth.signInWithPassword({ email: $('login-email').value.trim(), password: $('login-password').value })
+        .then(function (res) {
+          btn.disabled = false;
+          if (res.error || !res.data || !res.data.user) {
+            setMessage('login-msg', 'Email or password is incorrect.', 'error');
+            return;
+          }
+          $('login-password').value = '';
+          return checkAdmin(res.data.user);
+        })
+        .catch(function () {
+          btn.disabled = false;
+          setMessage('login-msg', 'Could not reach the server. Check your connection and try again.', 'error');
+        });
+    });
+
+    $('signout').addEventListener('click', function () {
+      db.auth.signOut().then(function () { showOnly('login'); });
+    });
+
+    function loadAll() {
+      loadHours();
+      loadBookings().then(loadBlocked);   // bookings first, so the block warning can count them
+    }
+
+    /* ---------------- Working hours ---------------- */
+    function timeInput(value, label) {
+      var input = document.createElement('input');
+      input.type = 'time';
+      input.value = shortTime(value);
+      input.setAttribute('aria-label', label);
+      return input;
+    }
+
+    function loadHours() {
+      db.from('working_hours').select('*').then(function (res) {
+        if (res.error) { setMessage('hours-msg', 'Could not load hours: ' + res.error.message, 'error'); return; }
+        var byDay = {};
+        (res.data || []).forEach(function (r) { byDay[r.day_of_week] = r; });
+        var box = $('hours-list');
+        box.textContent = '';
+        DAY_ORDER.forEach(function (d) {
+          var r = byDay[d] || { is_open: false };
+          var row = make('div', 'hours-row');
+          row.setAttribute('data-day', d);
+          var open = document.createElement('input');
+          open.type = 'checkbox';
+          open.checked = !!r.is_open;
+          open.setAttribute('aria-label', DAY_NAMES[d] + ' open');
+          var from = timeInput(r.open_time || '09:00', DAY_NAMES[d] + ' opens');
+          var to = timeInput(r.close_time || '18:00', DAY_NAMES[d] + ' closes');
+          var sw = make('label', 'switch');
+          sw.appendChild(open);
+          sw.appendChild(make('span', null, 'Open'));
+          function sync() { from.disabled = to.disabled = !open.checked; }
+          open.addEventListener('change', sync);
+          sync();
+          row.appendChild(make('span', 'hours-day', DAY_NAMES[d]));
+          row.appendChild(sw);
+          row.appendChild(from);
+          row.appendChild(to);
+          box.appendChild(row);
+        });
+      });
+    }
+
+    $('save-hours').addEventListener('click', function () {
+      var rows = [];
+      var problem = '';
+      Array.prototype.forEach.call($('hours-list').querySelectorAll('.hours-row'), function (row) {
+        var day = parseInt(row.getAttribute('data-day'), 10);
+        var inputs = row.querySelectorAll('input');
+        var isOpen = inputs[0].checked;
+        var openTime = inputs[1].value;
+        var closeTime = inputs[2].value;
+        if (isOpen && (!openTime || !closeTime)) problem = DAY_NAMES[day] + ' needs an opening and closing time.';
+        else if (isOpen && toMinutes(closeTime) <= toMinutes(openTime)) problem = DAY_NAMES[day] + ' must close after it opens.';
+        rows.push({
+          day_of_week: day,
+          is_open: isOpen,
+          open_time: isOpen ? openTime : null,
+          close_time: isOpen ? closeTime : null
+        });
+      });
+      if (problem) { setMessage('hours-msg', problem, 'error'); return; }
+      var btn = $('save-hours');
+      btn.disabled = true;
+      db.from('working_hours').upsert(rows, { onConflict: 'day_of_week' }).then(function (res) {
+        btn.disabled = false;
+        if (res.error) { setMessage('hours-msg', 'Could not save: ' + res.error.message, 'error'); return; }
+        setMessage('hours-msg', 'Saved. The booking calendar now uses these hours.', 'ok');
+      });
+    });
+
+    /* ---------------- Blocked days ---------------- */
+    function isActive(b) {
+      if (b.status === 'confirmed') return true;
+      if (b.status !== 'pending') return false;
+      return Date.now() - new Date(parseDbTime(b.created_at)).getTime() <= PENDING_HOLD_MINUTES * 60000;
+    }
+
+    function loadBlocked() {
+      return db.from('blocked_dates').select('blocked_date, reason').gte('blocked_date', todayKey()).order('blocked_date', { ascending: true })
+        .then(function (res) {
+          var list = $('block-list');
+          list.textContent = '';
+          if (res.error) { setMessage('block-msg', 'Could not load blocked days: ' + res.error.message, 'error'); return; }
+          if (!res.data || !res.data.length) { list.appendChild(make('li', 'muted', 'No upcoming blocked days.')); return; }
+          res.data.forEach(function (row) {
+            var li = make('li');
+            var text = make('span', null, formatDate(row.blocked_date) + (row.reason ? ' (' + row.reason + ')' : ''));
+            var btn = make('button', 'btn-ghost', 'Remove');
+            btn.type = 'button';
+            btn.addEventListener('click', function () {
+              btn.disabled = true;
+              db.from('blocked_dates').delete().eq('blocked_date', row.blocked_date).then(function (r) {
+                if (r.error) { btn.disabled = false; setMessage('block-msg', 'Could not remove: ' + r.error.message, 'error'); return; }
+                setMessage('block-msg', 'Day unblocked. It will show on the calendar again.', 'ok');
+                loadBlocked();
+              });
+            });
+            li.appendChild(text);
+            li.appendChild(btn);
+            list.appendChild(li);
+          });
+        });
+    }
+
+    $('add-block').addEventListener('click', function () {
+      var date = $('block-date').value;
+      if (!date) { setMessage('block-msg', 'Choose a date to block.', 'error'); return; }
+      if (date < todayKey()) { setMessage('block-msg', 'That date is in the past.', 'error'); return; }
+      var btn = $('add-block');
+      btn.disabled = true;
+      db.from('blocked_dates').upsert({ blocked_date: date, reason: $('block-reason').value.trim() || null }, { onConflict: 'blocked_date' })
+        .then(function (res) {
+          btn.disabled = false;
+          if (res.error) { setMessage('block-msg', 'Could not block that day: ' + res.error.message, 'error'); return; }
+          var clashes = bookings.filter(function (b) { return b.booking_date === date && isActive(b); }).length;
+          if (clashes) {
+            setMessage('block-msg', 'Blocked. You already have ' + clashes + ' booking' + (clashes === 1 ? '' : 's') + ' on that day. Blocking does not cancel them.', 'info');
+          } else {
+            setMessage('block-msg', 'Day blocked. It is now hidden from the booking calendar.', 'ok');
+          }
+          $('block-date').value = '';
+          $('block-reason').value = '';
+          loadBlocked();
+        });
+    });
+
+    /* ---------------- Upcoming bookings ---------------- */
+    function statusInfo(b) {
+      if (b.status === 'pending') {
+        return isActive(b) ? { cls: 'pending', label: 'Awaiting deposit' } : { cls: 'expired', label: 'Pending, expired' };
+      }
+      var labels = { confirmed: 'Confirmed', completed: 'Completed', cancelled: 'Cancelled' };
+      return { cls: b.status, label: labels[b.status] || b.status };
+    }
+
+    function bookingCard(b) {
+      var card = make('div', 'booking');
+      var head = make('div', 'booking-head');
+      var end = b.duration_minutes ? ' to ' + minutesToTime(toMinutes(b.booking_time) + b.duration_minutes) : '';
+      head.appendChild(make('span', 'when', formatDate(b.booking_date) + ', ' + shortTime(b.booking_time) + end));
+      var st = statusInfo(b);
+      head.appendChild(make('span', 'badge ' + st.cls, st.label));
+      card.appendChild(head);
+      card.appendChild(make('div', 'svc', b.service_type));
+      if (b.addons) card.appendChild(make('div', 'muted', 'Add-ons: ' + b.addons));
+      var who = make('div', 'muted');
+      who.appendChild(document.createTextNode(b.name + ' '));
+      if (b.phone) {
+        var tel = make('a', null, b.phone);
+        tel.href = 'tel:' + String(b.phone).replace(/[^\d+]/g, '');
+        who.appendChild(tel);
+        who.appendChild(document.createTextNode(' '));
+      }
+      if (b.email) {
+        var mail = make('a', null, b.email);
+        mail.href = 'mailto:' + b.email;
+        who.appendChild(mail);
+      }
+      card.appendChild(who);
+      return card;
+    }
+
+    function renderBookings() {
+      var hideOld = $('hide-old').checked;
+      var shown = bookings.filter(function (b) {
+        if (!hideOld) return true;
+        return b.status === 'confirmed' || b.status === 'completed' || isActive(b);
+      });
+      var list = $('booking-list');
+      list.textContent = '';
+      $('booking-count').textContent = shown.length + ' upcoming booking' + (shown.length === 1 ? '' : 's');
+      if (!shown.length) { list.appendChild(make('p', 'muted', 'No upcoming bookings yet.')); return; }
+      shown.forEach(function (b) { list.appendChild(bookingCard(b)); });
+    }
+
+    function loadBookings() {
+      return db.from('bookings')
+        .select('id, name, email, phone, service_type, addons, booking_date, booking_time, status, created_at, duration_minutes')
+        .gte('booking_date', todayKey())
+        .order('booking_date', { ascending: true })
+        .order('booking_time', { ascending: true })
+        .then(function (res) {
+          if (res.error) { setMessage('booking-msg', 'Could not load bookings: ' + res.error.message, 'error'); return; }
+          setMessage('booking-msg', '');
+          bookings = res.data || [];
+          renderBookings();
+        });
+    }
+
+    $('hide-old').addEventListener('change', renderBookings);
+  })();
+  </script>
+</body>
+</html>
