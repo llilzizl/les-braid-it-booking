@@ -724,7 +724,7 @@ infoToggles.forEach(function (btn) {
     var bookingDb = null;
     var bookingMemberId = null;
     if (window.supabase && lbiConfig.url && lbiConfig.anonKey) {
-      bookingDb = window.supabase.createClient(lbiConfig.url, lbiConfig.anonKey);
+       bookingDb = sharedDb;
     }
 
     var showBookingStatus = function (message, type) {
@@ -777,6 +777,8 @@ infoToggles.forEach(function (btn) {
         phone: phone,
         service_type: selectedService,
         addons: addons.length ? addons.join(', ') : null,
+        duration_minutes: (currentBooking() || {}).duration || null,
+        buffer_minutes: (currentBooking() || {}).buffer || 0,
         booking_date: calendarDate.getFullYear() + '-' + pad(calendarDate.getMonth() + 1) + '-' + pad(selectedDay),
         booking_time: time.value
       }).then(function (result) {
