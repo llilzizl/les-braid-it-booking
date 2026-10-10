@@ -465,12 +465,13 @@ infoToggles.forEach(function (btn) {
       selectedAddons.textContent = chosen.length ? 'Add-ons: ' + chosen.map(function (input) { return input.value; }).join(', ') : 'No add-ons selected';
       closeBookingModal();
       availability.classList.add('is-visible');
+      renderCalendar();
       var calendarCard = availability.querySelector('.calendar-card');
       (calendarCard || availability).scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
-  /* ---------------- Booking page: calendar navigation ---------------- */
+/* ---------------- Booking page: calendar (live availability from Supabase) ---------------- */
   var calendarGrid = document.querySelector('.calendar-grid');
   var calendarHeading = document.querySelector('.calendar-heading h3');
   var calendarNavBtns = Array.prototype.slice.call(document.querySelectorAll('.calendar-heading .lightbox-nav'));
@@ -478,39 +479,168 @@ infoToggles.forEach(function (btn) {
   var nextMonthBtn = calendarNavBtns[1];
   var timeOptionsHeading = document.querySelector('.time-options-heading');
   var timeOptionsContainer = document.querySelector('.time-options');
-  var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  var AVAILABLE_DAYS = [1, 2, 4, 5, 8, 11, 14, 16, 21, 24, 29];
-  var TIME_POOL = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'];
-  var calendarDate = new Date(2026, 8, 1);
-  var selectedDay = null;
   var bookingForm = document.querySelector('.booking-details-form');
+  var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  // Booking rules. Change these numbers to change the rules.
+  var MIN_NOTICE_DAYS = 4;       // earliest bookable day is today + 4 days
+  var MAX_MONTHS_AHEAD = 1;      // latest bookable day is 1 month from today
+  var SLOT_STEP_MINUTES = 30;    // a start time every 30 minutes
+  var DEFAULT_BUFFER_MINUTES = 15;
+
+  // One shared Supabase connection for the calendar and the booking form
+  var sharedConfig = window.LBI_SUPABASE || {};
+  var sharedDb = null;
+  if (window.supabase && sharedConfig.url && sharedConfig.anonKey) {
+    sharedDb = window.supabase.createClient(sharedConfig.url, sharedConfig.anonKey);
+  }
+
+  var workingHours = null;   // working_hours rows, keyed by day of week (0 = Sunday)
+  var serviceRules = {};     // services rows, keyed by style name
+  var rulesPromise = null;
+  var availableSlots = {};   // day of month -> list of start times
+  var renderToken = 0;
+  var selectedDay = null;
+
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function dateKey(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  function toMinutes(t) { var p = String(t).split(':'); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); }
+  function minutesToTime(m) { return pad2(Math.floor(m / 60)) + ':' + pad2(m % 60); }
 
   function displayTime(value) {
     var parts = value.split(':');
     return parseInt(parts[0], 10) + ':' + parts[1];
   }
 
-  function timesForDay(day) {
-    var count = 4 + (day % 3);
-    var start = (day * 2) % (TIME_POOL.length - count);
-    return TIME_POOL.slice(start, start + count);
+  function bookingWindow() {
+    var now = new Date();
+    return {
+      first: new Date(now.getFullYear(), now.getMonth(), now.getDate() + MIN_NOTICE_DAYS),
+      last: new Date(now.getFullYear(), now.getMonth() + MAX_MONTHS_AHEAD, now.getDate())
+    };
   }
 
-  function resetTimeOptions() {
+  var calendarDate = (function () {
+    var w = bookingWindow();
+    return new Date(w.first.getFullYear(), w.first.getMonth(), 1);
+  })();
+
+  // How long the chosen style (plus any add-ons) takes, and the gap needed after it
+  function currentBooking() {
+    if (!selectedService) return null;
+    var service = SERVICES[selectedService] || {};
+    var match = service.hrs && service.hrs.match(/(\d+(?:\.\d+)?)/);
+    var hours = match ? parseFloat(match[1]) : 0;
+    if (addonList) {
+      Array.prototype.slice.call(addonList.querySelectorAll('input:checked')).forEach(function (input) {
+        hours += parseAddonHours(input.getAttribute('data-extra'));
+      });
+    }
+    var rule = serviceRules[selectedService];
+    return {
+      duration: Math.round(hours * 60),
+      buffer: rule && rule.buffer_minutes != null ? rule.buffer_minutes : DEFAULT_BUFFER_MINUTES
+    };
+  }
+
+  function loadRules() {
+    if (rulesPromise) return rulesPromise;
+    rulesPromise = Promise.all([
+      sharedDb.from('working_hours').select('*'),
+      sharedDb.from('services').select('name, buffer_minutes')
+    ]).then(function (results) {
+      if (results[0].error) throw results[0].error;
+      if (results[1].error) throw results[1].error;
+      workingHours = {};
+      (results[0].data || []).forEach(function (row) { workingHours[row.day_of_week] = row; });
+      (results[1].data || []).forEach(function (row) { serviceRules[row.name] = row; });
+    }).catch(function (err) {
+      rulesPromise = null;
+      throw err;
+    });
+    return rulesPromise;
+  }
+
+  function loadMonthData(year, month) {
+    var from = dateKey(new Date(year, month, 1));
+    var to = dateKey(new Date(year, month + 1, 0));
+    return Promise.all([
+      sharedDb.from('blocked_dates').select('blocked_date').gte('blocked_date', from).lte('blocked_date', to),
+      sharedDb.rpc('get_busy_slots', { from_date: from, to_date: to })
+    ]).then(function (results) {
+      if (results[0].error) throw results[0].error;
+      if (results[1].error) throw results[1].error;
+      var blocked = {};
+      var busy = {};
+      (results[0].data || []).forEach(function (row) { blocked[row.blocked_date] = true; });
+      (results[1].data || []).forEach(function (row) {
+        var start = toMinutes(row.start_time);
+        (busy[row.booking_date] = busy[row.booking_date] || []).push({ start: start, end: start + row.block_minutes });
+      });
+      return { blocked: blocked, busy: busy };
+    });
+  }
+
+  // Start times on one date: inside working hours, not blocked, not clashing with another booking
+  function slotsForDate(date, need, data) {
+    var key = dateKey(date);
+    var hours = workingHours[date.getDay()];
+    if (!hours || !hours.is_open || !hours.open_time || !hours.close_time) return [];
+    if (data.blocked[key]) return [];
+    var open = toMinutes(hours.open_time);
+    var close = toMinutes(hours.close_time);
+    var busy = data.busy[key] || [];
+    var slots = [];
+    for (var start = open; start + need.duration <= close; start += SLOT_STEP_MINUTES) {
+      var end = start + need.duration + need.buffer;
+      var clash = false;
+      for (var i = 0; i < busy.length; i++) {
+        if (start < busy[i].end && end > busy[i].start) { clash = true; break; }
+      }
+      if (!clash) slots.push(minutesToTime(start));
+    }
+    return slots;
+  }
+
+  function updateNavButtons() {
+    var w = bookingWindow();
+    var thisMonth = calendarDate.getFullYear() * 12 + calendarDate.getMonth();
+    var firstMonth = w.first.getFullYear() * 12 + w.first.getMonth();
+    var lastMonth = w.last.getFullYear() * 12 + w.last.getMonth();
+    if (prevMonthBtn) { prevMonthBtn.disabled = thisMonth <= firstMonth; prevMonthBtn.style.opacity = prevMonthBtn.disabled ? 0.3 : 1; }
+    if (nextMonthBtn) { nextMonthBtn.disabled = thisMonth >= lastMonth; nextMonthBtn.style.opacity = nextMonthBtn.disabled ? 0.3 : 1; }
+  }
+
+  function resetTimeOptions(message) {
     if (!timeOptionsContainer) return;
     timeOptionsContainer.innerHTML = '';
-    if (timeOptionsHeading) timeOptionsHeading.textContent = 'Select a date to see available times';
+    if (timeOptionsHeading) timeOptionsHeading.textContent = message || 'Select a date to see available times';
     if (bookingForm) bookingForm.hidden = true;
   }
 
   function renderTimeOptions(day, monthLabel) {
     if (!timeOptionsContainer) return;
-    var times = timesForDay(day);
+    var times = availableSlots[day] || [];
     if (timeOptionsHeading) timeOptionsHeading.textContent = 'Available times for ' + monthLabel + ' ' + day;
     timeOptionsContainer.innerHTML = times.map(function (t) {
       return '<label class="time-option"><input type="radio" name="time" value="' + t + '">' + displayTime(t) + '</label>';
     }).join('');
     if (bookingForm) bookingForm.hidden = true;
+  }
+
+  function drawGrid(year, month) {
+    var html = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(function (d) {
+      return '<span class="weekday">' + d + '</span>';
+    }).join('');
+    var firstDay = new Date(year, month, 1).getDay();
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    for (var i = 0; i < firstDay; i++) html += '<span></span>';
+    for (var day = 1; day <= daysInMonth; day++) {
+      html += availableSlots[day]
+        ? '<button class="is-available" type="button">' + day + '</button>'
+        : '<span>' + day + '</span>';
+    }
+    calendarGrid.innerHTML = html;
   }
 
   function renderCalendar() {
@@ -521,23 +651,38 @@ infoToggles.forEach(function (btn) {
     calendarHeading.textContent = monthLabel;
     calendarGrid.setAttribute('aria-label', monthLabel + ' calendar');
 
-    var html = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(function (d) {
-      return '<span class="weekday">' + d + '</span>';
-    }).join('');
-
-    var firstDay = new Date(year, month, 1).getDay();
-    var daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    for (var i = 0; i < firstDay; i++) html += '<span></span>';
-    for (var day = 1; day <= daysInMonth; day++) {
-      html += AVAILABLE_DAYS.indexOf(day) !== -1
-        ? '<button class="is-available" type="button">' + day + '</button>'
-        : '<span>' + day + '</span>';
-    }
-
-    calendarGrid.innerHTML = html;
+    var token = ++renderToken;
     selectedDay = null;
-    resetTimeOptions();
+    availableSlots = {};
+    drawGrid(year, month);
+    updateNavButtons();
+
+    if (!sharedDb || !selectedService) {
+      resetTimeOptions(selectedService ? 'Online booking is not available right now' : 'Choose a style to see available dates');
+      return;
+    }
+    resetTimeOptions('Checking availability...');
+
+    Promise.all([loadRules(), loadMonthData(year, month)]).then(function (results) {
+      if (token !== renderToken) return;   // the person has already moved on
+      var data = results[1];
+      var need = currentBooking();         // read again now the gap for this style is known
+      var w = bookingWindow();
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+      var count = 0;
+      for (var day = 1; day <= daysInMonth; day++) {
+        var date = new Date(year, month, day);
+        if (date < w.first || date > w.last) continue;
+        var slots = slotsForDate(date, need, data);
+        if (slots.length) { availableSlots[day] = slots; count++; }
+      }
+      drawGrid(year, month);
+      resetTimeOptions(count ? 'Select a date to see available times' : 'No available dates this month. Try another month.');
+    }).catch(function (err) {
+      if (token !== renderToken) return;
+      console.error('Availability failed to load:', err);
+      resetTimeOptions('Could not load availability. Please refresh the page and try again.');
+    });
   }
 
   if (calendarGrid) {
@@ -552,15 +697,16 @@ infoToggles.forEach(function (btn) {
     });
 
     if (prevMonthBtn) prevMonthBtn.addEventListener('click', function () {
+      if (prevMonthBtn.disabled) return;
       calendarDate.setMonth(calendarDate.getMonth() - 1);
       renderCalendar();
     });
     if (nextMonthBtn) nextMonthBtn.addEventListener('click', function () {
+      if (nextMonthBtn.disabled) return;
       calendarDate.setMonth(calendarDate.getMonth() + 1);
       renderCalendar();
     });
   }
-
   /* ---------------- Booking page: time slot selection ---------------- */
   if (timeOptionsContainer) {
     timeOptionsContainer.addEventListener('change', function (e) {
