@@ -5,6 +5,6 @@
    row level security rules are what protect members' data.
    ========================================================== */
 window.LBI_SUPABASE = {
-  url: '',      // e.g. 'https://abcdefghijkl.supabase.co'
-  anonKey: ''   // the long "anon public" key
+  url: 'https://gzmpwvdumskoiyporgfp.supabase.co',     
+  anonKey: 'sb_publishable_gnuTeMHNUYPM44kcQu95hA_ac_qUamH'   
 };
