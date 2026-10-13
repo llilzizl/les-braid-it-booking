@@ -73,6 +73,23 @@
     .toolbar label { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); }
     .toolbar input { width: 18px; height: 18px; accent-color: var(--pink); }
 
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0 8px; }
+    .stat { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+    .stat b { display: block; font-size: 1.6rem; font-weight: 700; line-height: 1.2; }
+    .stat span { color: var(--muted); font-size: .78rem; }
+    .chart-title { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 26px 0 10px; }
+    .bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+    .bars li { display: grid; grid-template-columns: minmax(90px, 200px) 1fr 64px; gap: 10px; align-items: center; font-size: .85rem; }
+    .bars .lbl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
+    .bars .track { display: block; height: 10px; border-radius: 0 5px 5px 0; background: transparent; }
+    .bars .bar { display: block; height: 10px; background: var(--pink); border-radius: 0 5px 5px 0; min-width: 2px; }
+    .bars .val { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .person { border-bottom: 1px solid var(--line); padding: 12px 0; display: grid; gap: 2px; }
+    .person-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .person a { color: var(--pink); text-decoration: none; }
+    .search { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--field); color: var(--text); font: inherit; font-size: 16px; margin: 6px 0 4px; }
+    @media (max-width: 600px) { .bars li { grid-template-columns: 1fr 60px; } .bars .track { grid-column: 1 / -1; grid-row: 2; } .bars .lbl { white-space: normal; } }
+
     @media (max-width: 600px) {
       .hours-row { grid-template-columns: 1fr 1fr; }
       .hours-row .switch { justify-self: end; }
@@ -151,6 +168,27 @@
         </div>
         <div id="booking-list"></div>
         <p class="msg" id="booking-msg" hidden></p>
+      </section>
+
+      <section class="card" id="insights-card">
+        <h2>Insights</h2>
+        <p class="hint">Built from every appointment on this site, including your imported Wix history. Revenue comes from your Wix sales report.</p>
+        <div class="stats" id="stats"></div>
+        <h3 class="chart-title">Sales by month (from Wix)</h3>
+        <ul class="bars" id="chart-months"></ul>
+        <h3 class="chart-title">Most booked styles</h3>
+        <ul class="bars" id="chart-styles"></ul>
+        <h3 class="chart-title">Busiest days</h3>
+        <ul class="bars" id="chart-days"></ul>
+        <p class="msg" id="insights-msg" hidden></p>
+      </section>
+
+      <section class="card" id="clients-card">
+        <h2>Clients</h2>
+        <p class="hint" id="clients-hint"></p>
+        <input type="search" class="search" id="client-search" placeholder="Search name, email or phone" aria-label="Search clients">
+        <div id="client-list"></div>
+        <p class="msg" id="clients-msg" hidden></p>
       </section>
     </div>
   </main>
@@ -261,6 +299,7 @@
     function loadAll() {
       loadHours();
       loadBookings().then(loadBlocked);   // bookings first, so the block warning can count them
+      loadInsights();
     }
 
     /* ---------------- Working hours ---------------- */
@@ -398,6 +437,7 @@
     }
 
     function paymentLine(b) {
+      if (b.source === 'wix') return 'Imported from Wix';
       var dep = b.deposit_amount != null ? '\u00a3' + Number(b.deposit_amount) : null;
       var left = b.price != null && b.deposit_amount != null ? Number(b.price) - Number(b.deposit_amount) : null;
       if (b.payment_status === 'paid') {
@@ -452,7 +492,7 @@
 
     function loadBookings() {
       return db.from('bookings')
-        .select('id, name, email, phone, service_type, addons, booking_date, booking_time, status, created_at, duration_minutes, deposit_amount, payment_status, price')
+        .select('id, name, email, phone, service_type, addons, booking_date, booking_time, status, created_at, duration_minutes, deposit_amount, payment_status, price, source')
         .gte('booking_date', todayKey())
         .order('booking_date', { ascending: true })
         .order('booking_time', { ascending: true })
@@ -463,6 +503,147 @@
           renderBookings();
         });
     }
+
+
+    /* ---------------- Insights and clients ---------------- */
+    var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    function money(n) { return '\u00a3' + Math.round(n).toLocaleString('en-GB'); }
+
+    function fetchAll(table, columns) {
+      var rows = [];
+      function page(from) {
+        return db.from(table).select(columns).range(from, from + 999).then(function (res) {
+          if (res.error) throw res.error;
+          rows = rows.concat(res.data || []);
+          return (res.data || []).length === 1000 ? page(from + 1000) : rows;
+        });
+      }
+      return page(0);
+    }
+
+    function bars(id, items, format) {
+      var list = $(id);
+      list.textContent = '';
+      if (!items.length) { list.appendChild(make('li', 'muted', 'Nothing to show yet.')); return; }
+      var max = Math.max.apply(null, items.map(function (i) { return i.value; })) || 1;
+      items.forEach(function (item) {
+        var li = make('li');
+        li.title = item.label + ': ' + format(item.value);
+        li.appendChild(make('span', 'lbl', item.label));
+        var track = make('span', 'track');
+        var bar = make('span', 'bar');
+        bar.style.width = Math.max(1, Math.round(item.value / max * 100)) + '%';
+        track.appendChild(bar);
+        li.appendChild(track);
+        li.appendChild(make('span', 'val', format(item.value)));
+        list.appendChild(li);
+      });
+    }
+
+    function renderInsights(all, sales) {
+      var real = all.filter(function (b) { return b.status === 'confirmed' || b.status === 'completed'; });
+      var perClient = {};
+      real.forEach(function (b) { var e = String(b.email || '').toLowerCase(); if (e) perClient[e] = (perClient[e] || 0) + 1; });
+      var people = Object.keys(perClient).length;
+      var repeat = Object.keys(perClient).filter(function (e) { return perClient[e] > 1; }).length;
+      var total = sales.reduce(function (sum, r) { return sum + Number(r.total_sales || 0); }, 0);
+
+      var stats = $('stats');
+      stats.textContent = '';
+      [[String(real.length), 'Appointments'], [String(people), 'Clients who booked'],
+       [people ? Math.round(repeat / people * 100) + '%' : '0%', 'Came back more than once'],
+       [sales.length ? money(total) : 'n/a', 'Sales (Wix report)']].forEach(function (s) {
+        var box = make('div', 'stat');
+        box.appendChild(make('b', null, s[0]));
+        box.appendChild(make('span', null, s[1]));
+        stats.appendChild(box);
+      });
+
+      var byMonth = {};
+      sales.forEach(function (r) { var k = String(r.day).slice(0, 7); byMonth[k] = (byMonth[k] || 0) + Number(r.total_sales || 0); });
+      bars('chart-months', Object.keys(byMonth).sort().map(function (k) {
+        return { label: MONTHS[parseInt(k.slice(5), 10) - 1] + ' ' + k.slice(0, 4), value: byMonth[k] };
+      }), money);
+
+      var byStyle = {};
+      real.forEach(function (b) { byStyle[b.service_type] = (byStyle[b.service_type] || 0) + 1; });
+      bars('chart-styles', Object.keys(byStyle).map(function (k) { return { label: k, value: byStyle[k] }; })
+        .sort(function (a, b) { return b.value - a.value; }).slice(0, 8), String);
+
+      var byDay = {};
+      real.forEach(function (b) { var p = String(b.booking_date).split('-'); var d = new Date(+p[0], +p[1] - 1, +p[2]).getDay(); byDay[d] = (byDay[d] || 0) + 1; });
+      bars('chart-days', DAY_ORDER.filter(function (d) { return byDay[d]; }).map(function (d) { return { label: DAY_NAMES[d], value: byDay[d] }; }), String);
+    }
+
+    var clientRows = [];
+    function buildClients(all, clients) {
+      var map = {};
+      clients.forEach(function (c) {
+        map[String(c.email).toLowerCase()] = { email: c.email, name: [c.first_name, c.last_name].filter(Boolean).join(' '), phone: c.phone, visits: 0, last: null };
+      });
+      all.forEach(function (b) {
+        if (b.status !== 'confirmed' && b.status !== 'completed') return;
+        var e = String(b.email || '').toLowerCase();
+        if (!e) return;
+        var c = map[e] || (map[e] = { email: b.email, name: b.name, phone: b.phone, visits: 0, last: null });
+        if (!c.name) c.name = b.name;
+        c.visits++;
+        if (!c.last || b.booking_date > c.last) c.last = b.booking_date;
+      });
+      clientRows = Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) {
+        return (b.visits - a.visits) || String(a.name).localeCompare(String(b.name));
+      });
+      $('clients-hint').textContent = clientRows.length + ' clients. Most visits first. Imported Wix contacts have not agreed to marketing emails, so only use them for appointment messages.';
+      renderClients();
+    }
+
+    function renderClients() {
+      var term = $('client-search').value.trim().toLowerCase();
+      var list = $('client-list');
+      list.textContent = '';
+      var found = clientRows.filter(function (c) {
+        return !term || (c.name + ' ' + c.email + ' ' + (c.phone || '')).toLowerCase().indexOf(term) !== -1;
+      });
+      found.slice(0, 40).forEach(function (c) {
+        var row = make('div', 'person');
+        var head = make('div', 'person-head');
+        head.appendChild(make('strong', null, c.name || c.email));
+        head.appendChild(make('span', 'muted', c.visits ? c.visits + (c.visits === 1 ? ' visit' : ' visits') + ', last ' + formatDate(c.last) : 'No appointments yet'));
+        row.appendChild(head);
+        var line = make('div', 'muted');
+        var mail = make('a', null, c.email);
+        mail.href = 'mailto:' + c.email;
+        line.appendChild(mail);
+        if (c.phone) {
+          line.appendChild(document.createTextNode(' '));
+          var tel = make('a', null, c.phone);
+          tel.href = 'tel:' + String(c.phone).replace(/[^\d+]/g, '');
+          line.appendChild(tel);
+        }
+        row.appendChild(line);
+        list.appendChild(row);
+      });
+      if (!found.length) list.appendChild(make('p', 'muted', 'No clients match that search.'));
+      else if (found.length > 40) list.appendChild(make('p', 'muted', 'Showing 40 of ' + found.length + '. Type to narrow it down.'));
+    }
+
+    function loadInsights() {
+      return Promise.resolve().then(function () { return Promise.all([
+        fetchAll('bookings', 'booking_date, booking_time, service_type, status, email, name, phone'),
+        fetchAll('sales_daily', 'day, total_sales'),
+        fetchAll('clients', 'email, first_name, last_name, phone')
+      ]); }).then(function (r) {
+        setMessage('insights-msg', '');
+        renderInsights(r[0], r[1]);
+        buildClients(r[0], r[2]);
+      }).catch(function (err) {
+        // Missing tables mean 07_wix_import_schema.sql has not been run yet
+        setMessage('insights-msg', 'Could not load insights: ' + (err.message || err), 'error');
+      });
+    }
+
+    $('client-search').addEventListener('input', renderClients);
 
     $('hide-old').addEventListener('change', renderBookings);
   })();
