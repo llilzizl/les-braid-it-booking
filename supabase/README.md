@@ -50,3 +50,7 @@ rules stop non-admins from changing hours or blocked days.
 
 When you are signed in with an admin account, an **Admin** link appears in the site menu on every page
 (non-admin visitors never see it). The menu also shows **Login**, which becomes **My account** once signed in.
+
+## Deposits (Stripe)
+
+See `STRIPE_SETUP.md`. New files: `04_payments.sql`, `05_lock_bookings.sql` (run last) and the two functions in `functions/`.

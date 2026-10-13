@@ -397,6 +397,17 @@
       return { cls: b.status, label: labels[b.status] || b.status };
     }
 
+    function paymentLine(b) {
+      var dep = b.deposit_amount != null ? '\u00a3' + Number(b.deposit_amount) : null;
+      var left = b.price != null && b.deposit_amount != null ? Number(b.price) - Number(b.deposit_amount) : null;
+      if (b.payment_status === 'paid') {
+        return 'Deposit ' + (dep || '') + ' paid' + (left != null && left > 0 ? ', \u00a3' + left + ' to pay on the day' : '');
+      }
+      if (b.payment_status === 'refunded') return 'Deposit ' + (dep || '') + ' refunded';
+      if (b.status === 'pending' && dep) return 'Deposit ' + dep + ' not paid yet';
+      return '';
+    }
+
     function bookingCard(b) {
       var card = make('div', 'booking');
       var head = make('div', 'booking-head');
@@ -407,6 +418,8 @@
       card.appendChild(head);
       card.appendChild(make('div', 'svc', b.service_type));
       if (b.addons) card.appendChild(make('div', 'muted', 'Add-ons: ' + b.addons));
+      var pay = paymentLine(b);
+      if (pay) card.appendChild(make('div', 'muted', pay));
       var who = make('div', 'muted');
       who.appendChild(document.createTextNode(b.name + ' '));
       if (b.phone) {
@@ -439,7 +452,7 @@
 
     function loadBookings() {
       return db.from('bookings')
-        .select('id, name, email, phone, service_type, addons, booking_date, booking_time, status, created_at, duration_minutes')
+        .select('id, name, email, phone, service_type, addons, booking_date, booking_time, status, created_at, duration_minutes, deposit_amount, payment_status, price')
         .gte('booking_date', todayKey())
         .order('booking_date', { ascending: true })
         .order('booking_time', { ascending: true })

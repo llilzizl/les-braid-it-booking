@@ -547,7 +547,7 @@ infoToggles.forEach(function (btn) {
     if (rulesPromise) return rulesPromise;
     rulesPromise = Promise.all([
       sharedDb.from('working_hours').select('*'),
-      sharedDb.from('services').select('name, buffer_minutes')
+      sharedDb.from('services').select('name, buffer_minutes, deposit_amount')
     ]).then(function (results) {
       if (results[0].error) throw results[0].error;
       if (results[1].error) throw results[1].error;
@@ -713,7 +713,10 @@ infoToggles.forEach(function (btn) {
       if (e.target.tagName !== 'INPUT') return;
       Array.prototype.slice.call(timeOptionsContainer.querySelectorAll('.time-option')).forEach(function (opt) { opt.classList.remove('is-selected'); });
       e.target.closest('.time-option').classList.add('is-selected');
-      if (bookingForm) bookingForm.hidden = false;
+      if (bookingForm) {
+        bookingForm.hidden = false;
+        if (typeof refreshSubmitLabel === 'function') refreshSubmitLabel();
+      }
     });
   }
 
@@ -734,6 +737,32 @@ infoToggles.forEach(function (btn) {
     };
 
     var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+
+    // Button text shows the deposit for the chosen style, e.g. "Pay £20 deposit"
+    var submitLabel = function () {
+      var rule = serviceRules[selectedService];
+      var amount = rule && rule.deposit_amount != null ? Number(rule.deposit_amount) : null;
+      return amount ? 'Pay £' + amount + ' deposit to book' : 'Continue to payment';
+    };
+    var resetSubmit = function () {
+      var btn = bookingForm.querySelector('[type="submit"]');
+      btn.disabled = !bookingDb;
+      btn.textContent = submitLabel();
+    };
+    var refreshSubmitLabel = function () {
+      var btn = bookingForm.querySelector('[type="submit"]');
+      if (!btn.disabled) btn.textContent = submitLabel();
+    };
+
+    // Coming back from the payment page (back button, or cancelled)
+    window.addEventListener('pageshow', function (event) { if (event.persisted && bookingDb) resetSubmit(); });
+    if (/[?&]cancelled=1/.test(window.location.search)) {
+      var cancelNote = document.createElement('p');
+      cancelNote.className = 'member-status is-info';
+      cancelNote.setAttribute('role', 'status');
+      cancelNote.textContent = 'Payment cancelled, so no booking was made. Your time was not reserved. You can choose a time and try again.';
+      bookingForm.parentNode.insertBefore(cancelNote, bookingForm.parentNode.firstChild);
+    }
 
     if (!bookingDb) {
       showBookingStatus('Online booking is being set up and will be available soon. Please get in touch on the contact page to book.', 'info');
@@ -770,26 +799,47 @@ infoToggles.forEach(function (btn) {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Please wait…';
 
-      bookingDb.from('bookings').insert({
-        member_id: bookingMemberId,
+      var chosen = currentBooking() || {};
+      var details = {
         name: name,
         email: email,
         phone: phone,
-        service_type: selectedService,
-        addons: addons.length ? addons.join(', ') : null,
-        duration_minutes: (currentBooking() || {}).duration || null,
-        buffer_minutes: (currentBooking() || {}).buffer || 0,
-        booking_date: calendarDate.getFullYear() + '-' + pad(calendarDate.getMonth() + 1) + '-' + pad(selectedDay),
-        booking_time: time.value
-      }).then(function (result) {
-        submitBtn.textContent = 'Confirm booking';
-        if (result.error) {
-          submitBtn.disabled = false;
-          if (result.error.code === '23505') return showBookingStatus('Sorry, that time has just been booked. Please choose another time.');
-          return showBookingStatus('Something went wrong and your booking wasn’t saved. Please try again.');
+        service: selectedService,
+        addons: addons.length ? addons.join(', ') : '',
+        duration: chosen.duration,
+        date: calendarDate.getFullYear() + '-' + pad(calendarDate.getMonth() + 1) + '-' + pad(selectedDay),
+        time: time.value
+      };
+
+      // The server re-checks every rule, saves the unpaid booking, and returns a Stripe payment page
+      bookingDb.auth.getSession().then(function (result) {
+        var session = result.data && result.data.session;
+        return fetch(lbiConfig.url + '/functions/v1/create-checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': lbiConfig.anonKey,
+            'Authorization': 'Bearer ' + (session ? session.access_token : lbiConfig.anonKey)
+          },
+          body: JSON.stringify(details)
+        });
+      }).then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (body) { return { ok: res.ok, body: body }; });
+      }).then(function (out) {
+        if (out.ok && out.body.url) {
+          submitBtn.textContent = 'Taking you to payment…';
+          window.location.href = out.body.url;
+          return;
         }
-        Array.prototype.slice.call(bookingForm.querySelectorAll('.field, .submit-btn, .form-note')).forEach(function (el) { el.hidden = true; });
-        showBookingStatus('Booking received! ' + selectedService + ' on ' + selectedDay + ' ' + MONTH_NAMES[calendarDate.getMonth()] + ' at ' + displayTime(time.value) + '. I’ll confirm by email shortly.', 'success');
+        resetSubmit();
+        showBookingStatus(out.body.error || 'Something went wrong and your booking wasn’t saved. Please try again.');
+        // A time that was just taken: refresh the calendar so it disappears
+        if (out.body.code === 'slot_taken' || out.body.code === 'date_unavailable') {
+          renderCalendar();
+        }
+      }).catch(function () {
+        resetSubmit();
+        showBookingStatus('Could not reach the booking service. Please check your connection and try again.');
       });
     });
   }
