@@ -7,6 +7,9 @@ Do these in order. Use **Test mode** in Stripe until step 8 works. No real money
 ## 1. Run the database changes
 Supabase > SQL Editor > New query > paste all of `supabase/04_payments.sql` > Run. It is safe to run twice. Your current booking form keeps working until step 9.
 
+## 1b. Add-on prices
+Run `supabase/06_addon_prices.sql` the same way. It adds paid add-ons (like Waist/Hip length) to each booking's full price. Edit them in Table Editor > service_addons.
+
 ## 2. Create the two functions
 Supabase > Edge Functions > Deploy a new function > **Via Editor**.
 
