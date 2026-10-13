@@ -492,7 +492,7 @@ infoToggles.forEach(function (btn) {
   var sharedConfig = window.LBI_SUPABASE || {};
   var sharedDb = null;
   if (window.supabase && sharedConfig.url && sharedConfig.anonKey) {
-    sharedDb = window.supabase.createClient(sharedConfig.url, sharedConfig.anonKey);
+    sharedDb = window.LBI_DB || window.supabase.createClient(sharedConfig.url, sharedConfig.anonKey);
   }
 
   var workingHours = null;   // working_hours rows, keyed by day of week (0 = Sunday)

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var config = window.LBI_SUPABASE || {};
   var db = null;
   if (window.supabase && config.url && config.anonKey) {
-    db = window.supabase.createClient(config.url, config.anonKey);
+    db = window.LBI_DB || window.supabase.createClient(config.url, config.anonKey);
   }
 
   var DASHBOARD_PAGE = 'member-dashboard.html';

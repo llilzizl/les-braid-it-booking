@@ -69,37 +69,66 @@ img {
 .main-nav ul {
   list-style: none;
   display: flex;
-  gap: 48px;
+  align-items: center;
+  gap: 40px;
   margin: 0;
   padding: 0;
 }
 
+/* Text-only navigation. To change the highlight colour, edit --nav-active. */
+.main-nav {
+  --nav-active: var(--pink);
+}
+
 .main-nav a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: block;
+  white-space: nowrap;
+  padding: 6px 0;
   font-size: 14px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--grey);
-  transition: color 0.2s ease;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.main-nav a img {
-  width: 30px;
-  height: 30px;
-  opacity: 0.85;
-  transition: opacity 0.2s ease;
-}
-
+/* Hot pink on hover, while pressed, and for the page you are on */
 .main-nav a:hover,
+.main-nav a:focus-visible,
+.main-nav a:active,
 .main-nav a[aria-current="page"] {
-  color: var(--pink);
+  color: var(--nav-active);
 }
 
-.main-nav a:hover img,
-.main-nav a[aria-current="page"] img {
-  opacity: 1;
+.main-nav a:active,
+.main-nav a[aria-current="page"] {
+  border-bottom-color: var(--nav-active);
+}
+
+/* Login / My account stands out as a button */
+.main-nav .nav-login a {
+  padding: 8px 20px;
+  border: 1px solid var(--nav-active);
+  border-radius: 999px;
+  color: var(--nav-active);
+}
+
+.main-nav .nav-login a:hover,
+.main-nav .nav-login a:active,
+.main-nav .nav-login a[aria-current="page"] {
+  background: var(--nav-active);
+  border-color: var(--nav-active);
+  color: #160a10;
+}
+
+@media (max-width: 1100px) {
+  .main-nav ul {
+    gap: 24px;
+  }
+  .main-nav a {
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
 }
 
 .nav-toggle {
@@ -121,7 +150,8 @@ img {
   background: var(--pink);
 }
 
-@media (max-width: 720px) {
+/* Collapse to the menu button below 960px so seven links never get squeezed */
+@media (max-width: 960px) {
   .nav-toggle {
     display: flex;
   }
@@ -133,6 +163,7 @@ img {
     left: 0;
     right: 0;
     flex-direction: column;
+    align-items: stretch;
     gap: 0;
     background: rgba(13, 13, 13, 0.97);
     border-bottom: 1px solid var(--border);
@@ -143,10 +174,31 @@ img {
     border-top: 1px solid var(--border);
   }
 
+  .main-nav a {
+    display: inline-block;
+  }
+
+  .main-nav .nav-login a {
+    padding: 6px 0;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+  }
+
+  .main-nav .nav-login a:hover,
+  .main-nav .nav-login a:active,
+  .main-nav .nav-login a[aria-current="page"] {
+    background: none;
+    color: var(--nav-active);
+    border-bottom-color: var(--nav-active);
+  }
+
   .main-nav.is-open ul {
     display: flex;
   }
+}
 
+@media (max-width: 720px) {
   .hero-actions {
     flex-direction: column;
     align-items: stretch;

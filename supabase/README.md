@@ -46,4 +46,7 @@ where id = (select id from auth.users where email = 'lesbraidit@outlook.com');
 ## 7. Admin page
 Open `admin.html` and sign in with your admin account. From there you can set your working hours,
 block off days and see upcoming bookings. Anyone else who signs in sees "No access", and the database
-rules stop non-admins from changing hours or blocked days. Don't link to this page from the public menu.
+rules stop non-admins from changing hours or blocked days.
+
+When you are signed in with an admin account, an **Admin** link appears in the site menu on every page
+(non-admin visitors never see it). The menu also shows **Login**, which becomes **My account** once signed in.
