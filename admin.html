@@ -40,6 +40,8 @@
     .btn:disabled { opacity: .5; cursor: default; }
     .btn-ghost { background: none; border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 8px 16px; font-size: .8rem; }
     .btn-ghost:hover { border-color: var(--pink); }
+    a.btn-ghost { display: inline-block; color: var(--text); text-decoration: none; }
+    .top-actions { display: flex; gap: 10px; align-items: center; }
     .msg { margin: 14px 0 0; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); font-size: .9rem; }
     .msg.ok { border-color: var(--ok); color: var(--ok); }
     .msg.error { border-color: var(--bad); color: var(--bad); }
@@ -82,7 +84,10 @@
 <body>
   <header class="top">
     <div class="brand">Les Braid It<span>Admin</span></div>
-    <button class="btn-ghost" id="signout" type="button" hidden>Sign out</button>
+    <div class="top-actions">
+      <a class="btn-ghost" href="index.html">View site</a>
+      <button class="btn-ghost" id="signout" type="button" hidden>Sign out</button>
+    </div>
   </header>
 
   <main>
