@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking confirmed | Les Braid It</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&family=Montserrat:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html"><img src="assets/images/membership-logo.png" alt="Les Braid It Members" class="logo"></a>
+    <nav class="main-nav">
+      <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      <ul>
+        <li><a href="booking.html">Book now</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="policies.html">Policies</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="nav-login"><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="member-page">
+    <section class="member-intro">
+      <p class="hero-eyebrow">Les Braid It</p>
+      <h1 id="confirm-title">Checking your payment&hellip;</h1>
+      <p id="confirm-text">This only takes a moment. Please don&rsquo;t close this page.</p>
+    </section>
+
+    <section class="member-card" id="confirm-card" aria-live="polite" hidden>
+      <p class="member-status is-success" id="confirm-detail"></p>
+      <p class="form-note">Your deposit comes off the price of your appointment. The rest is paid on the day. Please read the <a href="policies.html">policies</a> for rescheduling and cancellations.</p>
+      <p><a class="submit-btn" href="index.html" style="display:inline-block;text-align:center;text-decoration:none">Back to home</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer"><p>&copy; 2026 Les Braid It. All rights reserved.</p></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/nav-auth.js"></script>
+  <script src="assets/js/booking-confirmed.js"></script>
+</body>
+</html>
