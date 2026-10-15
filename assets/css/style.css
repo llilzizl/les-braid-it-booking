@@ -10,6 +10,9 @@
   --pink-light: #FBE4EF;
   --grey: #B3B3B3;
   --white: #FFFCF9;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
 }
 
 * {
@@ -24,15 +27,15 @@ body {
   margin: 0;
   background: var(--black);
   color: var(--white);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   line-height: 1.6;
   overflow-x: hidden;
 }
 
 h1, h2, h3 {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
   margin: 0 0 0.4em;
   color: var(--white);
 }
@@ -219,7 +222,7 @@ img {
   padding: 13px 30px;
   border-radius: 30px;
   font-size: 12px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -244,7 +247,7 @@ img {
   background: var(--white);
   color: var(--black);
   font-size: 12px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -276,14 +279,37 @@ img {
 
 .hero-eyebrow {
   color: var(--pink);
+  font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+/* picture collage strip under the welcome line (2:1, made in Canva) */
+.hero-collage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto 34px;
+  aspect-ratio: 2 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.hero-collage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .hero h1 {
-  font-size: clamp(34px, 5vw, 54px);
+  font-weight: 400;
+  line-height: 1.08;
+  font-size: clamp(34px, 5.5vw, 60px);
   max-width: 800px;
   margin: 0 auto 20px;
   position: relative;
@@ -352,7 +378,7 @@ img {
   background: rgba(13, 13, 13, 0.7);
   border: 1px solid var(--pink);
   color: var(--white);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.5px;
@@ -465,7 +491,7 @@ img {
 .specialty-link {
   margin-top: auto;
   color: var(--pink);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.5px;
@@ -545,7 +571,7 @@ img {
   border-radius: 8px;
   background: var(--pink);
   color: var(--black);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1px;
@@ -564,25 +590,25 @@ img {
 .booking-services-heading .portfolio-cta { flex-shrink: 0; margin: 0; }
 .heading-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; flex-shrink: 0; }
 .custom-request-wrap { position: relative; display: inline-flex; }
-.custom-request-btn { display: inline-block; padding: 8px 16px; border: 1px solid var(--pink); border-radius: 8px; background: var(--black); color: var(--pink); font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s ease; }
+.custom-request-btn { display: inline-block; padding: 8px 16px; border: 1px solid var(--pink); border-radius: 8px; background: var(--black); color: var(--pink); font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s ease; }
 .custom-request-btn:hover { background: var(--pink); color: var(--black); }
 .custom-request-wrap .info-toggle { position: absolute; top: -10px; right: -10px; background: var(--black); }
 .service-controls { display: flex; flex-wrap: wrap; gap: 16px 24px; margin: 0 0 18px; }
-.service-control { display: flex; flex-direction: column; gap: 4px; color: var(--pink-light); font-family: 'Montserrat', sans-serif; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; }
-.service-control select { padding: 8px 12px; border: 1px solid var(--pink); border-radius: 10px; background: var(--card); color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 13px; text-transform: none; letter-spacing: normal; }
+.service-control { display: flex; flex-direction: column; gap: 4px; color: var(--pink-light); font-family: var(--font-body); font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; }
+.service-control select { padding: 8px 12px; border: 1px solid var(--pink); border-radius: 10px; background: var(--card); color: var(--white); font-family: var(--font-body); font-size: 13px; text-transform: none; letter-spacing: normal; }
 .booking-service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding: 14px; border: 2px solid var(--pink); border-radius: 24px; box-shadow: 0 0 0 1px rgba(232, 85, 143, 0.25), inset 0 0 0 1px rgba(232, 85, 143, 0.22); }
 .booking-service-card { padding: 16px; border: 2px solid var(--pink-light); border-radius: 22px; background: var(--card); text-align: center; }
 .booking-service-card-link { display: block; color: inherit; text-decoration: none; }
 .booking-service-card img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border: 1px solid var(--pink-light); border-radius: 14px; }
 .service-photo-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%; aspect-ratio: 2 / 3; padding: 16px; border: 1px dashed var(--pink); border-radius: 14px; background: radial-gradient(circle at 50% 38%, rgba(232, 85, 143, 0.28), transparent 62%), repeating-linear-gradient(135deg, rgba(251, 228, 239, 0.04) 0 10px, transparent 10px 20px), var(--card); transition: border-color 0.2s ease; }
 .service-photo-placeholder svg { width: 38px; height: 38px; fill: var(--pink); opacity: 0.9; }
-.service-photo-placeholder .placeholder-brand { color: var(--pink-light); font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; line-height: 1.2; }
-.service-photo-placeholder .placeholder-note { color: var(--grey); font-family: 'Montserrat', sans-serif; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
+.service-photo-placeholder .placeholder-brand { color: var(--pink-light); font-family: var(--font-display); font-size: 20px; line-height: 1.2; }
+.service-photo-placeholder .placeholder-note { color: var(--grey); font-family: var(--font-body); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
 .booking-service-card-link:hover .service-photo-placeholder { border-color: var(--pink-light); }
 .service-gallery .service-photo-placeholder { aspect-ratio: 4 / 5; border-radius: 20px; }
 .service-gallery .service-photo-placeholder svg { width: 48px; height: 48px; }
 .service-gallery .service-photo-placeholder .placeholder-brand { font-size: 26px; }
-.booking-service-card h3 { min-height: 42px; margin: 14px 0 4px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 13px; font-style: normal; letter-spacing: 0.7px; line-height: 1.4; text-transform: uppercase; }
+.booking-service-card h3 { min-height: 42px; margin: 14px 0 4px; color: var(--white); font-family: var(--font-body); font-size: 13px; font-style: normal; letter-spacing: 0.7px; line-height: 1.4; text-transform: uppercase; }
 .booking-service-card p { margin: 0 0 14px; color: var(--pink-light); font-size: 14px; }
 .booking-service-card .service-hair-note { margin: 0 0 2px; color: var(--grey); font-size: 12px; }
 .booking-service-card .service-equipment-note { margin: 0 0 2px; color: var(--grey); font-size: 12px; }
@@ -592,7 +618,7 @@ img {
 .booking-service-card .btn-primary { padding: 11px 16px; font-size: 11px; }
 .booking-service { display: grid; grid-template-columns: minmax(230px, 360px) 1fr; gap: clamp(28px, 6vw, 80px); align-items: center; max-width: 980px; margin: 0 auto 80px; padding: 0 6%; }
 .booking-service-image { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 2px solid var(--pink); border-radius: 22px; }
-.booking-service-copy h2 { font-family: 'Montserrat', sans-serif; font-style: normal; font-size: clamp(22px, 3vw, 32px); letter-spacing: 1px; text-transform: uppercase; }
+.booking-service-copy h2 { font-family: var(--font-body); font-style: normal; font-size: clamp(22px, 3vw, 32px); letter-spacing: 1px; text-transform: uppercase; }
 .booking-price { color: var(--pink-light); font-size: 22px; font-weight: 600; }
 .booking-description { max-width: 520px; color: var(--grey); font-size: 14px; }
 .booking-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
@@ -600,14 +626,14 @@ img {
 .booking-modal.is-open { display: flex; }
 .booking-modal-panel { position: relative; width: min(100%, 580px); max-height: min(680px, 90vh); overflow-y: auto; padding: 34px clamp(22px, 5vw, 44px); background: rgba(122, 18, 61, 0.9); border: 1px solid var(--pink); box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45); }
 .booking-modal-close { position: absolute; top: 12px; right: 16px; border: 0; background: transparent; color: var(--white); font-size: 28px; cursor: pointer; }
-.booking-modal h2 { font-family: 'Montserrat', sans-serif; font-style: normal; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; }
+.booking-modal h2 { font-family: var(--font-body); font-style: normal; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; }
 .addon-list { display: grid; gap: 10px; margin: 24px 0; }
 .addon-option { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(255, 252, 249, 0.28); color: var(--white); font-size: 13px; }
 .addon-option span { display: flex; align-items: center; gap: 10px; }
 .addon-option input, .time-option input { accent-color: var(--pink); }
 .addon-option input[type="checkbox"] { width: 20px; height: 20px; flex-shrink: 0; cursor: pointer; }
 .booking-modal-note { margin: 0 0 8px; color: var(--pink-light); font-size: 13px; }
-.modal-service-hair-note { margin: 0 0 8px; color: rgba(255, 252, 249, 0.7); font-size: 12px; font-style: italic; }
+.modal-service-hair-note { margin: 0 0 8px; color: rgba(255, 252, 249, 0.7); font-size: 12px; }
 .modal-service-hair-note:empty, .addons-label[hidden], .addon-list[hidden] { display: none; }
 .availability { display: none; max-width: 980px; margin: 0 auto 80px; padding: 0 6%; }
 .availability.is-visible { display: block; }
@@ -628,7 +654,7 @@ img {
 .calendar-grid button.is-selected { outline: 2px solid var(--pink-light); outline-offset: -2px; }
 .time-options-heading { margin: 20px 0 0; color: var(--pink-light); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; }
 .time-options { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; min-height: 0; }
-.time-option { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border: 1px solid var(--pink); border-radius: 20px; background: rgba(232, 85, 143, 0.42); color: var(--white); font-family: 'Playfair Display', serif; font-style: italic; cursor: pointer; transition: background 0.15s ease; }
+.time-option { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border: 1px solid var(--pink); border-radius: 20px; background: rgba(232, 85, 143, 0.42); color: var(--white); font-family: var(--font-display); cursor: pointer; transition: background 0.15s ease; }
 .time-option:hover,
 .time-option.is-selected { background: rgba(232, 85, 143, 0.22); }
 .booking-details-form { margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--border); }
@@ -650,9 +676,9 @@ img {
 .service-gallery-prev { left: -24px; }
 .service-gallery-next { right: -24px; }
 
-.service-title { margin: 0 0 14px; font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(24px, 5vw, 32px); letter-spacing: 3px; text-transform: uppercase; }
+.service-title { margin: 0 0 14px; font-family: var(--font-body); font-weight: 800; font-size: clamp(24px, 5vw, 32px); letter-spacing: 3px; text-transform: uppercase; }
 
-.service-meta { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 22px; color: var(--pink); font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 15px; }
+.service-meta { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 22px; color: var(--pink); font-family: var(--font-body); font-weight: 700; font-size: 15px; }
 .service-meta span { display: flex; align-items: center; gap: 6px; }
 .service-meta img { width: 18px; height: 18px; }
 .service-meta-divider { color: var(--border); font-weight: 400; }
@@ -665,14 +691,14 @@ img {
 .service-description { margin: 0 0 30px; color: var(--grey); font-size: 14px; line-height: 1.75; text-align: left; }
 
 .service-kit { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--pink); border-radius: 20px; padding: 24px; margin: 0 0 30px; text-align: left; }
-.service-kit-title { margin: 0 0 6px; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; font-size: 22px; color: var(--pink); }
+.service-kit-title { margin: 0 0 6px; font-family: var(--font-display); font-weight: 600; font-size: 22px; color: var(--pink); }
 .service-kit-intro { margin: 0 0 18px; color: var(--grey); font-size: 13.5px; line-height: 1.6; }
 .service-kit-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .service-kit-list li { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--black); border: 1px solid var(--border); border-radius: 14px; color: var(--white); font-size: 13.5px; font-weight: 500; }
 .service-kit-list li::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); }
 .service-kit-list .service-kit-hair { grid-column: 1 / -1; flex-wrap: wrap; }
 .service-kit-swatches { display: flex; gap: 8px; margin-left: auto; }
-.kit-swatch { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--swatch); border: 2px solid var(--pink-light); color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; }
+.kit-swatch { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--swatch); border: 2px solid var(--pink-light); color: var(--white); font-family: var(--font-body); font-size: 10px; font-weight: 700; }
 
 @media (max-width: 420px) {
   .service-kit-list { grid-template-columns: 1fr; }
@@ -869,8 +895,7 @@ img {
   background: rgba(13, 13, 13, 0.65);
   border: 1px solid var(--pink);
   color: var(--pink);
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: 15px;
   display: flex;
@@ -991,7 +1016,7 @@ body.lightbox-active .portfolio-rail .portfolio-item {
   text-transform: uppercase;
   color: var(--pink);
   background: transparent;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1008,8 +1033,7 @@ body.lightbox-active .portfolio-rail .portfolio-item {
   border: 1px solid var(--pink);
   background: transparent;
   color: var(--pink);
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
@@ -1090,7 +1114,7 @@ section.form-section h2 {
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--white);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 13px;
 }
 
@@ -1108,7 +1132,7 @@ section.form-section h2 {
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--grey);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 12px;
 }
 .field input[type="file"]::file-selector-button {
@@ -1118,7 +1142,7 @@ section.form-section h2 {
   border-radius: 20px;
   background: transparent;
   color: var(--pink);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -1172,7 +1196,7 @@ section.form-section h2 {
   border: none;
   border-radius: 30px;
   color: var(--black);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 1px;
@@ -1201,7 +1225,7 @@ section.form-section h2 {
   overflow: hidden;
   background: var(--pink);
   color: var(--black);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 20vw;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -1352,9 +1376,8 @@ section.form-section h2 {
 .policy-thanks {
   margin: 44px 0 0;
   color: var(--pink-light);
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-display);
   font-size: 22px;
-  font-style: italic;
   text-align: center;
 }
 
@@ -1449,7 +1472,7 @@ section.form-section h2 {
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--white);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 13px;
 }
 
@@ -1474,7 +1497,7 @@ section.form-section h2 {
   border-radius: 6px;
   background: transparent;
   color: var(--pink);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1px;
@@ -1488,7 +1511,7 @@ section.form-section h2 {
   border: none;
   background: none;
   color: var(--pink);
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font-body);
   font-size: 13px;
   font-weight: 600;
   text-decoration: underline;
