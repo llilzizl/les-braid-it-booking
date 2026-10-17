@@ -1555,3 +1555,57 @@ section.form-section h2 {
 body[data-members-only]:not(.is-member-ready) main {
   visibility: hidden;
 }
+
+/* ==========================================================
+   Swirl rails: hot pink flourishes on the left and right edges.
+   Each swirl piece blooms in turn, from top to bottom, as the
+   page scrolls. Built by assets/js/main.js from the pieces in
+   assets/images/swirls/.
+   ========================================================== */
+
+.swirl-rail {
+  --space: max(56px, calc((100vw - 1000px) / 2 + 48px));
+  position: fixed;
+  top: 0;
+  z-index: -1;
+  height: 100vh;
+  height: 100dvh;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(232, 85, 143, 0.35));
+}
+
+.swirl-rail-left {
+  aspect-ratio: 564 / 2629;
+  left: min(0px, calc(var(--space) - 100vh * 564 / 2629));
+}
+
+.swirl-rail-right {
+  aspect-ratio: 959 / 2688;
+  right: min(0px, calc(var(--space) - 100vh * 959 / 2688));
+}
+
+.swirl-piece {
+  --k: 0;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  opacity: min(1, calc(var(--k) * 2.5));
+  transform: scale(calc(0.88 + var(--k) * 0.12));
+  transform-origin: 50% 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--k) * 130% - 30%), transparent calc(var(--k) * 130%));
+  mask-image: linear-gradient(to bottom, #000 calc(var(--k) * 130% - 30%), transparent calc(var(--k) * 130%));
+}
+
+.swirl-piece.is-dot {
+  transform-origin: 50% 50%;
+  transform: scale(var(--k));
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+@media (max-width: 720px) {
+  .swirl-rail {
+    --space: 64px;
+    opacity: 0.45;
+  }
+}
