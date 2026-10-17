@@ -1555,3 +1555,44 @@ section.form-section h2 {
 body[data-members-only]:not(.is-member-ready) main {
   visibility: hidden;
 }
+
+/* ==========================================================
+   Swirl rails: hot pink flourishes on the left and right edges
+   that grow from top to bottom as the page scrolls.
+   Added by assets/js/main.js; artwork in assets/images/swirls/.
+   ========================================================== */
+
+.swirl-rail {
+  --reveal: 0;
+  --space: max(56px, calc((100vw - 1000px) / 2 + 48px));
+  position: fixed;
+  top: 0;
+  z-index: -1;
+  height: 100vh;
+  height: 100dvh;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(232, 85, 143, 0.35));
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--reveal) * 120% - 20%), transparent calc(var(--reveal) * 120%));
+  mask-image: linear-gradient(to bottom, #000 calc(var(--reveal) * 120% - 20%), transparent calc(var(--reveal) * 120%));
+}
+
+.swirl-rail-left {
+  aspect-ratio: 373 / 1750;
+  left: min(0px, calc(var(--space) - 100vh * 373 / 1750));
+  background-image: url("../images/swirls/swirl-left.webp");
+}
+
+.swirl-rail-right {
+  aspect-ratio: 640 / 1792;
+  right: min(0px, calc(var(--space) - 100vh * 640 / 1792));
+  background-image: url("../images/swirls/swirl-right.webp");
+}
+
+@media (max-width: 720px) {
+  .swirl-rail {
+    --space: 64px;
+    opacity: 0.45;
+  }
+}

@@ -1,5 +1,56 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+  /* ---------------- Swirl rails: grow down the page edges on scroll ---------------- */
+  (function () {
+    var left = document.createElement('div');
+    var right = document.createElement('div');
+    left.className = 'swirl-rail swirl-rail-left';
+    right.className = 'swirl-rail swirl-rail-right';
+    left.setAttribute('aria-hidden', 'true');
+    right.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(left);
+    document.body.appendChild(right);
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      left.style.setProperty('--reveal', 1);
+      right.style.setProperty('--reveal', 1);
+      return;
+    }
+
+    var intro = 0;          // grows from 0 to 1 when the page first loads
+    var introStart = null;
+    var ticking = false;
+
+    function scrollProgress() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      return max > 0 ? Math.min(1, window.scrollY / max) : intro;
+    }
+
+    function render() {
+      ticking = false;
+      var p = scrollProgress();
+      // The top part blooms on load, then the rest follows the scroll
+      var base = 0.35 * intro + p * 0.8;
+      left.style.setProperty('--reveal', Math.min(1, base).toFixed(4));
+      right.style.setProperty('--reveal', Math.min(1, Math.max(0, base - 0.05 * intro)).toFixed(4));
+    }
+
+    function introStep(t) {
+      if (introStart === null) introStart = t;
+      var k = Math.min(1, (t - introStart) / 1400);
+      intro = 1 - Math.pow(1 - k, 3);
+      render();
+      if (k < 1) requestAnimationFrame(introStep);
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(render); }
+    }, { passive: true });
+    window.addEventListener('resize', render);
+    requestAnimationFrame(introStep);
+  })();
+
   /* ---------------- Service detail page: image gallery ---------------- */
   Array.prototype.slice.call(document.querySelectorAll('.service-gallery')).forEach(function (gallery) {
     var img = gallery.querySelector('img');
