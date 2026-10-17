@@ -100,7 +100,7 @@ Navigation is identical across all three pages so the site feels cohesive rather
 
 Information hierarchy: each page opens with the thing that matters most to a first-time visitor first (hero on the home page, gallery on the portfolio page, ways to get in touch on the contact page), so there's no scrolling to find the point of the page.
 Consistency: the same nav bar, colour palette, and typography appear on every page, reinforcing a single, professional brand.
-Swirl rails: hot pink flourishes sit on the left and right edges of every page. The top of each swirl blooms when the page loads, then the rest grows from top to bottom as the visitor scrolls, keeping the content in the centre. They are decorative only (hidden from screen readers, no clicks), and visitors who have reduced motion turned on see them fully drawn with no animation. On phones they fade back so text stays easy to read.
+Swirl rails: hot pink flourishes sit on the left and right edges of every page. Each rail is made of separate swirl pieces (5 on the left, 7 on the right). The top pieces bloom in when the page loads, then each piece unfurls in turn from top to bottom as the visitor scrolls, keeping the content in the centre. They are decorative only (hidden from screen readers, no clicks), and visitors who have reduced motion turned on see them fully drawn with no animation. On phones they fade back so text stays easy to read.
 
 ### Colour palette (matches the existing Les Braid It brand):
 
