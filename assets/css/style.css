@@ -1564,7 +1564,6 @@ body[data-members-only]:not(.is-member-ready) main {
    ========================================================== */
 
 .swirl-rail {
-  --space: max(56px, calc((100vw - 1000px) / 2 + 48px));
   position: fixed;
   top: 0;
   z-index: -1;
@@ -1576,12 +1575,12 @@ body[data-members-only]:not(.is-member-ready) main {
 
 .swirl-rail-left {
   aspect-ratio: 564 / 2629;
-  left: min(0px, calc(var(--space) - 100vh * 564 / 2629));
+  left: 0;
 }
 
 .swirl-rail-right {
   aspect-ratio: 959 / 2688;
-  right: min(0px, calc(var(--space) - 100vh * 959 / 2688));
+  right: 0;
 }
 
 .swirl-piece {
@@ -1605,7 +1604,6 @@ body[data-members-only]:not(.is-member-ready) main {
 
 @media (max-width: 720px) {
   .swirl-rail {
-    --space: 64px;
-    opacity: 0.45;
+    opacity: 0.6;
   }
 }
