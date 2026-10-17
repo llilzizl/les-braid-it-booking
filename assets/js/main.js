@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var pieces = [];
 
-    Object.keys(designs).forEach(function (side, sideIndex) {
+    Object.keys(designs).forEach(function (side) {
       var rail = document.createElement('div');
       rail.className = 'swirl-rail swirl-rail-' + side;
       rail.setAttribute('aria-hidden', 'true');
@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
         rail.appendChild(piece);
         pieces.push({
           el: piece,
-          start: d[2] / 100 + sideIndex * 0.04,   // the right side follows slightly behind
+          // Right side: top pieces first. Left side: bottom pieces first.
+          start: side === 'left' ? 1 - (d[2] + d[4]) / 100 : d[2] / 100,
           span: Math.max(0.06, d[4] / 100 * 0.7)
         });
       });

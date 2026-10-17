@@ -1558,8 +1558,9 @@ body[data-members-only]:not(.is-member-ready) main {
 
 /* ==========================================================
    Swirl rails: hot pink flourishes on the left and right edges.
-   Each swirl piece blooms in turn, from top to bottom, as the
-   page scrolls. Built by assets/js/main.js from the pieces in
+   Each swirl piece blooms in turn as the page scrolls: the right
+   side grows from top to bottom, the left from bottom to top.
+   Built by assets/js/main.js from the pieces in
    assets/images/swirls/.
    ========================================================== */
 
@@ -1595,7 +1596,14 @@ body[data-members-only]:not(.is-member-ready) main {
   mask-image: linear-gradient(to bottom, #000 calc(var(--k) * 130% - 30%), transparent calc(var(--k) * 130%));
 }
 
-.swirl-piece.is-dot {
+/* Left side grows upwards: each piece unfurls from its bottom edge */
+.swirl-rail-left .swirl-piece {
+  transform-origin: 50% 100%;
+  -webkit-mask-image: linear-gradient(to top, #000 calc(var(--k) * 130% - 30%), transparent calc(var(--k) * 130%));
+  mask-image: linear-gradient(to top, #000 calc(var(--k) * 130% - 30%), transparent calc(var(--k) * 130%));
+}
+
+.swirl-rail .swirl-piece.is-dot {
   transform-origin: 50% 50%;
   transform: scale(var(--k));
   -webkit-mask-image: none;
