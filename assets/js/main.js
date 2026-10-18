@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------------- Background decoration ----------------
-     Pages with <body data-decor="sparkles"> get floating sparkles
-     (assets/js/sparkles.js); every other page gets the glowing
-     swirl (assets/js/swirls.js). */
+     Pages with <body data-decor="swirl"> (home and booking) get the
+     glowing swirl (assets/js/swirls.js); every other page gets
+     floating pink sparkles (assets/js/sparkles.js). */
   var decorScript = document.createElement('script');
-  decorScript.src = document.body.getAttribute('data-decor') === 'sparkles'
-    ? 'assets/js/sparkles.js'
-    : 'assets/js/swirls.js';
+  decorScript.src = document.body.getAttribute('data-decor') === 'swirl'
+    ? 'assets/js/swirls.js'
+    : 'assets/js/sparkles.js';
   document.body.appendChild(decorScript);
 
   /* ---------------- Service detail page: image gallery ---------------- */

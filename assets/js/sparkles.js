@@ -1,9 +1,8 @@
 /* ==========================================================
    Les Braid It: floating pink sparkles
    ----------------------------------------------------------
-   Used instead of the glowing swirl on pages whose <body> has
-   data-decor="sparkles" (portfolio, policies, contact, login,
-   member dashboard, reset password).
+   Used on every page except home and booking, which have
+   <body data-decor="swirl"> and get the glowing swirl instead.
 
    A full-screen canvas behind the content with three kinds of
    sparkle drifting slowly upwards and twinkling:
