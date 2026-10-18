@@ -1,88 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* ---------------- Swirl rails: pieces bloom down the page edges on scroll ---------------- */
-  (function () {
-    // [image, left %, top %, width %, height %] inside each rail, ordered top to bottom
-    var designs = {
-      left: [
-        ['left-1.webp', 8.156, 0.0, 91.844, 28.984],
-        ['left-2.webp', 0.0, 9.623, 85.993, 30.886],
-        ['left-3.webp', 0.0, 31.305, 95.922, 30.316],
-        ['left-4.webp', 0.0, 61.62, 97.163, 27.729],
-        ['left-5.webp', 0.0, 63.674, 80.496, 36.326]
-      ],
-      right: [
-        ['right-1.webp', 8.342, 0.0, 85.297, 16.518],
-        ['right-2.webp', 34.202, 14.509, 65.068, 42.634],
-        ['right-3.webp', 38.895, 55.729, 61.105, 43.75],
-        ['right-4.webp', 88.843, 74.144, 9.593, 3.906],
-        ['right-5.webp', 33.16, 81.25, 8.342, 5.655],
-        ['right-6.webp', 0.0, 82.18, 85.089, 17.82],
-        ['right-7.webp', 75.912, 94.01, 2.711, 4.65]
-      ]
-    };
-    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var pieces = [];
-
-    Object.keys(designs).forEach(function (side) {
-      var rail = document.createElement('div');
-      rail.className = 'swirl-rail swirl-rail-' + side;
-      rail.setAttribute('aria-hidden', 'true');
-      designs[side].forEach(function (d) {
-        var piece = document.createElement('div');
-        piece.className = 'swirl-piece';
-        if (d[3] < 12 && d[4] < 8) piece.classList.add('is-dot');
-        piece.style.backgroundImage = 'url("assets/images/swirls/' + d[0] + '")';
-        piece.style.left = d[1] + '%';
-        piece.style.top = d[2] + '%';
-        piece.style.width = d[3] + '%';
-        piece.style.height = d[4] + '%';
-        if (reduceMotion) piece.style.setProperty('--k', 1);
-        rail.appendChild(piece);
-        pieces.push({
-          el: piece,
-          // Right side: top pieces first. Left side: bottom pieces first.
-          start: side === 'left' ? 1 - (d[2] + d[4]) / 100 : d[2] / 100,
-          span: Math.max(0.06, d[4] / 100 * 0.7)
-        });
-      });
-      document.body.appendChild(rail);
-    });
-    if (reduceMotion) return;
-
-    var intro = 0;          // grows from 0 to 1 when the page first loads
-    var introStart = null;
-    var ticking = false;
-
-    function scrollProgress() {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      return max > 0 ? Math.min(1, window.scrollY / max) : intro;
-    }
-
-    function render() {
-      ticking = false;
-      // The first swirls bloom on load, then the rest follow the scroll
-      var reveal = 0.3 * intro + scrollProgress() * 0.9;
-      pieces.forEach(function (p) {
-        var k = Math.min(1, Math.max(0, (reveal - p.start) / p.span));
-        p.el.style.setProperty('--k', k.toFixed(3));
-      });
-    }
-
-    function introStep(t) {
-      if (introStart === null) introStart = t;
-      var k = Math.min(1, (t - introStart) / 1600);
-      intro = 1 - Math.pow(1 - k, 3);
-      render();
-      if (k < 1) requestAnimationFrame(introStep);
-    }
-
-    window.addEventListener('scroll', function () {
-      if (!ticking) { ticking = true; requestAnimationFrame(render); }
-    }, { passive: true });
-    window.addEventListener('resize', render);
-    requestAnimationFrame(introStep);
-  })();
+  /* ---------------- Glowing swirl: drawn by assets/js/swirls.js ---------------- */
+  var swirlScript = document.createElement('script');
+  swirlScript.src = 'assets/js/swirls.js';
+  document.body.appendChild(swirlScript);
 
   /* ---------------- Service detail page: image gallery ---------------- */
   Array.prototype.slice.call(document.querySelectorAll('.service-gallery')).forEach(function (gallery) {
