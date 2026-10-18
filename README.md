@@ -101,6 +101,7 @@ Navigation is identical across all three pages so the site feels cohesive rather
 Information hierarchy: each page opens with the thing that matters most to a first-time visitor first (hero on the home page, gallery on the portfolio page, ways to get in touch on the contact page), so there's no scrolling to find the point of the page.
 Consistency: the same nav bar, colour palette, and typography appear on every page, reinforcing a single, professional brand.
 Glowing swirl: a hot pink S flourish (designed in Canva at 1080 x 2340 px, the shape of a phone screen) sits behind the content and draws itself on like a pen as the visitor scrolls, with a soft neon glow and twinkling sparkles. The first part draws when the page loads. On phones one S fills the screen; on wider screens the S sits on the right and a mirrored copy on the left draws from bottom to top. It is decorative only (hidden from screen readers, no clicks), phones get fewer sparkles to keep scrolling smooth, visitors with reduced motion turned on see it fully drawn with no sparkles, and browsers that cannot run WebGL get a still glowing image instead. The code is in assets/js/swirls.js; assets/images/swirls/s-swirl-map.png stores the drawing order (red), the line (green) and the glow (blue) for the WebGL shader.
+Frosted panels: every block of text that sits directly on the swirl (headings, intros, policy sections, service details, captions, the footer) has a see-through dark panel behind it (82% dark with a 10px blur), so the swirl still glows around and through it but the words always have enough contrast. The panels are drawn as a ::before layer behind each section, so the booking pop-up and photo lightboxes inside those sections keep working. The panel strength is set once in :root (--frost-bg, --frost-blur, --frost-radius).
 
 ### Colour palette (matches the existing Les Braid It brand):
 
@@ -232,6 +233,7 @@ Testing Log :
 | 8 | HTML validation errors: mismatched `<section>`/`<div>` opening and closing tags | `portfolio.html` | Made opening and closing tags match |
 | 9 | HTML validation warning: `.about-strip` section had no heading | `contact.html` | Added a visually-hidden `<h2>About</h2>` |
 | 10 | Decorative background images (`bg-decor-*.png`) rendered too small/faint | `index.html`, `contact.html`, `style.css` | Removed entirely (your choice) |
+| 11 | Text was hard to read where it sat over the glowing swirl. An automated contrast check of every visible piece of text on 7 page types at phone width (390px) found 101 of 425 pieces below the WCAG AA minimum (4.5:1, or 3:1 for large text) | All pages, `style.css` | Added frosted panels (82% dark, 10px blur) behind text sections. Re-check: 0 of 425 failing at phone width (lowest 4.65:1) and 0 of 406 at laptop width (lowest 5.23:1) |
 
 
 ## Known bugs
