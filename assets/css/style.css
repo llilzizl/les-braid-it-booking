@@ -10,6 +10,10 @@
   --pink-light: #FBE4EF;
   --grey: #B3B3B3;
   --white: #FFFCF9;
+  /* Frosted panels that keep text readable over the glowing swirl */
+  --frost-bg: rgba(13, 13, 13, 0.82);
+  --frost-blur: 10px;
+  --frost-radius: 24px;
 }
 
 * {
@@ -1578,4 +1582,120 @@ body[data-members-only]:not(.is-member-ready) main {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   pointer-events: none;
+}
+
+/* ==========================================================
+   Frosted panels: a see-through dark layer behind text that
+   sits directly on the glowing swirl, so the words always have
+   enough contrast. Drawn as a ::before layer so pop-ups and
+   lightboxes inside these sections keep working normally.
+   ========================================================== */
+
+.frost,
+.hero-text,
+.specialties > h2,
+.cta-strip,
+.portfolio-hero,
+.rail-arrow-hint,
+.booking-hero,
+.booking-services,
+.availability,
+.service-hero,
+.policies-intro,
+.policy-section,
+.hair-prep,
+.member-intro,
+.tabs,
+.form-section,
+.policy-filters,
+.member-guest,
+.portfolio-caption,
+.site-footer {
+  position: relative;
+  isolation: isolate;
+}
+
+.frost::before,
+.hero-text::before,
+.specialties > h2::before,
+.cta-strip::before,
+.portfolio-hero::before,
+.rail-arrow-hint::before,
+.booking-hero::before,
+.booking-services::before,
+.availability::before,
+.service-hero::before,
+.policies-intro::before,
+.policy-section::before,
+.hair-prep::before,
+.member-intro::before,
+.tabs::before,
+.form-section::before,
+.policy-filters::before,
+.member-guest::before,
+.portfolio-caption::before,
+.site-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--frost-radius);
+  background: var(--frost-bg);
+  -webkit-backdrop-filter: blur(var(--frost-blur));
+  backdrop-filter: blur(var(--frost-blur));
+  pointer-events: none;
+}
+
+.hero-text {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 22px 18px 26px;
+}
+
+.specialties > h2 {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 6px 22px;
+}
+
+.site-footer::before {
+  border-radius: 0;
+}
+
+/* Keep each panel wrapped around all of its text (stops margins leaking out) */
+.hero-text,
+.portfolio-hero,
+.booking-hero,
+.policies-intro,
+.policy-section,
+.hair-prep,
+.member-intro,
+.service-hero,
+.cta-strip,
+.form-section,
+.member-guest {
+  display: flow-root;
+}
+
+.member-intro,
+.member-guest {
+  padding: 14px 18px;
+}
+
+.rail-arrow-hint {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 6px 14px;
+}
+
+.policy-filters {
+  padding: 12px;
+}
+
+.portfolio-caption {
+  display: inline-block;
+  padding: 2px 10px;
+  --frost-radius: 999px;
 }
