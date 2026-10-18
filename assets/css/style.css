@@ -1597,6 +1597,18 @@ body[data-members-only]:not(.is-member-ready) main {
   pointer-events: none;
 }
 
+/* Sparkle pages: soft pink haze rising from the bottom of the screen */
+.sparkle-glow {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  height: 85vh;
+  background: radial-gradient(ellipse 100% 80% at 50% 100%, rgba(232, 85, 143, 0.5), rgba(200, 40, 120, 0.18) 50%, transparent 85%);
+  pointer-events: none;
+}
+
 /* Used only if the browser cannot run the animation */
 .swirl-static {
   position: fixed;
