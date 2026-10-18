@@ -1557,61 +1557,25 @@ body[data-members-only]:not(.is-member-ready) main {
 }
 
 /* ==========================================================
-   Swirl rails: hot pink flourishes on the left and right edges.
-   Each swirl piece blooms in turn as the page scrolls: the right
-   side grows from top to bottom, the left from bottom to top.
-   Built by assets/js/main.js from the pieces in
-   assets/images/swirls/.
+   Glowing swirl behind the page content.
+   Drawn by assets/js/swirls.js (see the notes at the top of it).
    ========================================================== */
 
-.swirl-rail {
+.swirl-layer {
   position: fixed;
   top: 0;
-  z-index: -1;
-  height: 100vh;
-  height: 100dvh;
-  pointer-events: none;
-  filter: drop-shadow(0 0 6px rgba(232, 85, 143, 0.35));
-}
-
-.swirl-rail-left {
-  aspect-ratio: 564 / 2629;
   left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
 }
 
-.swirl-rail-right {
-  aspect-ratio: 959 / 2688;
-  right: 0;
-}
-
-.swirl-piece {
-  --k: 0;
-  position: absolute;
+/* Used only if the browser cannot run the animation */
+.swirl-static {
+  position: fixed;
+  z-index: -1;
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  opacity: min(1, calc(var(--k) * 2.5));
-  transform: scale(calc(0.88 + var(--k) * 0.12));
-  transform-origin: 50% 0;
-  -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--k) * 130% - 30%), transparent calc(var(--k) * 130%));
-  mask-image: linear-gradient(to bottom, #000 calc(var(--k) * 130% - 30%), transparent calc(var(--k) * 130%));
-}
-
-/* Left side grows upwards: each piece unfurls from its bottom edge */
-.swirl-rail-left .swirl-piece {
-  transform-origin: 50% 100%;
-  -webkit-mask-image: linear-gradient(to top, #000 calc(var(--k) * 130% - 30%), transparent calc(var(--k) * 130%));
-  mask-image: linear-gradient(to top, #000 calc(var(--k) * 130% - 30%), transparent calc(var(--k) * 130%));
-}
-
-.swirl-rail .swirl-piece.is-dot {
-  transform-origin: 50% 50%;
-  transform: scale(var(--k));
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-@media (max-width: 720px) {
-  .swirl-rail {
-    opacity: 0.6;
-  }
+  pointer-events: none;
 }

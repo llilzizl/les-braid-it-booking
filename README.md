@@ -100,7 +100,7 @@ Navigation is identical across all three pages so the site feels cohesive rather
 
 Information hierarchy: each page opens with the thing that matters most to a first-time visitor first (hero on the home page, gallery on the portfolio page, ways to get in touch on the contact page), so there's no scrolling to find the point of the page.
 Consistency: the same nav bar, colour palette, and typography appear on every page, reinforcing a single, professional brand.
-Swirl rails: hot pink flourishes sit on the left and right edges of every page. Each rail is made of separate swirl pieces (5 on the left, 7 on the right). The top pieces bloom in when the page loads, then each piece unfurls in turn as the visitor scrolls: the right side grows from top to bottom and the left side grows from bottom to top, keeping the content in the centre. They are decorative only (hidden from screen readers, no clicks), and visitors who have reduced motion turned on see them fully drawn with no animation. Both designs sit fully on screen, reaching towards the centre; on phones they are slightly faded so text stays easy to read.
+Glowing swirl: a hot pink S flourish (designed in Canva at 1080 x 2340 px, the shape of a phone screen) sits behind the content and draws itself on like a pen as the visitor scrolls, with a soft neon glow and twinkling sparkles. The first part draws when the page loads. On phones one S fills the screen; on wider screens the S sits on the right and a mirrored copy on the left draws from bottom to top. It is decorative only (hidden from screen readers, no clicks), phones get fewer sparkles to keep scrolling smooth, visitors with reduced motion turned on see it fully drawn with no sparkles, and browsers that cannot run WebGL get a still glowing image instead. The code is in assets/js/swirls.js; assets/images/swirls/s-swirl-map.png stores the drawing order (red), the line (green) and the glow (blue) for the WebGL shader.
 
 ### Colour palette (matches the existing Les Braid It brand):
 
@@ -275,7 +275,7 @@ The live site is hosted at: https://llilzizl.github.io/les-braid-it-portfolio/
 - Claude Code (AI assistance used for debugging and documentation support)
 - Photography of finished styles by Lilian / Les Braid It
 - Fonts: Google Fonts, Playfair Display, Montserrat
-- Swirl rail artwork composed by Lilian in Canva, recoloured to the brand hot pink (#E8558F)
+- Swirl artwork composed by Lilian in Canva, recoloured to the brand hot pink (#E8558F) with glow and sparkles added in code
 
 ## Future improvements
 
