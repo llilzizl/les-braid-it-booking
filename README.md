@@ -88,7 +88,7 @@ Mobile
 
 ## Pages & Purpose
 
-Home (index.html) - Introduces the brand, hero gallery of recent work, links through to the portfolio and to the two contact pathways
+Home (index.html) - In order: the welcome intro with Book Now and About LBI buttons; Service Highlights (a carousel of style categories) followed by a Check Out Portfolio button, so visitors who have just browsed styles are led straight to the full gallery; the before and after slider with the Book Classes Now button; and a Let's connect section linking to the contact page
 
 Portfolio (portfolio.html) - Gallery of real work across 8 styles (Perfect Sew In, Fulani, Cassie, Natural, Patewo and Base, Boho French Curl, Extra Small Layered, Pick and Drop). Tapping a photo opens a close-up view with navigation and, for the Perfect Sew In style, extra detail about the method
 
