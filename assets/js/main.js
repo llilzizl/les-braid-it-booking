@@ -1,9 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* ---------------- Glowing swirl: drawn by assets/js/swirls.js ---------------- */
-  var swirlScript = document.createElement('script');
-  swirlScript.src = 'assets/js/swirls.js';
-  document.body.appendChild(swirlScript);
+  /* ---------------- Background decoration ----------------
+     Pages with <body data-decor="sparkles"> get floating sparkles
+     (assets/js/sparkles.js); every other page gets the glowing
+     swirl (assets/js/swirls.js). */
+  var decorScript = document.createElement('script');
+  decorScript.src = document.body.getAttribute('data-decor') === 'sparkles'
+    ? 'assets/js/sparkles.js'
+    : 'assets/js/swirls.js';
+  document.body.appendChild(decorScript);
 
   /* ---------------- Service detail page: image gallery ---------------- */
   Array.prototype.slice.call(document.querySelectorAll('.service-gallery')).forEach(function (gallery) {
