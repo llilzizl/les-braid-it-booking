@@ -259,7 +259,29 @@ img {
   border-color: var(--pink);
 }
 
-.hero .btn-white { position: relative; z-index: 1; }
+.transformation .btn-white { position: relative; z-index: 1; }
+
+/* Hidden from view but still read out by screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Home: before / after slider with the classes button */
+.transformation {
+  padding: 0 6% 50px;
+  text-align: center;
+}
+
+/* Home: link from the service highlights to the full portfolio */
+.specialty-portfolio {
+  --frost-radius: 30px;
+  margin-top: 26px;
+}
 
 .btn-outline {
   background: transparent;
