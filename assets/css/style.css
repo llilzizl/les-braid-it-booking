@@ -2011,3 +2011,36 @@ body[data-members-only]:not(.is-member-ready) main {
 .gel-allergy h2 { margin: 0 0 6px; font-family: 'Montserrat', sans-serif; font-style: normal; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; color: var(--pink); }
 .gel-allergy p { margin: 0; color: var(--white); font-size: 13.5px; line-height: 1.65; }
 .gel-allergy a { color: var(--pink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Service page details: what you get, prep, aftercare, FAQs, related ---------- */
+.service-lasts { margin: -12px 0 22px; color: var(--pink-light); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.3px; }
+.service-features-title,
+.service-info h2,
+.service-prep h2,
+.service-related h2 { margin: 0 0 12px; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; font-size: 21px; color: var(--pink); text-align: left; }
+.service-features a,
+.service-info a,
+.service-prep a { color: var(--pink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+.service-prep { margin: 0 0 26px; padding: 18px 22px; background: var(--card); border: 1px solid var(--pink); border-radius: 20px; text-align: left; }
+.service-prep h2 { font-size: 18px; margin-bottom: 6px; }
+.service-prep p { margin: 0; color: var(--white); font-size: 14px; line-height: 1.65; }
+
+.service-info { margin: 0 0 26px; padding: 22px 24px; background: var(--card); border-radius: 20px; text-align: left; }
+.service-info ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.service-info li { position: relative; padding-left: 20px; color: var(--grey); font-size: 14px; line-height: 1.6; }
+.service-info li::before { content: ''; position: absolute; left: 2px; top: 0.6em; width: 7px; height: 7px; border-radius: 50%; background: var(--pink); }
+
+.service-faq { border-top: 1px solid var(--border); }
+.service-faq:last-of-type { border-bottom: 1px solid var(--border); }
+.service-faq summary { position: relative; padding: 14px 30px 14px 0; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; line-height: 1.45; cursor: pointer; list-style: none; }
+.service-faq summary::-webkit-details-marker { display: none; }
+.service-faq summary::after { content: '+'; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); color: var(--pink); font-size: 20px; font-weight: 400; }
+.service-faq[open] summary::after { content: '\2212'; }
+.service-faq summary:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; border-radius: 4px; }
+.service-faq p { margin: 0 0 14px; color: var(--grey); font-size: 14px; line-height: 1.65; }
+
+.service-related { margin: 30px 0 0; padding: 20px 24px; background: var(--card); border-radius: 20px; text-align: left; }
+.service-related ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.service-related a { display: inline-block; padding: 8px 14px; border: 1px solid var(--pink); border-radius: 999px; background: var(--black); color: var(--pink-light); font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 600; text-decoration: none; }
+.service-related a:hover, .service-related a:focus-visible { background: var(--pink); color: var(--black); }

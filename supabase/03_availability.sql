@@ -66,7 +66,7 @@ insert into public.services (name, deposit_amount, duration_minutes, buffer_minu
   ('Extra Small Layered Braids Takedown', 30, 180, 10, true),
   ('Fulani Sew In', 30, 180, 10, true),
   ('Cassie Sew In', 20, 180, 10, true),
-  ('Fulani Crotchet', 20, 135, 10, true),
+  ('Fulani Crochet', 20, 135, 10, true),
   ('Flat Twist', 20, 120, 10, true),
   ('Small Mini Twist / Mini Braids', 20, 120, 10, true),
   ('The ''Perfect'' Sew In Takedown', 20, 120, 10, true),

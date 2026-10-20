@@ -276,7 +276,7 @@ infoToggles.forEach(function (btn) {
     ] },
     'Extra Small Layered Braids Takedown': { price: 55, hrs: '3 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
     "The 'Perfect' Sew In Takedown": { price: 30, hrs: '2 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
-    'Fulani Crotchet': { price: 60, hrs: '2.25 hrs', addons: [] },
+    'Fulani Crochet': { price: 60, hrs: '2.25 hrs', addons: [] },
     "The 'Perfect' Sew In Classes": { comingSoon: true, hairNote: 'Hair not included — please bring your own. Equipment included.', addons: [
       { label: '2 Part Sew In' },
       { label: 'Flip Over' },
@@ -897,6 +897,11 @@ infoToggles.forEach(function (btn) {
         }
       });
     });
+
+    // A link like policies.html#hair-prep opens straight on that tab
+    var policyHash = window.location.hash.replace('#', '');
+    var hashBtn = policyFilterBtns.filter(function (b) { return b.getAttribute('data-filter') === policyHash; })[0];
+    if (hashBtn) hashBtn.click();
   }
 
   /* ---------------- Mobile nav toggle ---------------- */

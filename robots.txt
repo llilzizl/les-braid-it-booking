@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /member-dashboard.html
+Disallow: /my-request.html
+Disallow: /reset-password.html
+Disallow: /booking-confirmed.html
+Disallow: /private/
+Disallow: /supabase/
+
+Sitemap: https://lesbraidit.co.uk/sitemap.xml
