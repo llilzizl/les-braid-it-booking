@@ -49,7 +49,7 @@ from (values
   ('Shuku/Patewo (and Base)', 30),
   ('Extra Small Layered Braids Takedown', 55),
   ('The ''Perfect'' Sew In Takedown', 30),
-  ('Fulani Crotchet', 60),
+  ('Fulani Crochet', 60),
   ('The ''Perfect'' Sew In Classes', 650)
 ) as p(name, price)
 where s.name = p.name;
