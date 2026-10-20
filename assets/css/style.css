@@ -14,6 +14,8 @@
   --frost-bg: rgba(13, 13, 13, 0.82);
   --frost-blur: 10px;
   --frost-radius: 24px;
+  /* Pink outline on the Service Highlights cards and the Let's connect box */
+  --outline-width: 2px;
 }
 
 * {
@@ -497,7 +499,7 @@ img {
   display: flex;
   flex-direction: column;
   background: var(--card);
-  border: 3px solid var(--pink);
+  border: var(--outline-width) solid var(--pink);
   border-radius: 16px;
   padding: 16px 16px 22px;
   text-align: left;
@@ -552,7 +554,7 @@ img {
   padding: 48px 6%;
   text-align: center;
   background: var(--card);
-  border: 3px solid var(--pink);
+  border: var(--outline-width) solid var(--pink);
   border-radius: 20px;
   overflow: hidden;
 }
