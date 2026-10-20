@@ -88,7 +88,7 @@ Mobile
 
 ## Pages & Purpose
 
-Home (index.html) - In order: the welcome intro with Book Now and About LBI buttons; Service Highlights (a carousel of style categories) followed by a Check Out Portfolio button, so visitors who have just browsed styles are led straight to the full gallery; the before and after slider with the Book Classes Now button; and a Let's connect section linking to the contact page
+Home (index.html) - In order: the "Express yourself, don't repress yourself" banner (full width on phones, sized to fit the screen on laptops so the buttons show without scrolling) with Book Now and About LBI buttons underneath; the page has a visually hidden "Les Braid It" heading for screen readers and the banner's alt text reads out the phrase; Service Highlights (a carousel of style categories) followed by a Check Out Portfolio button, so visitors who have just browsed styles are led straight to the full gallery; the before and after slider with the Book Classes Now button; and a Let's connect section linking to the contact page
 
 Portfolio (portfolio.html) - Gallery of real work across 8 styles (Perfect Sew In, Fulani, Cassie, Natural, Patewo and Base, Boho French Curl, Extra Small Layered, Pick and Drop). Tapping a photo opens a close-up view with navigation and, for the Perfect Sew In style, extra detail about the method
 
