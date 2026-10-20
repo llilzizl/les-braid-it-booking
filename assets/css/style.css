@@ -2003,3 +2003,7 @@ body[data-members-only]:not(.is-member-ready) main {
 @media (prefers-reduced-motion: reduce) {
   .gel-glow::before { animation: none; }
 }
+.gel-allergy { margin: 0 0 26px; padding: 18px 22px; background: var(--card); border: 1px solid var(--pink); border-radius: 20px; text-align: left; }
+.gel-allergy h2 { margin: 0 0 6px; font-family: 'Montserrat', sans-serif; font-style: normal; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; color: var(--pink); }
+.gel-allergy p { margin: 0; color: var(--white); font-size: 13.5px; line-height: 1.65; }
+.gel-allergy a { color: var(--pink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
