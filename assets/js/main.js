@@ -1,13 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------------- Background decoration ----------------
-     Pages with <body data-decor="swirl"> (home and booking) get the
-     glowing swirl (assets/js/swirls.js); every other page gets
-     floating pink sparkles (assets/js/sparkles.js). */
+     Chosen by the data-decor attribute on <body>:
+       data-decor="swirl" (home)    -> glowing swirl, assets/js/swirls.js
+       data-decor="neon"  (booking) -> neon sparkle field, assets/js/neon-sparkles.js
+       no data-decor (all others)   -> floating sparkles, assets/js/sparkles.js */
+  var decorScripts = {
+    swirl: 'assets/js/swirls.js',
+    neon: 'assets/js/neon-sparkles.js'
+  };
   var decorScript = document.createElement('script');
-  decorScript.src = document.body.getAttribute('data-decor') === 'swirl'
-    ? 'assets/js/swirls.js'
-    : 'assets/js/sparkles.js';
+  decorScript.src = decorScripts[document.body.getAttribute('data-decor')] || 'assets/js/sparkles.js';
   document.body.appendChild(decorScript);
 
   /* ---------------- Service detail page: image gallery ---------------- */
