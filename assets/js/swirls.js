@@ -1,6 +1,6 @@
 /* ==========================================================
    Les Braid It: glowing swirl that draws itself on scroll
-   (home and booking pages only: <body data-decor="swirl">)
+   (home page only: <body data-decor="swirl">)
    ----------------------------------------------------------
    Artwork: Lilian's S flourish, designed in Canva at 1080 x 2340.
    assets/images/swirls/s-swirl-map.png packs three layers:
