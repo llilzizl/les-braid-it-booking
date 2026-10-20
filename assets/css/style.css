@@ -313,8 +313,16 @@ img {
 
 /* Home: link from the service highlights to the full portfolio */
 .specialty-portfolio {
-  --frost-radius: 30px;
   margin-top: 26px;
+}
+
+/* On phones, match the Book Now button: full width and taller */
+@media (max-width: 720px) {
+  .specialty-portfolio {
+    display: block;
+    padding: 18px 30px;
+    font-size: 14px;
+  }
 }
 
 .btn-outline {
