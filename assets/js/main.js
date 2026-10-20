@@ -277,10 +277,10 @@ infoToggles.forEach(function (btn) {
     'Extra Small Layered Braids Takedown': { price: 55, hrs: '3 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
     "The 'Perfect' Sew In Takedown": { price: 30, hrs: '2 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
     'Fulani Crotchet': { price: 60, hrs: '2.25 hrs', addons: [] },
-    "The 'Perfect' Sew In Classes": { price: 650, hrs: '~8 hrs', hairNote: 'Hair not included — please bring your own. Equipment included.', addons: [
-      { label: '2 Part Sew In', extra: '+£200' },
-      { label: 'Flip Over', extra: '+£200' },
-      { label: 'Both 2 Part Sew In and Flip Over', extra: '+£350' }
+    "The 'Perfect' Sew In Classes": { comingSoon: true, hairNote: 'Hair not included — please bring your own. Equipment included.', addons: [
+      { label: '2 Part Sew In' },
+      { label: 'Flip Over' },
+      { label: 'Both 2 Part Sew In and Flip Over' }
     ] }
   };
 
@@ -310,8 +310,12 @@ infoToggles.forEach(function (btn) {
       });
 
       visible.sort(function (a, b) {
-        if (sortValue === 'price-asc') return Number(a.getAttribute('data-price')) - Number(b.getAttribute('data-price'));
-        if (sortValue === 'price-desc') return Number(b.getAttribute('data-price')) - Number(a.getAttribute('data-price'));
+        if (sortValue === 'price-asc' || sortValue === 'price-desc') {
+          // Cards with no price yet ("coming soon") always go last.
+          var priceA = a.getAttribute('data-price'), priceB = b.getAttribute('data-price');
+          if (!priceA || !priceB) return (priceA ? 0 : 1) - (priceB ? 0 : 1);
+          return sortValue === 'price-asc' ? priceA - priceB : priceB - priceA;
+        }
         var popularA = a.getAttribute('data-popular') === 'true' ? 0 : 1;
         var popularB = b.getAttribute('data-popular') === 'true' ? 0 : 1;
         return popularA - popularB;
@@ -417,6 +421,11 @@ infoToggles.forEach(function (btn) {
       totalHours += parseAddonHours(extra);
     });
 
+    if (service.comingSoon) {
+      if (modalServicePrice) modalServicePrice.textContent = 'Price coming soon';
+      if (modalServiceHrs) modalServiceHrs.textContent = '· Time coming soon';
+      return;
+    }
     if (modalServicePrice) modalServicePrice.textContent = '£' + totalPrice;
     if (modalServiceHrs) modalServiceHrs.textContent = totalHours ? '· ' + formatDuration(totalHours) : '';
   }
