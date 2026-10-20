@@ -54,3 +54,7 @@ When you are signed in with an admin account, an **Admin** link appears in the s
 ## Deposits (Stripe)
 
 See `STRIPE_SETUP.md`. New files: `04_payments.sql`, `05_lock_bookings.sql` (run last) and the two functions in `functions/`.
+
+## Custom style requests
+
+See `CUSTOM_REQUESTS_SETUP.md`. New files: `09_custom_requests.sql` and the `custom-requests` function in `functions/`.
