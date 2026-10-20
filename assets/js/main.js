@@ -897,31 +897,6 @@ infoToggles.forEach(function (btn) {
     });
   }
 
-  /* ---------------- Service highlights slider ---------------- */
-  document.querySelectorAll('.specialty-slider').forEach(function (slider) {
-    var track = slider.querySelector('.specialty-track');
-    var prev = slider.querySelector('.specialty-prev');
-    var next = slider.querySelector('.specialty-next');
-    if (!track) return;
-
-    var step = function () {
-      var card = track.querySelector('.specialty-card');
-      return card ? card.offsetWidth + 24 : track.clientWidth;
-    };
-
-    var update = function () {
-      var maxScroll = track.scrollWidth - track.clientWidth;
-      slider.classList.toggle('is-scrollable', maxScroll > 2);
-      if (prev) prev.disabled = track.scrollLeft <= 2;
-      if (next) next.disabled = track.scrollLeft >= maxScroll - 2;
-    };
-
-    if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step() }); });
-    if (next) next.addEventListener('click', function () { track.scrollBy({ left: step() }); });
-    track.addEventListener('scroll', update);
-    window.addEventListener('resize', update);
-    update();
-  });
 
   /* ---------------- Before / after slider ---------------- */
   document.querySelectorAll('.before-after').forEach(function (slider) {

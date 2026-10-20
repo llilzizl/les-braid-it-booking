@@ -489,7 +489,7 @@ img {
   display: flex;
   flex-direction: column;
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 3px solid var(--pink);
   border-radius: 16px;
   padding: 16px 16px 22px;
   text-align: left;
@@ -498,7 +498,7 @@ img {
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 .specialty-card:hover {
-  border-color: var(--pink);
+  border-color: var(--pink-light);
   transform: translateY(-4px);
 }
 
@@ -532,30 +532,9 @@ img {
   text-transform: uppercase;
 }
 
-.specialty-nav {
-  position: absolute;
-  top: 40%;
-  z-index: 2;
-  display: none;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--pink);
-  border-radius: 50%;
-  background: var(--pink-light);
-  cursor: pointer;
-  transform: translateY(-50%);
-}
-.specialty-nav svg { width: 20px; height: 20px; stroke: var(--pink); }
-.specialty-nav[disabled] { opacity: 0.35; cursor: default; }
-.specialty-prev { left: -14px; }
-.specialty-next { right: -14px; }
-.specialty-slider.is-scrollable .specialty-nav { display: grid; }
 
 @media (max-width: 720px) {
   .specialty-card { flex-basis: 78%; min-width: 0; }
-  .specialty-prev { left: -6px; }
-  .specialty-next { right: -6px; }
 }
 
 /* ---------- CTA strip (home) ---------- */
