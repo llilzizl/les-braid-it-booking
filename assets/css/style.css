@@ -1977,7 +1977,16 @@ body[data-members-only]:not(.is-member-ready) main {
 .gel-link:hover, .gel-link:focus-visible { color: var(--pink-light); }
 
 .gel-page { max-width: 640px; margin: 0 auto; padding: 30px 6% 70px; text-align: center; overflow-x: clip; }
-.gel-glow { position: relative; width: min(300px, 78vw); margin: 10px auto 28px; isolation: isolate; }
+.gel-showcase { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0; margin: 10px 0 30px; }
+.gel-keys { position: relative; z-index: 2; text-align: left; }
+.gel-keys h2 { margin: 0 0 10px; font-family: 'Montserrat', sans-serif; font-style: normal; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--pink); }
+.gel-keys ul { list-style: none; margin: 0; padding: 0; }
+/* The line under each ingredient runs on into the tub, like a label pointing at the product */
+.gel-keys li { padding: 14px 0; }
+.gel-keys li:not(:last-child) { border-bottom: 1px solid rgba(232, 85, 143, 0.7); margin-right: -30%; padding-right: 30%; }
+.gel-keys h3 { margin: 0 0 4px; font-family: 'Montserrat', sans-serif; font-style: normal; font-size: clamp(14px, 3.8vw, 18px); font-weight: 700; color: var(--pink); }
+.gel-keys p { margin: 0; color: var(--pink-light); font-size: clamp(12px, 3.2vw, 14px); line-height: 1.45; }
+.gel-glow { position: relative; width: 100%; max-width: 300px; justify-self: center; isolation: isolate; }
 /* Soft pink halo and light rays behind the tub, like a glowing bulb */
 .gel-glow::before,
 .gel-glow::after { content: ''; position: absolute; left: 50%; top: 50%; z-index: -1; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); }
@@ -1988,15 +1997,10 @@ body[data-members-only]:not(.is-member-ready) main {
 
 .gel-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; list-style: none; margin: 0 0 22px; padding: 0; }
 .gel-tags li { padding: 5px 12px; border: 1px solid var(--pink); border-radius: 999px; background: var(--black); color: var(--pink-light); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
-.gel-lead { margin: 0 0 28px; color: var(--white); font-size: 16px; line-height: 1.6; }
 .gel-section { margin: 0 0 26px; padding: 22px 24px; background: var(--card); border-radius: 20px; text-align: left; }
 .gel-section h2 { margin: 0 0 10px; font-size: 22px; color: var(--pink); }
 .gel-section p { margin: 0 0 12px; color: var(--grey); font-size: 14px; line-height: 1.75; }
 .gel-section p:last-child { margin-bottom: 0; }
-.gel-ingredients { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
-.gel-ingredients li { padding: 14px 16px; background: var(--black); border: 1px solid var(--border); border-left: 3px solid var(--pink); border-radius: 14px; }
-.gel-ingredients h3 { margin: 0 0 4px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; font-style: normal; letter-spacing: 0.5px; }
-.gel-ingredients p { margin: 0; font-size: 13.5px; line-height: 1.6; }
 .gel-inci { font-size: 13px !important; }
 .gel-cta { display: inline-block; margin-top: 6px; text-decoration: none; }
 
