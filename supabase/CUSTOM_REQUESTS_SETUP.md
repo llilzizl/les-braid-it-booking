@@ -15,6 +15,12 @@ This adds the Custom Style Request workflow:
 5. Paying goes through the same Stripe deposit system as normal bookings. Once paid, the booking is confirmed,
    they get the usual confirmation email, and the request shows as **Booked and paid**.
 
+**Your admin area** groups requests by status (Needs you, Waiting for client, Waiting for deposit, Deposit paid, Declined),
+shows each person with their times and deposit status, opens the full details when you click a row, and has a
+**Calendar** view showing every request on its date.
+
+**Members** see all their requests on their dashboard, with your latest message and buttons to open the conversation or pay.
+
 If the deposit is not paid in time, the hold ends and the slot is free again. You can send a new offer from the admin page.
 
 Do these steps in order. You need the Stripe deposits (`STRIPE_SETUP.md`) and emails (`EMAIL_SETUP.md`) already working.
@@ -27,6 +33,11 @@ It is safe to run more than once. It creates:
 - a **private** storage bucket called `custom-requests` for the photos (8 MB max, images only).
   Only you can see the photos, through the admin page.
 - the rules for holding a slot while a deposit is waiting
+
+## 1b. Let members see their requests
+Run `supabase/10_member_custom_requests.sql` the same way. It lets a signed-in member **read** (never change)
+their own requests, the conversation and their photos on `member-dashboard.html`. A request counts as theirs if they
+sent it while logged in, or with the same email as their account.
 
 ## 2. Create the function
 Supabase > Edge Functions > Deploy a new function > **Via Editor**.

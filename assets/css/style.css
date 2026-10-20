@@ -1946,3 +1946,27 @@ body[data-members-only]:not(.is-member-ready) main {
 .request-reply { display: grid; gap: 4px; }
 .request-decline { justify-self: center; margin-top: 10px; background: none; border: 0; color: var(--grey); text-decoration: underline; font-family: 'Montserrat', sans-serif; font-size: 12px; cursor: pointer; }
 .request-decline:hover { color: var(--pink); }
+
+/* Member dashboard: your custom style requests */
+.member-card.my-requests { max-width: 640px; margin-top: 26px; display: grid; gap: 14px; }
+.my-requests h2 { margin: 0; font-size: 26px; }
+.my-requests-hint, .my-requests-empty, .my-request-wait { margin: 0; color: var(--grey); font-size: 13px; }
+.my-requests-new { justify-self: center; }
+#my-requests { display: grid; gap: 14px; }
+.my-request { display: grid; gap: 12px; padding: 16px; border: var(--outline-width, 2px) solid var(--pink); border-radius: 16px; background: var(--black); }
+.my-request-head { display: flex; gap: 14px; align-items: flex-start; }
+.my-request-photo { flex: none; width: 72px; height: 90px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
+.my-request-title { display: grid; gap: 6px; min-width: 0; }
+.my-request-desc { margin: 0; color: var(--white); font-size: 14px; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.my-request-badge { justify-self: start; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--grey); color: var(--grey); }
+.my-request-badge.is-action { background: var(--pink); border-color: var(--pink); color: var(--black); }
+.my-request-badge.is-booked { border-color: #6fcf97; color: #6fcf97; }
+.my-request-badge.is-waiting { border-color: var(--pink-light); color: var(--pink-light); }
+.my-request-details { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; font-size: 13px; }
+.my-request-details dt { color: var(--grey); }
+.my-request-details dd { margin: 0; color: var(--white); }
+.my-request-last { margin: 0; padding-left: 10px; border-left: 3px solid var(--pink); color: var(--grey); font-size: 13px; overflow-wrap: anywhere; }
+.my-request-last span { color: var(--pink-light); font-weight: 600; }
+.my-request-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.my-request-actions .btn-primary, .my-request-actions .btn-outline { padding: 10px 20px; font-size: 11px; }
+@media (max-width: 480px) { .my-request-details { grid-template-columns: 1fr; gap: 2px; } .my-request-details dd { margin-bottom: 6px; } }

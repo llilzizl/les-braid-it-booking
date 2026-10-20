@@ -130,6 +130,46 @@
     .time-pair select { min-width: 0; }
     .btn-plain { background: none; border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 12px 22px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .8rem; }
     .btn-plain:hover { border-color: var(--pink); }
+    /* Custom requests: toolbar, rows and calendar */
+    .req-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .req-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .req-filters button, .view-toggle button { background: var(--field); border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 7px 14px; font-size: .78rem; font-weight: 600; }
+    .req-filters button[aria-pressed=true], .view-toggle button[aria-pressed=true] { background: var(--pink); border-color: var(--pink); color: #160a10; }
+    .req-filters .n { margin-left: 6px; opacity: .75; font-variant-numeric: tabular-nums; }
+    .view-toggle { display: flex; gap: 4px; }
+    .req-item { border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
+    .req-item.needs { border-color: var(--pink); }
+    .req-row { width: 100%; display: grid; grid-template-columns: 1.3fr 1.4fr 1.2fr auto; gap: 12px; align-items: center; padding: 12px 16px; background: none; border: 0; color: var(--text); text-align: left; }
+    .req-row:hover { background: rgba(232, 85, 143, .06); }
+    .req-row .who b { display: block; }
+    .req-row small { display: block; color: var(--muted); font-size: .78rem; }
+    .req-row .chev { color: var(--muted); transition: transform .2s; }
+    .req-row[aria-expanded=true] .chev { transform: rotate(180deg); }
+    .dep-paid { color: var(--ok); } .dep-due { color: var(--warn); } .dep-late { color: var(--bad); }
+    .req-item > .req { border: 0; border-top: 1px solid var(--line); border-radius: 0; margin: 0; }
+    .cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .cal-head h3 { margin: 0; font-size: 1.1rem; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+    .cal-dow { font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-align: center; padding: 4px 0; }
+    .cal-day { min-height: 92px; border: 1px solid var(--line); border-radius: 10px; padding: 4px; display: grid; align-content: start; gap: 3px; min-width: 0; }
+    .cal-day.out { opacity: .35; }
+    .cal-day.today { border-color: var(--pink); }
+    .cal-num { font-size: .75rem; color: var(--muted); }
+    .cal-pill { display: block; width: 100%; border: 0; border-radius: 6px; padding: 3px 5px; font-size: .7rem; font-weight: 600; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #160a10; }
+    .cal-pill.needs { background: var(--pink); }
+    .cal-pill.client { background: #8c8085; }
+    .cal-pill.deposit { background: var(--warn); }
+    .cal-pill.paid { background: var(--ok); }
+    .cal-pill.late { background: var(--bad); }
+    .cal-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; font-size: .78rem; color: var(--muted); }
+    .cal-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+    @media (max-width: 700px) {
+      .req-row { grid-template-columns: 1fr auto; }
+      .req-row .when-col, .req-row .dep-col { grid-column: 1 / -1; }
+      .cal-day { min-height: 64px; }
+      .cal-pill { font-size: .6rem; padding: 2px 3px; text-overflow: clip; }
+      .cal-time { display: none; }           /* names only on small screens; tap to see the time */
+    }
     @media (max-width: 600px) { .req { grid-template-columns: 1fr; } .req-photo { width: 100%; max-width: 260px; } }
 
     @media (max-width: 600px) {
@@ -178,12 +218,16 @@
     <div id="app" hidden>
       <section class="card" id="requests-card">
         <h2>Custom style requests <span class="count-badge" id="request-new-count" hidden></span></h2>
-        <p class="hint">Requests from the booking page. You can accept as asked, suggest a different price, deposit, length or time, send a message only, or decline. Any offer holds the time for 48 hours and emails the client a link where they can pay the deposit (which books them in), reply to you, or decline.</p>
-        <div class="toolbar">
-          <span class="muted" id="request-count"></span>
-          <label><input type="checkbox" id="show-answered"> Show answered requests</label>
+        <p class="hint">Requests from the booking page. Click a request to see the photo, the conversation and your options: accept as asked, suggest changes, send a message, or decline. Any offer holds the time for 48 hours and emails the client a link to pay the deposit.</p>
+        <div class="req-toolbar">
+          <div class="req-filters" id="request-filters" role="group" aria-label="Show requests"></div>
+          <div class="view-toggle" role="group" aria-label="View">
+            <button type="button" data-view="list" aria-pressed="true">List</button>
+            <button type="button" data-view="calendar" aria-pressed="false">Calendar</button>
+          </div>
         </div>
         <div id="request-list"></div>
+        <div id="request-calendar" hidden></div>
         <p class="msg" id="request-msg" hidden></p>
       </section>
 
@@ -815,22 +859,200 @@
       return card;
     }
 
+    /* Groups for the filters and colours */
+    var GROUPS = [
+      { key: 'open', label: 'Open', test: function (r) { return CLOSED.indexOf(r.status) === -1; } },
+      { key: 'needs', label: 'Needs you', test: function (r) { return NEEDS_YOU.indexOf(requestState(r)) !== -1; } },
+      { key: 'client', label: 'Waiting for client', test: function (r) { return requestState(r) === 'owner_replied'; } },
+      { key: 'deposit', label: 'Waiting for deposit', test: function (r) { return requestState(r) === 'accepted' || (offerOpen(r) && r.status === 'client_replied'); } },
+      { key: 'paid', label: 'Deposit paid', test: function (r) { return r.status === 'booked'; } },
+      { key: 'closed', label: 'Declined', test: function (r) { return r.status === 'declined' || r.status === 'client_declined'; } },
+      { key: 'all', label: 'All', test: function () { return true; } }
+    ];
+    var filter = 'open';
+    var view = 'list';
+    var expanded = {};                       // request id -> open
+    var calMonth = (function () { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); })();
+
+    function colourOf(r) {
+      var st = requestState(r);
+      if (r.status === 'booked') return 'paid';
+      if (st === 'expired') return 'late';
+      if (NEEDS_YOU.indexOf(st) !== -1) return 'needs';
+      if (offerOpen(r)) return 'deposit';
+      return 'client';
+    }
+
+    // The date and time the request is about: your offer if there is one, otherwise what they asked for
+    function slotOf(r) {
+      var useOffer = r.final_date && r.status !== 'declined';
+      return { date: useOffer ? r.final_date : r.requested_date, time: shortTime(useOffer ? r.final_time : r.requested_time), isOffer: !!useOffer };
+    }
+
+    function depositInfo(r) {
+      if (r.status === 'booked') return { cls: 'dep-paid', text: 'Deposit ' + money0(r.deposit_amount) + ' paid' };
+      if (offerOpen(r)) return { cls: 'dep-due', text: money0(r.deposit_amount) + ' due by ' + shortDate(r.hold_until) };
+      if (requestState(r) === 'expired') return { cls: 'dep-late', text: 'Not paid in time' };
+      if (r.status === 'declined' || r.status === 'client_declined') return { cls: '', text: 'No deposit' };
+      return { cls: '', text: 'No offer sent yet' };
+    }
+
+    function requestRow(r) {
+      var item = make('div', 'req-item' + (colourOf(r) === 'needs' ? ' needs' : ''));
+      item.id = 'req-' + r.id;
+      var row = make('button', 'req-row');
+      row.type = 'button';
+      row.setAttribute('aria-expanded', expanded[r.id] ? 'true' : 'false');
+
+      var who = make('span', 'who');
+      who.appendChild(make('b', null, r.name));
+      who.appendChild(make('small', null, r.phone + ' · ' + r.email));
+      row.appendChild(who);
+
+      var slot = slotOf(r);
+      var when = make('span', 'when-col', formatDate(slot.date) + ', ' + slot.time);
+      when.appendChild(make('small', null, (slot.isOffer ? 'Your offer · ' + lengthWords(r.final_duration) + ' · ' + money0(r.final_price)
+        : 'Asked for · ' + lengthWords(r.duration_minutes) + (r.suggested_price != null ? ' · ' + money0(r.suggested_price) : ''))));
+      row.appendChild(when);
+
+      var dep = depositInfo(r);
+      row.appendChild(make('span', 'dep-col ' + dep.cls, dep.text));
+
+      var right = make('span', null);
+      var st = requestState(r);
+      right.appendChild(make('span', 'badge ' + st, REQUEST_LABELS[st] || st));
+      right.appendChild(make('span', 'chev', ' ▾'));
+      row.appendChild(right);
+      item.appendChild(row);
+
+      if (expanded[r.id]) item.appendChild(requestCard(r));
+      row.addEventListener('click', function () {
+        expanded[r.id] = !expanded[r.id];
+        var fresh = requestRow(r);
+        item.replaceWith(fresh);
+        fresh.querySelector('.req-row').focus();
+      });
+      return item;
+    }
+
+    function renderFilters() {
+      var box = $('request-filters');
+      box.textContent = '';
+      GROUPS.forEach(function (g) {
+        var n = requests.filter(g.test).length;
+        if (!n && g.key !== 'open' && g.key !== filter) return;   // hide empty groups
+        var b = make('button', null, g.label);
+        b.type = 'button';
+        b.appendChild(make('span', 'n', String(n)));
+        b.setAttribute('aria-pressed', g.key === filter ? 'true' : 'false');
+        b.addEventListener('click', function () { filter = g.key; renderRequests(); });
+        box.appendChild(b);
+      });
+    }
+
+    function renderList() {
+      var list = $('request-list');
+      list.textContent = '';
+      var group = GROUPS.filter(function (g) { return g.key === filter; })[0] || GROUPS[0];
+      var shown = requests.filter(group.test);
+      if (!shown.length) { list.appendChild(make('p', 'muted', filter === 'open' ? 'No open requests right now.' : 'Nothing here.')); return; }
+      shown.slice().sort(function (a, b) {
+        var na = colourOf(a) === 'needs', nb = colourOf(b) === 'needs';
+        if (na !== nb) return na ? -1 : 1;
+        return String(slotOf(a).date + slotOf(a).time).localeCompare(slotOf(b).date + slotOf(b).time);
+      }).forEach(function (r) { list.appendChild(requestRow(r)); });
+    }
+
+    function openRequest(id) {
+      var r = requests.filter(function (x) { return x.id === id; })[0];
+      if (!r) return;
+      expanded[id] = true;
+      if (!GROUPS.filter(function (g) { return g.key === filter; })[0].test(r)) filter = 'all';
+      setView('list');
+      var node = document.getElementById('req-' + id);
+      if (node) { node.scrollIntoView({ behavior: 'smooth', block: 'start' }); node.querySelector('.req-row').focus({ preventScroll: true }); }
+    }
+
+    function renderCalendar() {
+      var box = $('request-calendar');
+      box.textContent = '';
+      var head = make('div', 'cal-head');
+      var prev = make('button', 'btn-ghost', '‹ Previous');
+      prev.type = 'button';
+      var next = make('button', 'btn-ghost', 'Next ›');
+      next.type = 'button';
+      head.appendChild(prev);
+      head.appendChild(make('h3', null, calMonth.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })));
+      head.appendChild(next);
+      prev.addEventListener('click', function () { calMonth.setMonth(calMonth.getMonth() - 1); renderCalendar(); });
+      next.addEventListener('click', function () { calMonth.setMonth(calMonth.getMonth() + 1); renderCalendar(); });
+      box.appendChild(head);
+
+      var byDay = {};
+      requests.forEach(function (r) {
+        if (r.status === 'declined' || r.status === 'client_declined') return;
+        var slot = slotOf(r);
+        (byDay[slot.date] = byDay[slot.date] || []).push({ r: r, time: slot.time });
+      });
+
+      var grid = make('div', 'cal-grid');
+      ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach(function (d) { grid.appendChild(make('div', 'cal-dow', d)); });
+      var first = new Date(calMonth.getFullYear(), calMonth.getMonth(), 1);
+      var start = new Date(first);
+      start.setDate(1 - ((first.getDay() + 6) % 7));                     // back to Monday
+      var today = todayKey();
+      for (var i = 0; i < 42; i++) {
+        var d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+        if (i >= 35 && d.getMonth() !== calMonth.getMonth()) break;      // skip an empty last row
+        var key = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+        var cell = make('div', 'cal-day' + (d.getMonth() !== calMonth.getMonth() ? ' out' : '') + (key === today ? ' today' : ''));
+        cell.appendChild(make('span', 'cal-num', String(d.getDate())));
+        (byDay[key] || []).sort(function (a, b) { return a.time.localeCompare(b.time); }).forEach(function (x) {
+          var pill = make('button', 'cal-pill ' + colourOf(x.r));
+          pill.appendChild(make('span', 'cal-time', x.time + ' '));
+          pill.appendChild(document.createTextNode(x.r.name.split(' ')[0]));
+          pill.type = 'button';
+          pill.title = x.r.name + ', ' + x.time + ': ' + (REQUEST_LABELS[requestState(x.r)] || '');
+          pill.addEventListener('click', function () { openRequest(x.r.id); });
+          cell.appendChild(pill);
+        });
+        grid.appendChild(cell);
+      }
+      box.appendChild(grid);
+
+      var legend = make('div', 'cal-legend');
+      [['needs', 'Needs you'], ['client', 'Waiting for client'], ['deposit', 'Waiting for deposit'], ['paid', 'Deposit paid'], ['late', 'Deposit not paid in time']].forEach(function (l) {
+        var item = make('span', null);
+        var dot = make('i', 'cal-pill ' + l[0]);
+        item.appendChild(dot);
+        item.appendChild(document.createTextNode(l[1]));
+        legend.appendChild(item);
+      });
+      box.appendChild(legend);
+      box.appendChild(make('p', 'muted', 'Each request shows on your offered time if you have sent one, otherwise on the time the client asked for. Click one to open it.'));
+    }
+
+    function setView(v) {
+      view = v;
+      Array.prototype.forEach.call(document.querySelectorAll('.view-toggle button'), function (b) {
+        b.setAttribute('aria-pressed', b.getAttribute('data-view') === v ? 'true' : 'false');
+      });
+      renderRequests();
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('.view-toggle button'), function (b) {
+      b.addEventListener('click', function () { setView(b.getAttribute('data-view')); });
+    });
+
     function renderRequests() {
-      var showAll = $('show-answered').checked;
-      var open = requests.filter(function (r) { return CLOSED.indexOf(r.status) === -1; });
-      var shown = showAll ? requests : open;
       var waiting = requests.filter(function (r) { return NEEDS_YOU.indexOf(requestState(r)) !== -1; }).length;
       var badge = $('request-new-count');
       badge.textContent = waiting + ' need' + (waiting === 1 ? 's' : '') + ' you';
       badge.hidden = !waiting;
-      $('request-count').textContent = shown.length + (showAll ? ' request' : ' open request') + (shown.length === 1 ? '' : 's');
-      var list = $('request-list');
-      list.textContent = '';
-      if (!shown.length) { list.appendChild(make('p', 'muted', showAll ? 'No custom requests yet.' : 'No open requests. Tick "Show answered requests" to see older ones.')); return; }
-      // the ones waiting for you first
-      shown.slice().sort(function (a, b) {
-        return (NEEDS_YOU.indexOf(requestState(a)) === -1) - (NEEDS_YOU.indexOf(requestState(b)) === -1);
-      }).forEach(function (r) { list.appendChild(requestCard(r)); });
+      renderFilters();
+      $('request-filters').hidden = view === 'calendar';
+      $('request-list').hidden = view !== 'list';
+      $('request-calendar').hidden = view !== 'calendar';
+      if (view === 'list') renderList(); else renderCalendar();
     }
 
     function loadRequests() {
@@ -851,7 +1073,6 @@
         });
       });
     }
-    $('show-answered').addEventListener('change', renderRequests);
 
     /* ---------------- Insights and clients ---------------- */
     var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

@@ -354,6 +354,12 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   updatePriceHint();
 
+  // Coming from the member dashboard ("Send a new custom request"): open the form straight away
+  if (window.location.hash === '#custom-request') {
+    var opener = document.querySelector('.open-custom-modal');
+    if (opener) setTimeout(function () { opener.click(); }, 300);
+  }
+
   /* ---------- 5. Send ---------- */
   form.addEventListener('submit', function (e) {
     e.preventDefault();

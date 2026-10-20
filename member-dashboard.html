@@ -30,7 +30,14 @@
     <section class="member-intro">
       <p class="hero-eyebrow">Les Braid It Members</p>
       <h1>Hi, <span data-member-name>there</span></h1>
-      <p>You&rsquo;re logged in. Your dashboard, bookings and loyalty card are coming soon.</p>
+      <p>You&rsquo;re logged in. Your bookings history and loyalty card are coming soon.</p>
+    </section>
+
+    <section class="member-card my-requests" aria-labelledby="my-requests-title">
+      <h2 id="my-requests-title">Your custom style requests</h2>
+      <p class="my-requests-hint">Requests you&rsquo;ve sent for styles that aren&rsquo;t on the booking page, my replies, and any deposits to pay.</p>
+      <div id="my-requests" aria-live="polite"><p class="my-requests-empty">Loading your requests&hellip;</p></div>
+      <button type="button" class="link-btn my-requests-new" data-new-request>Send a new custom request</button>
     </section>
 
     <section class="member-card member-center">
@@ -46,5 +53,6 @@
   <script src="assets/js/nav-auth.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/member.js"></script>
+  <script src="assets/js/member-requests.js"></script>
 </body>
 </html>
