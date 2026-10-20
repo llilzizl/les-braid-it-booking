@@ -90,6 +90,48 @@
     .search { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--field); color: var(--text); font: inherit; font-size: 16px; margin: 6px 0 4px; }
     @media (max-width: 600px) { .bars li { grid-template-columns: 1fr 60px; } .bars .track { grid-column: 1 / -1; grid-row: 2; } .bars .lbl { white-space: normal; } }
 
+    /* Custom style requests */
+    .count-badge { display: inline-block; vertical-align: middle; margin-left: 8px; font-family: 'Montserrat', sans-serif; font-style: normal; font-size: .75rem; font-weight: 700; background: var(--pink); color: #160a10; border-radius: 999px; padding: 2px 10px; }
+    .req { border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 14px; display: grid; grid-template-columns: 140px 1fr; gap: 16px; }
+    .req.is-new { border-color: var(--pink); }
+    .req-photo { display: block; width: 140px; aspect-ratio: 3 / 4; border-radius: 10px; overflow: hidden; background: var(--field); border: 1px solid var(--line); }
+    .req-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .req-body { display: grid; gap: 4px; min-width: 0; }
+    .req-desc { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--field); border-radius: 10px; padding: 10px 12px; margin: 6px 0; }
+    .req a { color: var(--pink); text-decoration: none; }
+    .req-form { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0 12px; }
+    .req-form .wide { grid-column: 1 / -1; }
+    .req-form input[type=number], .req-form select, .req-form textarea {
+      width: 100%; margin-top: 6px; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line);
+      background: var(--field); color: var(--text); font: inherit; font-size: 16px; color-scheme: dark;
+    }
+    .req-form textarea { min-height: 70px; resize: vertical; }
+    .req-buttons { grid-column: 1 / -1; display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-decline { background: none; border: 1px solid var(--bad); color: var(--bad); border-radius: 999px; padding: 12px 22px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .8rem; }
+    .btn-decline:hover { background: rgba(239, 107, 107, .12); }
+    .badge.new { color: var(--pink); border-color: var(--pink); }
+    .badge.accepted { color: var(--warn); border-color: var(--warn); }
+    .badge.client_declined, .badge.declined { color: var(--muted); }
+    .badge.booked { color: var(--ok); border-color: var(--ok); }
+    .pay-link { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+    .pay-link code { font-size: .75rem; overflow-wrap: anywhere; color: var(--muted); }
+    .badge.client_replied { color: var(--pink); border-color: var(--pink); }
+    .badge.owner_replied { color: var(--muted); }
+    .thread { grid-column: 1 / -1; display: grid; gap: 8px; margin-top: 4px; }
+    .thread-title { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 6px 0 0; }
+    .bubble { max-width: 85%; padding: 10px 14px; border-radius: 14px; background: var(--field); border: 1px solid var(--line); }
+    .bubble.owner { justify-self: end; border-color: rgba(232, 85, 143, .55); background: rgba(232, 85, 143, .1); }
+    .bubble-meta { font-size: .72rem; color: var(--muted); margin-bottom: 2px; }
+    .bubble-body { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .bubble-offer { font-weight: 600; }
+    .time-pair { display: flex; gap: 8px; }
+    .req-form .length-field { grid-column: span 2; }
+    @media (max-width: 600px) { .req-form .length-field { grid-column: 1 / -1; } }
+    .time-pair select { min-width: 0; }
+    .btn-plain { background: none; border: 1px solid var(--line); color: var(--text); border-radius: 999px; padding: 12px 22px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .8rem; }
+    .btn-plain:hover { border-color: var(--pink); }
+    @media (max-width: 600px) { .req { grid-template-columns: 1fr; } .req-photo { width: 100%; max-width: 260px; } }
+
     @media (max-width: 600px) {
       .hours-row { grid-template-columns: 1fr 1fr; }
       .hours-row .switch { justify-self: end; }
@@ -134,6 +176,17 @@
     </section>
 
     <div id="app" hidden>
+      <section class="card" id="requests-card">
+        <h2>Custom style requests <span class="count-badge" id="request-new-count" hidden></span></h2>
+        <p class="hint">Requests from the booking page. You can accept as asked, suggest a different price, deposit, length or time, send a message only, or decline. Any offer holds the time for 48 hours and emails the client a link where they can pay the deposit (which books them in), reply to you, or decline.</p>
+        <div class="toolbar">
+          <span class="muted" id="request-count"></span>
+          <label><input type="checkbox" id="show-answered"> Show answered requests</label>
+        </div>
+        <div id="request-list"></div>
+        <p class="msg" id="request-msg" hidden></p>
+      </section>
+
       <section class="card">
         <h2>Working hours</h2>
         <p class="hint">Clients can only book on open days, between these times. A style must finish before closing time. Changing hours does not move bookings that already exist.</p>
@@ -297,6 +350,7 @@
     });
 
     function loadAll() {
+      loadRequests();
       loadHours();
       loadBookings().then(loadBlocked);   // bookings first, so the block warning can count them
       loadInsights();
@@ -375,6 +429,7 @@
     function isActive(b) {
       if (b.status === 'confirmed') return true;
       if (b.status !== 'pending') return false;
+      if (b.hold_until && new Date(b.hold_until).getTime() > Date.now()) return true;   // accepted custom request
       return Date.now() - new Date(parseDbTime(b.created_at)).getTime() <= PENDING_HOLD_MINUTES * 60000;
     }
 
@@ -430,6 +485,9 @@
     /* ---------------- Upcoming bookings ---------------- */
     function statusInfo(b) {
       if (b.status === 'pending') {
+        if (b.hold_until && new Date(b.hold_until).getTime() > Date.now()) {
+          return { cls: 'pending', label: 'Held until ' + new Date(b.hold_until).toLocaleString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) };
+        }
         return isActive(b) ? { cls: 'pending', label: 'Awaiting deposit' } : { cls: 'expired', label: 'Pending, expired' };
       }
       var labels = { confirmed: 'Confirmed', completed: 'Completed', cancelled: 'Cancelled' };
@@ -492,7 +550,7 @@
 
     function loadBookings() {
       return db.from('bookings')
-        .select('id, name, email, phone, service_type, addons, booking_date, booking_time, status, created_at, duration_minutes, deposit_amount, payment_status, price, source')
+        .select('*')
         .gte('booking_date', todayKey())
         .order('booking_date', { ascending: true })
         .order('booking_time', { ascending: true })
@@ -504,6 +562,296 @@
         });
     }
 
+
+    /* ---------------- Custom style requests ---------------- */
+    var requests = [];
+    var threads = {};            // request id -> messages, oldest first
+    var RATE_HIGH = 20;          // £ an hour, used to suggest a price when the client left it empty
+    var DEFAULT_DEPOSIT = 30;    // starting deposit you can change on each request
+    var CLOSED = ['declined', 'client_declined', 'booked'];
+    var NEEDS_YOU = ['new', 'client_replied', 'expired'];
+    var REQUEST_LABELS = {
+      'new': 'New', client_replied: 'Client replied', owner_replied: 'Waiting for client',
+      accepted: 'Offer sent, waiting for deposit', expired: 'Deposit not paid in time',
+      declined: 'You declined', client_declined: 'Client declined', booked: 'Booked and paid'
+    };
+
+    function lengthWords(mins) {
+      var h = Math.floor(mins / 60), m = mins % 60;
+      return (h ? h + ' hr' + (h === 1 ? '' : 's') : '') + (m ? (h ? ' ' : '') + m + ' mins' : '');
+    }
+    function money0(n) { return '£' + Number(n); }
+    function shortDate(d) { return new Date(d).toLocaleString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }); }
+
+    function requestState(r) {
+      if (r.status === 'accepted' && r.hold_until && new Date(r.hold_until).getTime() <= Date.now()) return 'expired';
+      return r.status;
+    }
+    function offerOpen(r) { return r.final_price != null && r.hold_until && new Date(r.hold_until).getTime() > Date.now() && CLOSED.indexOf(r.status) === -1; }
+    function siteBase() { return location.href.replace(/[^/]*([?#].*)?$/, ''); }
+
+    function respond(payload) {
+      return db.auth.getSession().then(function (res) {
+        var session = res.data && res.data.session;
+        if (!session) throw new Error('Please sign in again.');
+        return fetch(cfg.url + '/functions/v1/custom-requests', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', apikey: cfg.anonKey, Authorization: 'Bearer ' + session.access_token },
+          body: JSON.stringify(Object.assign({ action: 'respond' }, payload))
+        });
+      }).then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (body) {
+          if (!res.ok) throw new Error(body.error || 'Something went wrong. Please try again.');
+          return body;
+        });
+      });
+    }
+
+    function labelled(text, control, cls) {
+      var wrap = make('label', 'field' + (cls ? ' ' + cls : ''), text);
+      wrap.appendChild(control);
+      return wrap;
+    }
+    function input(type, value, attrs) {
+      var el = document.createElement(type === 'textarea' ? 'textarea' : 'input');
+      if (type !== 'textarea') el.type = type;
+      if (value != null) el.value = value;
+      Object.keys(attrs || {}).forEach(function (k) { el.setAttribute(k, attrs[k]); });
+      return el;
+    }
+    function select(values, chosen, label) {
+      var el = document.createElement('select');
+      values.forEach(function (v) {
+        var o = make('option', null, label(v));
+        o.value = v;
+        if (v === chosen) o.selected = true;
+        el.appendChild(o);
+      });
+      return el;
+    }
+
+    function offerText(o) {
+      return money0(o.price) + ', deposit ' + money0(o.deposit) + ', ' + lengthWords(o.duration) + ', ' + formatDate(o.date) + ' at ' + String(o.time).slice(0, 5);
+    }
+
+    // The conversation, oldest first
+    function threadView(r) {
+      var box = make('div', 'thread');
+      var msgs = threads[r.id] || [];
+      if (!msgs.length) return box;
+      box.appendChild(make('p', 'thread-title', 'Conversation'));
+      msgs.forEach(function (m) {
+        var b = make('div', 'bubble ' + m.sender);
+        var who = m.sender === 'owner' ? 'You' : r.name.split(' ')[0];
+        var what = m.kind === 'offer' ? (m.offer && m.offer.changed ? ' suggested changes' : ' accepted') : m.kind === 'decline' ? ' declined' : '';
+        b.appendChild(make('div', 'bubble-meta', who + what + ' · ' + shortDate(m.created_at)));
+        if (m.kind === 'offer' && m.offer) b.appendChild(make('div', 'bubble-offer', offerText(m.offer)));
+        if (m.body) b.appendChild(make('div', 'bubble-body', m.body));
+        box.appendChild(b);
+      });
+      return box;
+    }
+
+    // Your answer: accept as asked, suggest changes, message only, or decline
+    function answerForm(r) {
+      var form = make('div', 'req-form');
+      var hours = r.duration_minutes / 60;
+      var base = offerOpen(r) || requestState(r) === 'expired';   // start from your last offer if there is one
+      var startPrice = base && r.final_price != null ? Number(r.final_price)
+        : r.suggested_price != null ? Number(r.suggested_price) : Math.round(hours * RATE_HIGH);
+      var startDeposit = base && r.deposit_amount != null ? Number(r.deposit_amount) : Math.min(DEFAULT_DEPOSIT, startPrice);
+      var startMins = base && r.final_duration ? r.final_duration : r.duration_minutes;
+
+      var price = input('number', startPrice, { min: '1', step: '1', inputmode: 'numeric' });
+      var deposit = input('number', startDeposit, { min: '1', step: '1', inputmode: 'numeric' });
+      var hourVals = []; for (var h = 0; h <= 12; h++) hourVals.push(h);
+      var hrs = select(hourVals, Math.floor(startMins / 60), function (v) { return v + ' hr'; });
+      var mins = select([0, 15, 30, 45], startMins % 60, function (v) { return (v < 10 ? '0' : '') + v + ' min'; });
+      var pair = make('div', 'time-pair');
+      pair.appendChild(hrs);
+      pair.appendChild(mins);
+      var date = input('date', base && r.final_date ? r.final_date : r.requested_date);
+      var time = input('time', shortTime(base && r.final_time ? r.final_time : r.requested_time), { step: '900' });
+      var note = input('textarea', '', { maxlength: '2000', placeholder: 'Write a comment or question for ' + r.name.split(' ')[0] + ' (optional for offers)' });
+
+      form.appendChild(labelled('Price (£)', price));
+      form.appendChild(labelled('Deposit (£)', deposit));
+      form.appendChild(labelled('Length', pair, 'length-field'));
+      form.appendChild(labelled('Date', date));
+      form.appendChild(labelled('Start time', time));
+      form.appendChild(labelled('Comment', note, 'wide'));
+
+      var buttons = make('div', 'req-buttons');
+      var offer = make('button', 'btn');
+      offer.type = 'button';
+      var message = make('button', 'btn-plain', 'Send message only');
+      message.type = 'button';
+      var decline = make('button', 'btn-decline', 'Decline');
+      decline.type = 'button';
+      buttons.appendChild(offer);
+      buttons.appendChild(message);
+      buttons.appendChild(decline);
+      form.appendChild(buttons);
+      var msg = make('p', 'msg wide');
+      msg.hidden = true;
+      form.appendChild(msg);
+
+      function duration() { return Number(hrs.value) * 60 + Number(mins.value); }
+      function changed() {
+        return duration() !== r.duration_minutes || date.value !== r.requested_date ||
+          time.value !== shortTime(r.requested_time) ||
+          (r.suggested_price != null && Number(price.value) !== Number(r.suggested_price));
+      }
+      // The main button says what will happen
+      function label() {
+        offer.textContent = offerOpen(r) ? 'Send updated offer' : changed() ? 'Send suggested changes' : 'Accept as asked';
+      }
+      [price, hrs, mins, date, time].forEach(function (el) { el.addEventListener('input', label); el.addEventListener('change', label); });
+      label();
+
+      function say(text, type) { msg.textContent = text; msg.className = 'msg wide ' + type; msg.hidden = false; }
+      function busy(on) { offer.disabled = message.disabled = decline.disabled = on; }
+      function done(text, ok) { say(text, ok ? 'ok' : 'info'); setTimeout(function () { loadRequests(); loadBookings(); }, ok ? 1500 : 0); }
+
+      offer.addEventListener('click', function () {
+        var p = Number(price.value), d = Number(deposit.value), mins30 = duration();
+        if (!(p > 0)) return say('Enter the price.', 'error');
+        if (!(d > 0) || d > p) return say('The deposit must be more than £0 and no more than the price.', 'error');
+        if (mins30 < 30) return say('The length must be at least 30 minutes.', 'error');
+        if (!date.value || !time.value) return say('Choose the date and start time.', 'error');
+        busy(true);
+        say('Sending…', 'info');
+        respond({
+          request_id: r.id, decision: 'offer', price: p, deposit: d, duration: mins30,
+          date: date.value, time: time.value, message: note.value.trim(),
+          requested: { date: r.requested_date, time: shortTime(r.requested_time), duration: r.duration_minutes, price: r.suggested_price }
+        }).then(function (out) {
+          done(out.emailed
+            ? (out.changed ? 'Suggested changes sent. ' : 'Accepted. ') + r.name + ' has been emailed a link to pay the £' + d + ' deposit.'
+            : 'Saved, but the email could not be sent. Send this link to ' + r.email + ' yourself: ' + out.link, out.emailed);
+        }).catch(function (err) { busy(false); say(err.message, 'error'); });
+      });
+
+      message.addEventListener('click', function () {
+        if (!note.value.trim()) return say('Write your comment or question first.', 'error');
+        busy(true);
+        say('Sending…', 'info');
+        respond({ request_id: r.id, decision: 'message', message: note.value.trim() }).then(function (out) {
+          done(out.emailed ? 'Message sent to ' + r.name + '.' : 'Saved, but the email could not be sent. Send this link to ' + r.email + ' yourself: ' + out.link, out.emailed);
+        }).catch(function (err) { busy(false); say(err.message, 'error'); });
+      });
+
+      decline.addEventListener('click', function () {
+        if (!window.confirm('Decline this request? ' + r.name + ' will be emailed' + (note.value.trim() ? ' your comment.' : '.'))) return;
+        busy(true);
+        say('Sending…', 'info');
+        respond({ request_id: r.id, decision: 'decline', message: note.value.trim() }).then(function (out) {
+          done('Declined.' + (out.emailed ? ' ' + r.name + ' has been emailed.' : ' The email could not be sent, so let them know yourself.'), out.emailed);
+        }).catch(function (err) { busy(false); say(err.message, 'error'); });
+      });
+      return form;
+    }
+
+    function requestCard(r) {
+      var state = requestState(r);
+      var card = make('div', 'req' + (NEEDS_YOU.indexOf(state) !== -1 ? ' is-new' : ''));
+
+      var photo = make('a', 'req-photo');
+      photo.target = '_blank';
+      photo.rel = 'noopener';
+      photo.setAttribute('aria-label', 'Open the photo full size');
+      if (r.photo_path) {
+        var img = document.createElement('img');
+        img.alt = 'Photo of the style ' + r.name + ' wants';
+        photo.appendChild(img);
+        db.storage.from('custom-requests').createSignedUrl(r.photo_path, 3600).then(function (res) {
+          if (res.data && res.data.signedUrl) { img.src = res.data.signedUrl; photo.href = res.data.signedUrl; }
+        });
+      } else {
+        photo.appendChild(make('span', 'muted', 'No photo'));
+      }
+      card.appendChild(photo);
+
+      var body = make('div', 'req-body');
+      var head = make('div', 'booking-head');
+      head.appendChild(make('span', 'when', r.name));
+      head.appendChild(make('span', 'badge ' + state, REQUEST_LABELS[state] || state));
+      body.appendChild(head);
+      body.appendChild(make('div', 'muted', 'Sent ' + shortDate(r.created_at)));
+      body.appendChild(make('div', null, 'Wants: ' + formatDate(r.requested_date) + ', ' + shortTime(r.requested_time)));
+      body.appendChild(make('div', null, 'Thinks it takes: ' + lengthWords(r.duration_minutes) + '  ·  Suggested price: ' + (r.suggested_price != null ? money0(r.suggested_price) : 'not given')));
+      body.appendChild(make('div', 'req-desc', r.description));
+
+      var who = make('div', 'muted');
+      var tel = make('a', null, r.phone);
+      tel.href = 'tel:' + String(r.phone).replace(/[^\d+]/g, '');
+      var mail = make('a', null, r.email);
+      mail.href = 'mailto:' + r.email;
+      who.appendChild(tel);
+      who.appendChild(document.createTextNode('  '));
+      who.appendChild(mail);
+      body.appendChild(who);
+
+      if (offerOpen(r)) {
+        body.appendChild(make('div', null, 'Current offer: ' + offerText({ price: r.final_price, deposit: r.deposit_amount, duration: r.final_duration, date: r.final_date, time: r.final_time })));
+        body.appendChild(make('div', 'muted', 'Time held until ' + shortDate(r.hold_until)));
+      }
+      if (r.pay_token && CLOSED.indexOf(r.status) === -1) {
+        var link = siteBase() + 'my-request.html?token=' + r.pay_token;
+        var row = make('div', 'pay-link');
+        var copy = make('button', 'btn-ghost', 'Copy client’s link');
+        copy.type = 'button';
+        copy.addEventListener('click', function () {
+          (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(function () {
+            copy.textContent = 'Copied';
+          }).catch(function () { window.prompt('Copy this link:', link); });
+        });
+        row.appendChild(copy);
+        body.appendChild(row);
+      }
+      card.appendChild(body);
+      card.appendChild(threadView(r));
+      if (CLOSED.indexOf(r.status) === -1) card.appendChild(answerForm(r));
+      return card;
+    }
+
+    function renderRequests() {
+      var showAll = $('show-answered').checked;
+      var open = requests.filter(function (r) { return CLOSED.indexOf(r.status) === -1; });
+      var shown = showAll ? requests : open;
+      var waiting = requests.filter(function (r) { return NEEDS_YOU.indexOf(requestState(r)) !== -1; }).length;
+      var badge = $('request-new-count');
+      badge.textContent = waiting + ' need' + (waiting === 1 ? 's' : '') + ' you';
+      badge.hidden = !waiting;
+      $('request-count').textContent = shown.length + (showAll ? ' request' : ' open request') + (shown.length === 1 ? '' : 's');
+      var list = $('request-list');
+      list.textContent = '';
+      if (!shown.length) { list.appendChild(make('p', 'muted', showAll ? 'No custom requests yet.' : 'No open requests. Tick "Show answered requests" to see older ones.')); return; }
+      // the ones waiting for you first
+      shown.slice().sort(function (a, b) {
+        return (NEEDS_YOU.indexOf(requestState(a)) === -1) - (NEEDS_YOU.indexOf(requestState(b)) === -1);
+      }).forEach(function (r) { list.appendChild(requestCard(r)); });
+    }
+
+    function loadRequests() {
+      return db.from('custom_requests').select('*').order('created_at', { ascending: false }).limit(200).then(function (res) {
+        if (res.error) {
+          var missing = /custom_requests/.test(res.error.message || '');
+          setMessage('request-msg', missing ? 'Custom requests are not set up yet. Run supabase/09_custom_requests.sql in the Supabase SQL Editor.' : 'Could not load requests: ' + res.error.message, missing ? 'info' : 'error');
+          return;
+        }
+        setMessage('request-msg', '');
+        requests = res.data || [];
+        var ids = requests.map(function (r) { return r.id; });
+        if (!ids.length) { threads = {}; renderRequests(); return; }
+        return db.from('custom_request_messages').select('*').in('request_id', ids).order('created_at', { ascending: true }).then(function (m) {
+          threads = {};
+          (m.data || []).forEach(function (row) { (threads[row.request_id] = threads[row.request_id] || []).push(row); });
+          renderRequests();
+        });
+      });
+    }
+    $('show-answered').addEventListener('change', renderRequests);
 
     /* ---------------- Insights and clients ---------------- */
     var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
