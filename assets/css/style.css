@@ -2044,3 +2044,14 @@ body[data-members-only]:not(.is-member-ready) main {
 .service-related ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
 .service-related a { display: inline-block; padding: 8px 14px; border: 1px solid var(--pink); border-radius: 999px; background: var(--black); color: var(--pink-light); font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 600; text-decoration: none; }
 .service-related a:hover, .service-related a:focus-visible { background: var(--pink); color: var(--black); }
+
+/* ---------- Policies: hair length guide ---------- */
+.hair-length { margin-top: 0; }
+.length-guide { margin: 0 0 24px; }
+.length-guide a { display: block; border: 1px solid var(--pink); border-radius: 16px; overflow: hidden; }
+.length-guide img { display: block; width: 100%; height: auto; }
+.length-guide figcaption { margin-top: 8px; color: var(--grey); font-size: 12.5px; text-align: center; }
+.length-notes { margin: 0; padding-left: 22px; }
+.length-notes li { margin-bottom: 12px; color: var(--grey); font-size: 14px; line-height: 1.75; }
+.length-notes strong { color: var(--white); }
+.length-notes a { color: var(--pink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
