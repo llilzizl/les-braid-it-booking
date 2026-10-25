@@ -24,6 +24,7 @@ create policy "admins manage addons" on public.service_addons for all
 
 insert into public.service_addons (service, label, price) values
   ('Extra Small Layered Box Braid', 'Waist/Hip length', 40),
+  ('Extra Small Layered Box Braid', 'Ombre', 15),
   ('Small Layered Knotless Braids', 'Waist/Hip length', 35),
   ('Smedium Layered Knotless Braids', 'Waist/Hip length', 30),
   ('The ''Perfect'' Sew In', '2 Part Sew In', 50),
