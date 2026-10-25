@@ -905,6 +905,39 @@ infoToggles.forEach(function (btn) {
     if (hashBtn) hashBtn.click();
   }
 
+  /* ---------------- Book buttons: show the full style name on one line ---------------- */
+  // Each button starts at its normal size and shrinks its own text just enough to fit.
+  var bookButtons = Array.prototype.slice.call(document.querySelectorAll('.service-book-now'));
+  var MIN_BOOK_TEXT = 9; // px: smallest size before we let the text wrap instead
+  function fitBookButtons() {
+    bookButtons.forEach(function (btn) {
+      btn.style.fontSize = '';
+      btn.classList.remove('is-wrapped');
+      if (!btn.offsetWidth) return; // hidden right now, checked again on resize
+      var cs = getComputedStyle(btn);
+      var space = btn.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      // Measure the text on one line in a hidden copy with the same font
+      var probe = document.createElement('span');
+      probe.textContent = btn.textContent;
+      probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;left:-9999px;top:0;' +
+        'font:' + cs.font + ';letter-spacing:' + cs.letterSpacing + ';text-transform:' + cs.textTransform;
+      document.body.appendChild(probe);
+      var textWidth = probe.getBoundingClientRect().width;
+      probe.remove();
+      var size = parseFloat(cs.fontSize);
+      if (textWidth <= space - 2) return;
+      var fitted = Math.floor(size * space / textWidth * 4) / 4 - 0.25; // a little room to spare
+      if (fitted >= MIN_BOOK_TEXT) btn.style.fontSize = fitted + 'px';
+      else btn.classList.add('is-wrapped');
+    });
+  }
+  if (bookButtons.length) {
+    fitBookButtons();
+    window.addEventListener('resize', fitBookButtons);
+    window.addEventListener('load', fitBookButtons);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBookButtons);
+  }
+
   /* ---------------- Mobile nav toggle ---------------- */
   var navToggle = document.querySelector('.nav-toggle');
   var mainNav = document.querySelector('.main-nav');
