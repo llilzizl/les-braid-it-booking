@@ -28,6 +28,7 @@ insert into public.service_addons (service, label, price) values
   ('Small Layered Knotless Braids', 'Waist/Hip length', 35),
   ('Small Layered Knotless Braids', 'Ombre', 15),
   ('Smedium Layered Knotless Braids', 'Waist/Hip length', 30),
+  ('Smedium Layered Knotless Braids', 'Ombre', 15),
   ('The ''Perfect'' Sew In', '2 Part Sew In', 50),
   ('The ''Perfect'' Sew In', 'Flip Over', 30),
   ('Patewo/Shuku and Base', 'French Curl (hair included)', 10),
