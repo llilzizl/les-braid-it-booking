@@ -213,6 +213,7 @@ infoToggles.forEach(function (btn) {
     'Small Layered Knotless Braids': { price: 150, hrs: '6 hrs', hairNote: 'Hair included in the price.', addons: [
       { label: 'Colour #1' }, { label: 'Colour #1B' }, { label: 'Colour #2' }, { label: 'Colour #4' },
       { label: 'Other colour (add description/reference to booking form)' },
+      { label: 'Ombre', extra: '+£15 · +30 mins' },
       { label: 'Waist/Hip length', extra: '+£35 · +1hr' }
     ] },
     'Smedium Layered Knotless Braids': { price: 130, hrs: '5 hrs', hairNote: 'Hair included in the price.', addons: [
