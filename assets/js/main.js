@@ -233,7 +233,7 @@ infoToggles.forEach(function (btn) {
     'Flip Over (Minimal leave out - Ivy Method)': { price: 120, hrs: '4 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
       { label: 'Layers' }, { label: 'Curl' }, { label: 'Define curls' }, { label: 'Crimp' }, { label: 'Straighten' }
     ] },
-    'Micro Braids w/Sew In': { price: 130, hrs: '6 hrs', hairNote: 'Braiding hair included in the price.', addons: [
+    'Micro Braids with Sew In': { price: 130, hrs: '6 hrs', hairNote: 'Braiding hair included in the price.', addons: [
       { label: 'Colour #1' }, { label: 'Colour #1B' }, { label: 'Colour #2' }, { label: 'Colour #4' },
       { label: 'Other colour (add description/reference to booking form)' }
     ] },

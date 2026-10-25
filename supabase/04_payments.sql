@@ -34,7 +34,7 @@ from (values
   ('The ''Perfect'' U Part Install', 90),
   ('The ''Perfect'' Sew In', 130),
   ('Flip Over (Minimal leave out - Ivy Method)', 120),
-  ('Micro Braids w/Sew In', 130),
+  ('Micro Braids with Sew In', 130),
   ('Fulani Sew In', 85),
   ('Cassie Sew In', 85),
   ('Patewo/Shuku and Base', 100),
