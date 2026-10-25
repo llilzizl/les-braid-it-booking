@@ -53,7 +53,7 @@ insert into public.services (name, deposit_amount, duration_minutes, buffer_minu
   ('Extra Small Layered Box Braid', 50, 450, 20, true),
   ('Small Knotless BOHO French Curl', 40, 420, 20, true),
   ('Small Layered Knotless Braids', 30, 360, 20, true),
-  ('Micro Braids w/Sew In', 30, 360, 20, true),
+  ('Micro Braids with Sew In', 30, 360, 20, true),
   ('Straight Pick & Drop Boho Braids', 30, 390, 20, true),
   ('Smedium Knotless BOHO French Curl', 30, 330, 15, true),
   ('Smedium Layered Knotless Braids', 30, 300, 15, true),
