@@ -272,8 +272,8 @@ infoToggles.forEach(function (btn) {
     'Shuku/Patewo (and Base)': { price: 30, hrs: '1.5 hrs', addons: [
       { label: 'No gel' }, { label: 'Marley hair (included)', extra: '+£5' }
     ] },
-    'Extra Small Layered Braids Takedown': { price: 55, hrs: '3 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
-    "The 'Perfect' Sew In Takedown": { price: 30, hrs: '2 hrs', hairNote: 'Wash & blow dry included.', addons: [] },
+    'Extra Small Layered Braids Takedown': { comingSoon: true, hairNote: 'Wash & blow dry included.', addons: [] },
+    "The 'Perfect' Sew In Takedown": { comingSoon: true, hairNote: 'Wash & blow dry included.', addons: [] },
     'Fulani Crochet': { price: 60, hrs: '2.25 hrs', addons: [] },
     "The 'Perfect' Sew In Classes": { comingSoon: true, hairNote: 'Hair not included — please bring your own. Equipment included.', addons: [
       { label: '2 Part Sew In' },
@@ -906,33 +906,75 @@ infoToggles.forEach(function (btn) {
   // Each button starts at its normal size and shrinks its own text just enough to fit.
   var bookButtons = Array.prototype.slice.call(document.querySelectorAll('.service-book-now'));
   var MIN_BOOK_TEXT = 9; // px: smallest size before we let the text wrap instead
-  function fitBookButtons() {
+  var measureCtx = document.createElement('canvas').getContext('2d');
+
+  // Put each button's words in a span, so we can notice when they change width (e.g. the web font arrives)
+  bookButtons.forEach(function (btn) {
+    if (btn.querySelector('.book-text')) return;
+    var span = document.createElement('span');
+    span.className = 'book-text';
+    while (btn.firstChild) span.appendChild(btn.firstChild);
+    btn.appendChild(span);
+  });
+
+  // Width of the words on one line at a given size, using whichever font has actually loaded
+  function wordsWidth(btn, size, spacing) {
+    var cs = getComputedStyle(btn);
+    var text = btn.textContent.trim();
+    if (cs.textTransform === 'uppercase') text = text.toUpperCase();
+    measureCtx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + size + 'px ' + cs.fontFamily;
+    return measureCtx.measureText(text).width + spacing * text.length;
+  }
+
+  function fitBookButton(btn) {
+    if (!btn.offsetWidth) return;
+    var cs = getComputedStyle(btn);
+    var space = btn.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 4;
+    var base = btn._baseSize;
+    var spacing = btn._baseSpacing;
+    var size = base, tight = false, wrapped = false;
+    if (wordsWidth(btn, base, spacing) > space) {
+      size = Math.floor(base * space / wordsWidth(btn, base, spacing) * 4) / 4;
+      if (size < MIN_BOOK_TEXT) {
+        // Take out the small gap between letters before making the text any smaller
+        tight = true;
+        size = Math.floor(base * space / wordsWidth(btn, base, 0) * 4) / 4;
+        if (size < MIN_BOOK_TEXT) { wrapped = true; size = base; }
+      }
+    }
+    // Only touch the page when something changes, so this can run as often as needed
+    var wantSize = size === base ? '' : size + 'px';
+    if (btn.style.fontSize !== wantSize) btn.style.fontSize = wantSize;
+    if (btn.classList.contains('is-tight') !== tight) btn.classList.toggle('is-tight', tight);
+    if (btn.classList.contains('is-wrapped') !== wrapped) btn.classList.toggle('is-wrapped', wrapped);
+  }
+
+  // The normal size depends on the screen width, so read it again from a clean start
+  function refitBookButtons() {
     bookButtons.forEach(function (btn) {
       btn.style.fontSize = '';
-      btn.classList.remove('is-wrapped');
-      if (!btn.offsetWidth) return; // hidden right now, checked again on resize
+      btn.classList.remove('is-wrapped', 'is-tight');
       var cs = getComputedStyle(btn);
-      var space = btn.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      // Measure the text on one line in a hidden copy with the same font
-      var probe = document.createElement('span');
-      probe.textContent = btn.textContent;
-      probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;left:-9999px;top:0;' +
-        'font:' + cs.font + ';letter-spacing:' + cs.letterSpacing + ';text-transform:' + cs.textTransform;
-      document.body.appendChild(probe);
-      var textWidth = probe.getBoundingClientRect().width;
-      probe.remove();
-      var size = parseFloat(cs.fontSize);
-      if (textWidth <= space - 2) return;
-      var fitted = Math.floor(size * space / textWidth * 4) / 4 - 0.25; // a little room to spare
-      if (fitted >= MIN_BOOK_TEXT) btn.style.fontSize = fitted + 'px';
-      else btn.classList.add('is-wrapped');
+      btn._baseSize = parseFloat(cs.fontSize);
+      btn._baseSpacing = parseFloat(cs.letterSpacing) || 0;
+      fitBookButton(btn);
     });
   }
+
   if (bookButtons.length) {
-    fitBookButtons();
-    window.addEventListener('resize', fitBookButtons);
-    window.addEventListener('load', fitBookButtons);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBookButtons);
+    refitBookButtons();
+    window.addEventListener('resize', refitBookButtons);
+    window.addEventListener('load', refitBookButtons);
+    if (document.fonts) {
+      if (document.fonts.ready) document.fonts.ready.then(refitBookButtons);
+      if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', refitBookButtons);
+    }
+    if (window.ResizeObserver) {
+      var textObserver = new ResizeObserver(function (entries) {
+        entries.forEach(function (entry) { fitBookButton(entry.target.parentNode); });
+      });
+      bookButtons.forEach(function (btn) { textObserver.observe(btn.querySelector('.book-text')); });
+    }
   }
 
   /* ---------------- Mobile nav toggle ---------------- */
