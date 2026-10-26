@@ -248,11 +248,6 @@ infoToggles.forEach(function (btn) {
       { label: 'Other colour (add description/reference to booking form)' },
       { label: 'French Curl (hair included)', extra: '+£10' }
     ] },
-    'Small Lemonade Braids': { price: 100, hrs: '4 hrs', hairNote: 'Hair included in the price.', addons: [
-      { label: 'Colour #1' }, { label: 'Colour #2' }, { label: 'Colour #1B' }, { label: 'Colour #4' },
-      { label: 'Other colour (add description/reference to booking form)' },
-      { label: '5–6 rows of braids in the back', extra: '+£10 · +20 mins' }
-    ] },
     'Straight Pick & Drop Boho Braids': { price: 140, hrs: '6.5 hrs', hairNote: 'Braiding hair included in the price.', addons: [
       { label: 'Layers' }
     ] },

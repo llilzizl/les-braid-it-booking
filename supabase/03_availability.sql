@@ -61,7 +61,7 @@ insert into public.services (name, deposit_amount, duration_minutes, buffer_minu
   ('''Cassie'' Small Knotless BOHO French Curl', 30, 300, 15, true),
   ('The ''Perfect'' U Part Install', 30, 240, 10, true),
   ('Patewo/Shuku and Base', 30, 240, 10, true),
-  ('Small Lemonade Braids', 30, 240, 10, true),
+  ('Small Lemonade Braids', 30, 240, 10, false),
   ('Flip Over (Minimal leave out - Ivy Method)', 30, 240, 10, true),
   ('Extra Small Layered Braids Takedown', 30, 180, 10, true),
   ('Fulani Sew In', 30, 180, 10, true),
