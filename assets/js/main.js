@@ -248,7 +248,7 @@ infoToggles.forEach(function (btn) {
       { label: 'Other colour (add description/reference to booking form)' },
       { label: 'French Curl (hair included)', extra: '+£10' }
     ] },
-    'Straight Pick & Drop Boho Braids': { price: 140, hrs: '6.5 hrs', hairNote: 'Braiding hair included in the price.', addons: [
+    'Straight Pick & Drop Boho Braids': { price: 140, hrs: '6.5 hrs', hairNote: 'Braiding hair included in the price. Bring straight or body wave bundles, or bulk hair (preferred).', addons: [
       { label: 'Layers' }
     ] },
     "'Cassie' Small Knotless BOHO French Curl": { price: 110, hrs: '5 hrs', hairNote: 'Hair not included — please bring your own.', addons: [
