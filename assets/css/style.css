@@ -2057,3 +2057,7 @@ body[data-members-only]:not(.is-member-ready) main {
 .length-notes li { margin-bottom: 12px; color: var(--grey); font-size: 14px; line-height: 1.75; }
 .length-notes strong { color: var(--white); }
 .length-notes a { color: var(--pink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Highlighted length that links to the hair length chart on the policies page */
+.service-features a.length-link { padding: 1px 6px; border-radius: 6px; background: rgba(232, 85, 143, 0.18); color: var(--pink-light); font-weight: 700; }
+.service-features a.length-link:hover, .service-features a.length-link:focus-visible { background: var(--pink); color: var(--black); }
