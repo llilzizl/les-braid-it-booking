@@ -998,6 +998,40 @@ infoToggles.forEach(function (btn) {
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPortfolioPhotos);
   }
 
+  /* ---------------- Policies banner: word fills the full width, edge to edge ---------------- */
+  var policiesBanner = document.querySelector('.policies-banner');
+  var policiesWord = policiesBanner && policiesBanner.querySelector('.policies-banner-text');
+  if (policiesWord) {
+    var bannerCtx = document.createElement('canvas').getContext('2d');
+    var fitPoliciesBanner = function () {
+      var cs = getComputedStyle(policiesWord);
+      var word = policiesWord.textContent;
+      var base = 100;
+      var spacing = -0.02 * base; // matches letter-spacing: -0.02em
+      bannerCtx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + base + 'px ' + cs.fontFamily;
+      var first = bannerCtx.measureText(word.charAt(0));
+      var last = bannerCtx.measureText(word.charAt(word.length - 1));
+      // Where the ink of the first and last letters actually starts and ends, not their spacing boxes
+      var inkLeft = -first.actualBoundingBoxLeft;
+      var lastStart = bannerCtx.measureText(word).width - last.width + spacing * (word.length - 1);
+      var inkRight = lastStart + last.actualBoundingBoxRight;
+      var inkWidth = inkRight - inkLeft;
+      if (!inkWidth || !isFinite(inkWidth)) return;
+      var width = policiesBanner.clientWidth;
+      var size = base * width / inkWidth * 1.004; // a hair wider, so no sliver of pink shows
+      policiesWord.style.fontSize = size + 'px';
+      policiesWord.style.marginLeft = (-inkLeft * size / base - (size * 0.002)) + 'px';
+      policiesBanner.classList.add('is-fitted');
+    };
+    fitPoliciesBanner();
+    window.addEventListener('resize', fitPoliciesBanner);
+    window.addEventListener('load', fitPoliciesBanner);
+    if (document.fonts) {
+      if (document.fonts.ready) document.fonts.ready.then(fitPoliciesBanner);
+      if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', fitPoliciesBanner);
+    }
+  }
+
   /* ---------------- Mobile nav toggle ---------------- */
   var navToggle = document.querySelector('.nav-toggle');
   var mainNav = document.querySelector('.main-nav');
