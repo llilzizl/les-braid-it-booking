@@ -814,7 +814,12 @@ infoToggles.forEach(function (btn) {
       if (!/^\S+@\S+\.\S+$/.test(email)) return showBookingStatus('Please enter a valid email address.');
       if (!phone) return showBookingStatus('Please enter your phone number.');
 
+      var consent = bookingForm.querySelector('input[name="consent"]:checked');
+      if (bookingForm.querySelector('input[name="consent"]') && !consent) return showBookingStatus('Please choose whether I can share photos or videos of your hair.');
+
       var addons = Array.prototype.slice.call(addonList.querySelectorAll('input:checked')).map(function (input) { return input.value; });
+      // Saved with the add-ons so it shows on the booking in admin and in the emails (it has no price)
+      if (consent) addons.push('Photo/video consent: ' + consent.value);
       var submitBtn = bookingForm.querySelector('[type="submit"]');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Please wait…';
