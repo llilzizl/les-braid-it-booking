@@ -2067,3 +2067,28 @@ body[data-members-only]:not(.is-member-ready) main {
 .length-notes li { margin-bottom: 12px; color: var(--grey); font-size: 14px; line-height: 1.75; }
 .length-notes strong { color: var(--white); }
 .length-notes a { color: var(--pink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Links in the policies that take people to the contact details */
+.policy-contact { color: var(--pink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.policy-contact:hover, .policy-contact:focus-visible { color: var(--pink-light); }
+
+/* ---------- Contact page: phone and email ---------- */
+.contact-details { max-width: 640px; margin: 0 auto 40px; padding: 24px 26px; background: var(--card); border: 1px solid var(--pink); border-radius: 20px; scroll-margin-top: 100px; }
+.contact-details h2 { margin: 0 0 14px; font-size: clamp(22px, 3vw, 28px); color: var(--pink); }
+.contact-details ul { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 10px; }
+.contact-details li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.contact-label { min-width: 84px; color: var(--grey); font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+.contact-details a { color: var(--pink); font-size: 16px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.contact-details a:hover, .contact-details a:focus-visible { color: var(--pink-light); }
+.contact-details p { margin: 0; color: var(--grey); font-size: 13.5px; line-height: 1.6; }
+
+/* ---------- Booking form: photo and video consent ---------- */
+.consent-field { margin: 0 0 16px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 14px; }
+.consent-field legend { padding: 0 6px; color: var(--pink-light); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+.consent-note { margin: 0 0 10px; color: var(--grey); font-size: 12.5px; line-height: 1.55; }
+.consent-field .consent-option { display: flex; margin: 0; text-transform: none; letter-spacing: normal; align-items: center; gap: 10px; padding: 6px 0; color: var(--white); font-size: 14px; cursor: pointer; }
+.consent-field .consent-option input { width: 18px; height: 18px; margin: 0; accent-color: var(--pink); flex: none; }
+.site-footer a { color: var(--pink-light); text-decoration: underline; text-underline-offset: 3px; }
+.site-footer a:hover, .site-footer a:focus-visible { color: var(--pink); }
+.privacy-page .policies-intro { padding-top: 40px; }
+.privacy-page .policy-section h2 { margin-bottom: 14px; }
