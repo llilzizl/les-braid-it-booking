@@ -977,6 +977,27 @@ infoToggles.forEach(function (btn) {
     }
   }
 
+  /* ---------------- Portfolio: first photo fits on screen when the page opens ---------------- */
+  var portfolioRail = document.querySelector('.portfolio-rail');
+  if (portfolioRail) {
+    var fitPortfolioPhotos = function () {
+      var firstItem = portfolioRail.querySelector('.portfolio-item');
+      if (!firstItem) return;
+      var caption = firstItem.querySelector('.portfolio-caption');
+      var captionSpace = (caption ? caption.offsetHeight : 26) + 10 + 14; // caption, its gap, a little room below
+      var railTop = portfolioRail.getBoundingClientRect().top + window.pageYOffset + 8; // 8 = rail top padding
+      var screenHeight = window.innerHeight;
+      var room = screenHeight - railTop - captionSpace;
+      // Photos are 2:3 (width:height), so the widest photo that fits is two thirds of the room
+      var maxWidth = Math.max(150, Math.floor(room * 2 / 3));
+      document.documentElement.style.setProperty('--pf-max-w', maxWidth + 'px');
+    };
+    fitPortfolioPhotos();
+    window.addEventListener('resize', fitPortfolioPhotos);
+    window.addEventListener('load', fitPortfolioPhotos);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPortfolioPhotos);
+  }
+
   /* ---------------- Mobile nav toggle ---------------- */
   var navToggle = document.querySelector('.nav-toggle');
   var mainNav = document.querySelector('.main-nav');

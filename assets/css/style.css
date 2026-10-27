@@ -573,13 +573,15 @@ img {
 
 /* ---------- portfolio page ---------- */
 .portfolio-hero {
-  padding: 60px 6% 20px;
+  padding: 22px 6% 10px;
   text-align: center;
 }
 .portfolio-hero h1 {
+  margin: 0 0 6px;
   font-size: clamp(30px, 4.5vw, 44px);
 }
 .portfolio-hero p {
+  margin: 0;
   color: var(--grey);
   font-size: 13px;
   letter-spacing: 1.5px;
@@ -763,7 +765,7 @@ img {
 
 .portfolio-rail-wrap {
   position: relative;
-  padding: 20px 0 80px;
+  padding: 6px 0 80px;
 }
 
 .portfolio-rail {
@@ -771,7 +773,7 @@ img {
   gap: 22px;
   overflow-x: auto;
   scroll-snap-type: x proximity;
-  padding: 10px 6% 30px;
+  padding: 8px 6% 30px;
   scrollbar-width: thin;
   scrollbar-color: var(--pink) var(--card);
 }
@@ -789,7 +791,8 @@ img {
 
 .portfolio-item {
   flex: 0 0 auto;
-  width: min(64vw, 260px);
+  /* --pf-max-w is set by main.js so the whole first photo fits on screen under the heading */
+  width: min(64vw, 260px, var(--pf-max-w, 260px));
   scroll-snap-align: start;
   text-align: center;
   cursor: pointer;
