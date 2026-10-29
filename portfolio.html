@@ -8,9 +8,7 @@
   <!-- Fonts: Playfair Display and Montserrat, provided by Google Fonts (fonts.google.com) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-  <!-- Portfolio scrapbook fonts: Permanent Marker (handwriting) and Special Elite (typewriter) for the page,
-       and five display fonts loaded only for the letters of the heading (text=...) so they download tiny -->
-  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
+  <!-- Five display fonts for the PORTFOLIO heading only, loaded just for those letters (text=...) so they download tiny -->
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bungee&family=Rubik+Dirt&family=Rubik+Glitch&family=Rubik+Wet+Paint&text=PORTFLIO&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -47,27 +45,25 @@
       <svg class="scrap-doodle scrap-bolt" viewBox="0 0 60 100" aria-hidden="true"><path d="M34 0 L6 56 L28 56 L18 100 L56 36 L32 36 L44 0 Z"/></svg>
       <svg class="scrap-doodle scrap-squiggle" viewBox="0 0 220 80" aria-hidden="true"><path d="M4 50 C30 10 50 70 74 34 S118 6 132 44 S170 70 186 30 S212 20 216 40"/></svg>
       <svg class="scrap-doodle scrap-heart" viewBox="0 0 100 90" aria-hidden="true"><path d="M50 84 C10 56 2 34 10 18 C20 0 44 4 50 22 C56 4 80 0 90 18 C98 34 90 56 50 84 Z"/><path d="M30 30 L40 40 M62 26 L70 36"/></svg>
-      <span class="scrap-doodle scrap-wow" aria-hidden="true">wow!</span>
       <span class="scrap-doodle scrap-fresh" aria-hidden="true">fresh sets</span>
 
-      <p class="scrap-kicker">LBI<svg viewBox="0 0 120 20" aria-hidden="true"><path d="M2 12 C30 2 60 18 118 6"/></svg></p>
       <!-- The heading is real text: screen readers and Google read "LBI Portfolio", each letter is styled separately -->
       <h1 class="ransom" aria-label="LBI Portfolio">
         <span class="ransom-line" aria-hidden="true"><span class="rl rl-p">P</span><span class="rl rl-o1">O</span><span class="rl rl-r">R</span><span class="rl rl-t">T</span></span>
         <span class="ransom-line" aria-hidden="true"><span class="rl rl-f">F</span><span class="rl rl-o2">O</span><span class="rl rl-l">L</span><span class="rl rl-i">I</span><span class="rl rl-o3">O</span></span>
       </h1>
-      <p class="scrap-intro">Braids, sew ins and natural styles by Les Braid It, South East London. Tap any photo for a closer look.</p>
+      <p class="scrap-intro frost">Braids, sew ins and natural styles by Les Braid It, South East London. Tap any photo for a closer look.</p>
     </section>
 
     <div class="scrap-filters" role="group" aria-label="Filter by style">
-      <button type="button" class="scrap-chip" data-filter="all" aria-pressed="true">All</button>
-      <button type="button" class="scrap-chip" data-filter="psi" aria-pressed="false">The &lsquo;Perfect&rsquo; Sew In</button>
-      <button type="button" class="scrap-chip" data-filter="fulani" aria-pressed="false">Fulani</button>
-      <button type="button" class="scrap-chip" data-filter="cassie" aria-pressed="false">Cassie</button>
-      <button type="button" class="scrap-chip" data-filter="natural" aria-pressed="false">Natural</button>
-      <button type="button" class="scrap-chip" data-filter="patewo" aria-pressed="false">Patewo &amp; Base</button>
-      <button type="button" class="scrap-chip" data-filter="boho" aria-pressed="false">Boho French Curl</button>
-      <button type="button" class="scrap-chip" data-filter="layered" aria-pressed="false">Layered Braids</button>
+      <button type="button" class="tab scrap-chip" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="tab scrap-chip" data-filter="psi" aria-pressed="false">The &lsquo;Perfect&rsquo; Sew In</button>
+      <button type="button" class="tab scrap-chip" data-filter="fulani" aria-pressed="false">Fulani</button>
+      <button type="button" class="tab scrap-chip" data-filter="cassie" aria-pressed="false">Cassie</button>
+      <button type="button" class="tab scrap-chip" data-filter="natural" aria-pressed="false">Natural</button>
+      <button type="button" class="tab scrap-chip" data-filter="patewo" aria-pressed="false">Patewo &amp; Base</button>
+      <button type="button" class="tab scrap-chip" data-filter="boho" aria-pressed="false">Boho French Curl</button>
+      <button type="button" class="tab scrap-chip" data-filter="layered" aria-pressed="false">Layered Braids</button>
     </div>
 
     <div class="scrap-controls">
@@ -314,8 +310,11 @@ Human Hair and a small amount of synthetic used to create a realistic &lsquo;nat
     </div>
 
     <section class="scrap-cta">
-      <p>seen a look you love?</p>
-      <a href="booking.html" class="scrap-book">Book this style</a>
+      <p>Seen a look you love?</p>
+      <div class="scrap-cta-buttons">
+        <a href="booking.html" class="btn-primary scrap-book">Book this style</a>
+        <a href="contact.html#contact-details" class="scrap-collab">Contact for collaboration</a>
+      </div>
     </section>
 
     <div class="scrap-hazard scrap-hazard-bottom" aria-hidden="true"></div>
