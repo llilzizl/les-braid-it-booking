@@ -2170,7 +2170,10 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
 .scrapbook {
   position: relative;
   overflow: hidden;
-  background: var(--black);
+  /* Dark pink grunge texture, with a black wash on top so photos and text stand out */
+  background:
+    linear-gradient(180deg, rgba(13, 13, 13, 0.55), rgba(13, 13, 13, 0.25) 40%, rgba(13, 13, 13, 0.6)),
+    url("../images/pink-grunge-bg.webp") center top / cover;
   padding-bottom: 70px;
   --yellow: #F5E600;
 }
@@ -2181,7 +2184,7 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.16;
+  opacity: 0.08;
   mix-blend-mode: screen;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -2225,25 +2228,10 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
 .scrap-star-big { right: 70px; top: 30px; width: 130px; height: 130px; fill: var(--pink); transform: rotate(12deg); }
 .scrap-star-small { right: 30px; top: 190px; width: 46px; height: 46px; fill: var(--white); }
 .scrap-bolt { left: 150px; top: 250px; width: 44px; height: 74px; fill: none; stroke: var(--white); stroke-width: 4; stroke-linejoin: round; transform: rotate(-14deg); }
-.scrap-squiggle { left: 60px; top: 360px; width: 220px; height: 80px; fill: none; stroke: var(--pink); stroke-width: 5; stroke-linecap: round; }
-.scrap-heart { right: 120px; top: 330px; width: 92px; height: 84px; fill: none; stroke: var(--pink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; transform: rotate(10deg); }
-.scrap-wow { left: 40px; top: 210px; font-family: 'Permanent Marker', cursive; font-size: 46px; color: var(--pink); transform: rotate(-16deg); }
-.scrap-fresh { right: 190px; top: 70px; font-family: 'Permanent Marker', cursive; font-size: 22px; color: var(--white); transform: rotate(8deg); }
+.scrap-squiggle { left: 20px; top: 300px; width: 150px; height: 56px; fill: none; stroke: var(--pink); stroke-width: 5; stroke-linecap: round; }
+.scrap-heart { right: 40px; top: 250px; width: 70px; height: 64px; fill: none; stroke: var(--pink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; transform: rotate(10deg); }
+.scrap-fresh { right: 230px; top: 14px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 24px; color: var(--white); transform: rotate(8deg); }
 
-.scrap-kicker {
-  position: relative;
-  display: inline-block;
-  margin: 0 0 6px;
-  font-family: 'Permanent Marker', cursive;
-  font-size: 40px;
-  line-height: 1.2;
-  color: var(--white);
-  transform: rotate(-3deg);
-}
-.scrap-kicker svg {
-  position: absolute; left: -10px; bottom: -8px; width: 110px; height: 18px;
-  fill: none; stroke: var(--pink); stroke-width: 5; stroke-linecap: round;
-}
 
 /* Every letter of PORTFOLIO gets its own font, colour and tilt.
    --rs scales the whole heading down on smaller screens. */
@@ -2264,25 +2252,21 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
 .rl { display: inline-block; }
 .rl-p  { font-family: 'Rubik Dirt', sans-serif; font-size: calc(170px * var(--rs)); color: var(--pink); transform: rotate(-4deg); }
 .rl-o1 { font-family: 'Anton', sans-serif; font-size: calc(132px * var(--rs)); color: var(--black); background: var(--white); padding: 0.03em 0.1em; transform: rotate(5deg); }
-.rl-r  { font-family: 'Special Elite', monospace; font-size: calc(160px * var(--rs)); color: var(--white); transform: translateY(0.06em); }
+.rl-r  { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; font-size: calc(160px * var(--rs)); color: var(--white); transform: translateY(0.04em); }
 .rl-t  { font-family: 'Rubik Wet Paint', sans-serif; font-size: calc(168px * var(--rs)); color: var(--white); transform: rotate(-3deg); }
 .rl-f  { font-family: 'Bungee', sans-serif; font-size: calc(118px * var(--rs)); color: var(--black); background: var(--pink); padding: 0.07em 0.12em; transform: rotate(-6deg); }
 .rl-o2 { font-family: 'Rubik Glitch', sans-serif; font-size: calc(156px * var(--rs)); color: var(--white); transform: rotate(3deg); }
-.rl-l  { font-family: 'Permanent Marker', cursive; font-size: calc(160px * var(--rs)); color: var(--pink); transform: rotate(-8deg); }
+.rl-l  { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; font-size: calc(160px * var(--rs)); color: var(--pink); transform: rotate(-8deg); }
 .rl-i  { font-family: 'Anton', sans-serif; font-size: calc(150px * var(--rs)); color: var(--black); -webkit-text-stroke: calc(3px * var(--rs)) var(--white); transform: rotate(4deg); }
 .rl-o3 { font-family: 'Rubik Dirt', sans-serif; font-size: calc(150px * var(--rs)); color: var(--white); border: calc(5px * var(--rs)) solid var(--pink); border-radius: 50%; padding: 0 0.12em 0.05em; transform: rotate(-5deg); }
 
 .scrap-intro {
-  position: relative;
   max-width: 560px;
   margin: 26px auto 0;
-  padding: 10px 18px;
-  font-family: 'Special Elite', monospace;
-  font-size: 18px;
+  padding: 12px 22px;
+  font-size: 15px;
   line-height: 1.6;
   color: var(--white);
-  background: var(--card);
-  transform: rotate(-0.6deg);
 }
 
 /* ---------- style buttons and controls ---------- */
@@ -2297,21 +2281,7 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
   margin: 0 auto;
   padding: 10px 40px 0;
 }
-.scrap-chip {
-  min-height: 44px;
-  padding: 10px 18px;
-  font-family: 'Special Elite', monospace;
-  font-size: 15px;
-  color: var(--white);
-  background: transparent;
-  border: 2px solid var(--white);
-  cursor: pointer;
-  transform: rotate(-1deg);
-  transition: background 0.15s, color 0.15s;
-}
-.scrap-chip:nth-child(even) { transform: rotate(1.2deg); }
-.scrap-chip:hover { background: var(--border); }
-.scrap-chip[aria-pressed="true"] { background: var(--pink); border-color: var(--pink); color: var(--black); }
+.scrap-chip { min-height: 44px; }
 
 .scrap-controls {
   position: relative;
@@ -2323,7 +2293,7 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
   gap: 12px 14px;
   padding: 20px 20px 0;
 }
-.scrap-status { margin: 0; font-family: 'Special Elite', monospace; font-size: 15px; color: var(--grey); text-align: center; }
+.scrap-status { margin: 0; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--grey); text-align: center; }
 .scrap-ctl {
   display: inline-flex;
   align-items: center;
@@ -2331,22 +2301,25 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
   min-height: 44px;
   padding: 10px 18px;
   font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--white);
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--pink);
+  background: rgba(13, 13, 13, 0.7);
+  border: 1px solid var(--pink);
+  border-radius: 30px;
   cursor: pointer;
 }
 .scrap-ctl[hidden] { display: none; }
-.scrap-ctl:hover { border-color: var(--pink); }
+.scrap-ctl:hover { background: var(--pink); color: var(--black); }
 .scrap-ctl svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 .scrap-chip:focus-visible,
 .scrap-ctl:focus-visible,
 .scrap-strip:focus-visible,
 .scrap-book:focus-visible,
+.scrap-collab:focus-visible,
 .scrapbook .portfolio-item:focus-visible {
   outline: 3px solid var(--yellow);
   outline-offset: 4px;
@@ -2392,7 +2365,9 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
   bottom: 8px;
   display: block;
   padding: 0;
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 600;
   font-size: 15px;
   letter-spacing: 0;
   color: var(--black);
@@ -2445,7 +2420,8 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
 .scrap-note {
   right: 10px; top: 45%;
   padding: 10px 14px;
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
   font-size: 24px;
   line-height: 1.2;
   color: var(--black);
@@ -2457,20 +2433,24 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
 
 /* ---------- book button ---------- */
 .scrap-cta { position: relative; z-index: 1; text-align: center; padding: 60px 20px 50px; }
-.scrap-cta p { margin: 0 0 22px; font-family: 'Permanent Marker', cursive; font-size: 30px; color: var(--white); transform: rotate(-2deg); }
-.scrap-book {
+.scrap-cta p { margin: 0 0 22px; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; font-size: 30px; color: var(--white); }
+.scrap-cta-buttons { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.scrap-cta-buttons a { min-width: 290px; text-align: center; }
+/* The opposite of Book this style: black with pink writing */
+.scrap-collab {
   display: inline-block;
-  padding: 18px 34px;
+  padding: 13px 30px;
+  border: 1px solid var(--pink);
+  border-radius: 30px;
+  background: var(--black);
+  color: var(--pink);
+  font-size: 12px;
   font-weight: 600;
-  font-size: 16px;
-  letter-spacing: 0.04em;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--black);
-  background: var(--pink);
-  box-shadow: 6px 6px 0 var(--white);
-  transform: rotate(-1.5deg);
+  transition: all 0.2s ease;
 }
-.scrap-book:hover { transform: rotate(0); color: var(--black); }
+.scrap-collab:hover { background: var(--pink); color: var(--black); }
 
 /* ---------- smaller screens ---------- */
 @media (max-width: 1199px) { .ransom { --rs: 0.82; } }
@@ -2486,27 +2466,24 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
   .scrap-dots { left: -30px; top: 20px; width: 120px; height: 120px; }
   .scrap-star-big { right: 14px; top: 18px; width: 64px; height: 64px; }
   .scrap-star-small, .scrap-squiggle { display: none; }
-  .scrap-wow { left: 14px; top: 104px; font-size: 24px; }
-  .scrap-kicker { font-size: 28px; }
-  .scrap-kicker svg { width: 70px; }
-  .scrap-intro { margin-top: 20px; font-size: 15px; padding: 8px 12px; }
+    .scrap-intro { margin-top: 20px; font-size: 14px; padding: 10px 14px; }
 
   /* Style buttons scroll sideways in one line */
   .scrap-filters { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding: 18px 16px 10px; gap: 10px; }
-  .scrap-chip { flex: 0 0 auto; font-size: 14px; padding: 8px 14px; }
+  .scrap-chip { flex: 0 0 auto; padding: 10px 18px; }
 
   .scrap-stage { padding: 0; margin-top: 10px; }
   .scrap-board { display: block; padding: 0; }
   .scrap-row { position: relative; margin-top: 8px; }
   .scrap-row-head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 16px; }
-  .scrap-row-head span { font-family: 'Special Elite', monospace; font-size: 13px; color: var(--grey); }
+  .scrap-row-head span { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--grey); }
   .scrap-row-title {
     display: inline-block;
     margin: 0;
-    font-family: 'Permanent Marker', cursive;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 26px;
     color: var(--pink);
     transform: rotate(-3deg);
   }
@@ -2539,6 +2516,6 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
 
   .scrap-cta { padding: 40px 16px 50px; }
   .scrap-cta p { font-size: 24px; }
-  .scrap-book { display: block; font-size: 14px; }
+  .scrap-cta-buttons a { min-width: 0; width: 100%; box-sizing: border-box; }
 }
 @media (max-width: 380px) { .ransom { --rs: 0.48; } }

@@ -96,9 +96,9 @@
     var groups;
     if (current === 'all') {
       groups = [
-        ['sew ins', mix([byCat.psi || [], byCat.fulani || [], byCat.cassie || []])],
-        ['braids + curls', mix([byCat.layered || [], byCat.boho || []])],
-        ['natural + more', mix([byCat.natural || [], byCat.patewo || []])]
+        ['weaves', mix([byCat.psi || [], byCat.fulani || [], byCat.cassie || []])],
+        ['braids', mix([byCat.layered || [], byCat.boho || []])],
+        ['more styles', mix([byCat.natural || [], byCat.patewo || []])]
       ];
     } else {
       // Share this style's photos across up to 3 rows
