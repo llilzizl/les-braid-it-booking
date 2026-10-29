@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <!-- Black grunge layer for the portfolio: ink blotches, fine black grit and patches of halftone dots -->
+  <defs>
+    <!-- Big uneven ink blotches -->
+    <filter id="blotch" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.005" numOctaves="5" seed="3" stitchTiles="stitch" result="shape"/>
+      <!-- Rough up the edges so they look splattered rather than smooth -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="7" stitchTiles="stitch" result="rough"/>
+      <feDisplacementMap in="shape" in2="rough" scale="40" xChannelSelector="R" yChannelSelector="G"/>
+      <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -28 0 0 0 13.2"/>
+    </filter>
+    <!-- Fine black grit -->
+    <filter id="grit" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="11" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -24 0 0 0 8.2"/>
+    </filter>
+    <!-- Where the halftone dots show: soft patches -->
+    <filter id="patch" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004" numOctaves="3" seed="21" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  9 0 0 0 -4.1"/>
+    </filter>
+    <mask id="dots-mask">
+      <rect width="800" height="800" filter="url(#patch)"/>
+    </mask>
+    <pattern id="dots" width="11" height="11" patternUnits="userSpaceOnUse">
+      <circle cx="5.5" cy="5.5" r="3"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="800" fill="url(#dots)" mask="url(#dots-mask)" opacity="0.9"/>
+  <rect width="800" height="800" filter="url(#blotch)"/>
+  <rect width="800" height="800" filter="url(#grit)" opacity="0.7"/>
+</svg>
