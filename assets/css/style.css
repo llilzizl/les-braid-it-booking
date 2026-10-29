@@ -2161,3 +2161,384 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
 .cr-account-link[hidden] { display: none; }
 /* My account page: stop below the sticky header when linked to the requests */
 #custom-requests { scroll-margin-top: 124px; }
+
+/* ==========================================================
+   Portfolio scrapbook (portfolio.html, arranged by portfolio.js)
+   Grunge look: black paper with grain, hazard tape, doodles,
+   a "ransom note" heading and photos taped in like prints.
+   ========================================================== */
+.scrapbook {
+  position: relative;
+  overflow: hidden;
+  background: var(--black);
+  padding-bottom: 70px;
+  --yellow: #F5E600;
+}
+
+/* Film grain over the whole page: an SVG noise pattern, very faint */
+.scrapbook::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Pink and black hazard tape strips */
+.scrap-hazard {
+  position: relative;
+  height: 24px;
+  margin: 16px -20px 0;
+  background: repeating-linear-gradient(45deg, var(--pink) 0 18px, var(--black) 18px 36px);
+  box-shadow: 0 4px 0 var(--white);
+  transform: rotate(-1.2deg);
+}
+.scrap-hazard-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  margin: 0 -20px;
+  box-shadow: 0 -4px 0 var(--white);
+  transform: rotate(1deg);
+}
+
+/* ---------- hero: doodles and the ransom note heading ---------- */
+.scrap-hero {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 60px 40px 24px;
+  text-align: center;
+}
+.scrap-doodle { position: absolute; pointer-events: none; }
+.scrap-dots {
+  left: 10px; top: 40px; width: 170px; height: 170px;
+  border-radius: 50%;
+  opacity: 0.55;
+  background-image: radial-gradient(var(--pink) 1.6px, transparent 1.8px);
+  background-size: 12px 12px;
+}
+.scrap-star-big { right: 70px; top: 30px; width: 130px; height: 130px; fill: var(--pink); transform: rotate(12deg); }
+.scrap-star-small { right: 30px; top: 190px; width: 46px; height: 46px; fill: var(--white); }
+.scrap-bolt { left: 150px; top: 250px; width: 44px; height: 74px; fill: none; stroke: var(--white); stroke-width: 4; stroke-linejoin: round; transform: rotate(-14deg); }
+.scrap-squiggle { left: 60px; top: 360px; width: 220px; height: 80px; fill: none; stroke: var(--pink); stroke-width: 5; stroke-linecap: round; }
+.scrap-heart { right: 120px; top: 330px; width: 92px; height: 84px; fill: none; stroke: var(--pink); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; transform: rotate(10deg); }
+.scrap-wow { left: 40px; top: 210px; font-family: 'Permanent Marker', cursive; font-size: 46px; color: var(--pink); transform: rotate(-16deg); }
+.scrap-fresh { right: 190px; top: 70px; font-family: 'Permanent Marker', cursive; font-size: 22px; color: var(--white); transform: rotate(8deg); }
+
+.scrap-kicker {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 6px;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 40px;
+  line-height: 1.2;
+  color: var(--white);
+  transform: rotate(-3deg);
+}
+.scrap-kicker svg {
+  position: absolute; left: -10px; bottom: -8px; width: 110px; height: 18px;
+  fill: none; stroke: var(--pink); stroke-width: 5; stroke-linecap: round;
+}
+
+/* Every letter of PORTFOLIO gets its own font, colour and tilt.
+   --rs scales the whole heading down on smaller screens. */
+.ransom {
+  --rs: 1;
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 6px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+}
+.ransom-line { display: inline-flex; align-items: center; gap: 2px 4px; }
+.rl { display: inline-block; }
+.rl-p  { font-family: 'Rubik Dirt', sans-serif; font-size: calc(170px * var(--rs)); color: var(--pink); transform: rotate(-4deg); }
+.rl-o1 { font-family: 'Anton', sans-serif; font-size: calc(132px * var(--rs)); color: var(--black); background: var(--white); padding: 0.03em 0.1em; transform: rotate(5deg); }
+.rl-r  { font-family: 'Special Elite', monospace; font-size: calc(160px * var(--rs)); color: var(--white); transform: translateY(0.06em); }
+.rl-t  { font-family: 'Rubik Wet Paint', sans-serif; font-size: calc(168px * var(--rs)); color: var(--white); transform: rotate(-3deg); }
+.rl-f  { font-family: 'Bungee', sans-serif; font-size: calc(118px * var(--rs)); color: var(--black); background: var(--pink); padding: 0.07em 0.12em; transform: rotate(-6deg); }
+.rl-o2 { font-family: 'Rubik Glitch', sans-serif; font-size: calc(156px * var(--rs)); color: var(--white); transform: rotate(3deg); }
+.rl-l  { font-family: 'Permanent Marker', cursive; font-size: calc(160px * var(--rs)); color: var(--pink); transform: rotate(-8deg); }
+.rl-i  { font-family: 'Anton', sans-serif; font-size: calc(150px * var(--rs)); color: var(--black); -webkit-text-stroke: calc(3px * var(--rs)) var(--white); transform: rotate(4deg); }
+.rl-o3 { font-family: 'Rubik Dirt', sans-serif; font-size: calc(150px * var(--rs)); color: var(--white); border: calc(5px * var(--rs)) solid var(--pink); border-radius: 50%; padding: 0 0.12em 0.05em; transform: rotate(-5deg); }
+
+.scrap-intro {
+  position: relative;
+  max-width: 560px;
+  margin: 26px auto 0;
+  padding: 10px 18px;
+  font-family: 'Special Elite', monospace;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--white);
+  background: var(--card);
+  transform: rotate(-0.6deg);
+}
+
+/* ---------- style buttons and controls ---------- */
+.scrap-filters {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 10px 40px 0;
+}
+.scrap-chip {
+  min-height: 44px;
+  padding: 10px 18px;
+  font-family: 'Special Elite', monospace;
+  font-size: 15px;
+  color: var(--white);
+  background: transparent;
+  border: 2px solid var(--white);
+  cursor: pointer;
+  transform: rotate(-1deg);
+  transition: background 0.15s, color 0.15s;
+}
+.scrap-chip:nth-child(even) { transform: rotate(1.2deg); }
+.scrap-chip:hover { background: var(--border); }
+.scrap-chip[aria-pressed="true"] { background: var(--pink); border-color: var(--pink); color: var(--black); }
+
+.scrap-controls {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px 14px;
+  padding: 20px 20px 0;
+}
+.scrap-status { margin: 0; font-family: 'Special Elite', monospace; font-size: 15px; color: var(--grey); text-align: center; }
+.scrap-ctl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 18px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.scrap-ctl[hidden] { display: none; }
+.scrap-ctl:hover { border-color: var(--pink); }
+.scrap-ctl svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.scrap-chip:focus-visible,
+.scrap-ctl:focus-visible,
+.scrap-strip:focus-visible,
+.scrap-book:focus-visible,
+.scrapbook .portfolio-item:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
+}
+
+/* ---------- the photos: taped-in prints that float ---------- */
+.scrap-stage { position: relative; z-index: 1; max-width: 1200px; margin: 30px auto 0; padding: 0 40px; }
+
+/* Without JavaScript the photos simply wrap in a grid */
+.scrap-board { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px 20px; padding: 20px 0; }
+
+.scrapbook .portfolio-item {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: var(--w, 200px);
+  padding: 9px 9px 40px;
+  background: var(--white);
+  border: 0;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+  transform: rotate(var(--tilt, -2deg));
+  transition: scale 0.25s ease, box-shadow 0.25s ease;
+  animation: scrap-float var(--dur, 7s) ease-in-out var(--delay, 0s) infinite;
+}
+.scrapbook .portfolio-item:hover,
+.scrapbook .portfolio-item:focus-visible {
+  scale: 1.06;
+  z-index: 40 !important;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.7);
+}
+.scrapbook .portfolio-item img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border: 0;
+  border-radius: 0;
+}
+.scrapbook .portfolio-item:hover img { transform: none; }
+.scrapbook .portfolio-caption {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 8px;
+  display: block;
+  padding: 0;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 15px;
+  letter-spacing: 0;
+  color: var(--black);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.scrapbook .portfolio-caption::before { display: none; }
+.scrap-tape-bit {
+  position: absolute;
+  left: 50%;
+  top: -12px;
+  width: 80px;
+  height: 24px;
+  margin-left: -40px;
+  background: var(--tape, rgba(232, 85, 143, 0.8));
+  transform: rotate(-4deg);
+  z-index: 1;
+}
+
+/* Gentle float. "translate" is separate from "transform", so the tilt stays put */
+@keyframes scrap-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -12px; }
+}
+.scrapbook.is-paused .portfolio-item { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .scrapbook .portfolio-item { animation: none; transition: none; }
+}
+
+/* Laptops: photos scattered on a board. Positions come from portfolio.js as % values,
+   and the board keeps its shape (aspect-ratio) so everything scales together. */
+.scrap-board.is-scatter { display: block; position: relative; padding: 0; }
+.scrap-board.is-two-rows { aspect-ratio: 1200 / 1010; }
+.scrap-board.is-one-row { aspect-ratio: 1200 / 540; }
+.scrap-board.is-scatter .portfolio-item {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  z-index: var(--z, 10);
+}
+
+/* Little extras stuck between the two rows (laptops only) */
+.scrap-extras { display: none; }
+.scrap-stage.has-two-rows .scrap-extras { display: block; }
+.scrap-extras > * { position: absolute; z-index: 25; pointer-events: none; }
+.scrap-star-mid { left: 48%; top: 47%; width: 64px; height: 64px; fill: var(--pink); transform: rotate(18deg); }
+.scrap-note {
+  right: 10px; top: 45%;
+  padding: 10px 14px;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 24px;
+  line-height: 1.2;
+  color: var(--black);
+  background: var(--white);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transform: rotate(7deg);
+}
+.scrap-squiggle-mid { left: 0; top: 47%; width: 170px; height: 62px; fill: none; stroke: var(--white); stroke-width: 5; stroke-linecap: round; }
+
+/* ---------- book button ---------- */
+.scrap-cta { position: relative; z-index: 1; text-align: center; padding: 60px 20px 50px; }
+.scrap-cta p { margin: 0 0 22px; font-family: 'Permanent Marker', cursive; font-size: 30px; color: var(--white); transform: rotate(-2deg); }
+.scrap-book {
+  display: inline-block;
+  padding: 18px 34px;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--pink);
+  box-shadow: 6px 6px 0 var(--white);
+  transform: rotate(-1.5deg);
+}
+.scrap-book:hover { transform: rotate(0); color: var(--black); }
+
+/* ---------- smaller screens ---------- */
+@media (max-width: 1199px) { .ransom { --rs: 0.82; } }
+@media (max-width: 999px) {
+  .ransom { --rs: 0.66; }
+  .scrap-bolt, .scrap-heart, .scrap-fresh { display: none; }
+}
+
+/* Phones: swipeable scrapbook rows */
+@media (max-width: 720px) {
+  .ransom { --rs: 0.54; flex-direction: column; gap: 4px; }
+  .scrap-hero { padding: 34px 16px 10px; }
+  .scrap-dots { left: -30px; top: 20px; width: 120px; height: 120px; }
+  .scrap-star-big { right: 14px; top: 18px; width: 64px; height: 64px; }
+  .scrap-star-small, .scrap-squiggle { display: none; }
+  .scrap-wow { left: 14px; top: 104px; font-size: 24px; }
+  .scrap-kicker { font-size: 28px; }
+  .scrap-kicker svg { width: 70px; }
+  .scrap-intro { margin-top: 20px; font-size: 15px; padding: 8px 12px; }
+
+  /* Style buttons scroll sideways in one line */
+  .scrap-filters { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding: 18px 16px 10px; gap: 10px; }
+  .scrap-chip { flex: 0 0 auto; font-size: 14px; padding: 8px 14px; }
+
+  .scrap-stage { padding: 0; margin-top: 10px; }
+  .scrap-board { display: block; padding: 0; }
+  .scrap-row { position: relative; margin-top: 8px; }
+  .scrap-row-head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 16px; }
+  .scrap-row-head span { font-family: 'Special Elite', monospace; font-size: 13px; color: var(--grey); }
+  .scrap-row-title {
+    display: inline-block;
+    margin: 0;
+    font-family: 'Permanent Marker', cursive;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    color: var(--pink);
+    transform: rotate(-3deg);
+  }
+  .scrap-row-2 .scrap-row-title { color: var(--black); background: var(--white); padding: 2px 10px; transform: rotate(2deg); }
+  .scrap-row-3 .scrap-row-title { transform: rotate(-1.5deg); }
+
+  .scrap-strip {
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    padding: 22px 30px 46px 22px;
+  }
+  .scrap-strip::-webkit-scrollbar { display: none; }
+  .scrap-strip .portfolio-item {
+    flex: 0 0 var(--w);
+    margin-top: var(--drop, 0);
+    margin-left: -16px;
+    padding: 8px 8px 36px;
+    scroll-snap-align: start;
+    z-index: var(--z, 1);
+  }
+  .scrap-strip .portfolio-item:first-child { margin-left: 0; }
+  .scrapbook .portfolio-caption { font-size: 14px; }
+  @keyframes scrap-float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -8px; }
+  }
+
+  .scrap-cta { padding: 40px 16px 50px; }
+  .scrap-cta p { font-size: 24px; }
+  .scrap-book { display: block; font-size: 14px; }
+}
+@media (max-width: 380px) { .ransom { --rs: 0.48; } }

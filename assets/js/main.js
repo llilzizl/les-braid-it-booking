@@ -126,8 +126,18 @@ document.addEventListener('DOMContentLoaded', function () {
     lightbox.addEventListener('click', function (e) {
       if (e.target === lightbox) closeLightbox();
     });
-    prevBtn.addEventListener('click', function () { renderSlide(currentIndex - 1); });
-    nextBtn.addEventListener('click', function () { renderSlide(currentIndex + 1); });
+    // Next / previous photo. On the portfolio, skip photos hidden by the style filter
+    // (portfolio.js marks them data-out="true"), so the arrows stay within the chosen style.
+    function step(direction) {
+      var next = currentIndex;
+      for (var tries = 0; tries < items.length; tries++) {
+        next = (next + direction + items.length) % items.length;
+        if (items[next].getAttribute('data-out') !== 'true') break;
+      }
+      renderSlide(next);
+    }
+    prevBtn.addEventListener('click', function () { step(-1); });
+    nextBtn.addEventListener('click', function () { step(1); });
     lbInfoBtn.addEventListener('click', function () {
       lbInfoPanel.classList.toggle('is-open');
     });
@@ -135,8 +145,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('keydown', function (e) {
       if (!lightbox.classList.contains('is-open')) return;
       if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') renderSlide(currentIndex - 1);
-      if (e.key === 'ArrowRight') renderSlide(currentIndex + 1);
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
     });
 
     /* swipe support on the stage */
@@ -149,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (touchStartX === null) return;
       var diff = e.changedTouches[0].clientX - touchStartX;
       if (Math.abs(diff) > 40) {
-        diff < 0 ? renderSlide(currentIndex + 1) : renderSlide(currentIndex - 1);
+        diff < 0 ? step(1) : step(-1);
       }
       touchStartX = null;
     });
