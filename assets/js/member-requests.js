@@ -121,13 +121,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   db.auth.getSession().then(function (res) {
     if (!res.data || !res.data.session) return;
+    var me = res.data.session.user;
+    var myEmail = (me.email || '').toLowerCase();
     return db.from('custom_requests').select('*').order('created_at', { ascending: false }).then(function (out) {
       box.textContent = '';
       if (out.error) {
         box.appendChild(el('p', 'my-requests-empty', 'Your requests can’t be shown right now. Please try again later.'));
         return;
       }
-      var list = out.data || [];
+      // Only this person's own requests. The database lets the admin account read everyone's
+      // (for admin.html), so without this the admin's My account page would show all clients' requests.
+      // Same rule as the database: sent while logged in to this account, or with this account's email.
+      var list = (out.data || []).filter(function (r) {
+        return r.member_id === me.id || (r.email || '').toLowerCase() === myEmail;
+      });
       if (!list.length) {
         box.appendChild(el('p', 'my-requests-empty', 'You haven’t sent any custom requests yet.'));
         return;
