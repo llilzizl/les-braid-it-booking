@@ -263,6 +263,13 @@ img {
 
 .transformation .btn-white { position: relative; z-index: 1; }
 
+/* Home: white "Learn The 'Perfect' Sew In" button above the before and after picture */
+.transformation-learn { margin-bottom: 22px; }
+@media (max-width: 720px) {
+  /* On phones, the same full width and height as the Check out portfolio button */
+  .transformation-learn { display: block; padding: 18px 30px; font-size: 14px; }
+}
+
 /* Hidden from view but still read out by screen readers */
 .visually-hidden {
   position: absolute;
@@ -1714,6 +1721,8 @@ body[data-members-only]:not(.is-member-ready) main {
   margin-left: auto;
   margin-right: auto;
   padding: 6px 22px;
+  border: 1px solid var(--pink); /* same hot pink outline as the About LBI button */
+  border-radius: var(--frost-radius);
 }
 
 .site-footer::before {
