@@ -111,6 +111,14 @@ document.addEventListener('DOMContentLoaded', function () {
     return c;
   }
 
+  // A link like member-dashboard.html#custom-requests scrolls here once the requests have loaded
+  // (the page is still filling in when the browser first tries, so it can't jump there by itself)
+  function jumpIfAsked() {
+    if (window.location.hash !== '#custom-requests') return;
+    var section = document.getElementById('custom-requests');
+    if (section) section.scrollIntoView({ block: 'start' });
+  }
+
   db.auth.getSession().then(function (res) {
     if (!res.data || !res.data.session) return;
     return db.from('custom_requests').select('*').order('created_at', { ascending: false }).then(function (out) {
@@ -133,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
           list.sort(function (a, b) { return (state(b).cls === 'action') - (state(a).cls === 'action'); });
           list.forEach(function (r) { box.appendChild(card(r, last[r.id])); });
         });
-    });
+    }).then(jumpIfAsked);
   });
 
   // "Send a new custom request" opens the form on the booking page

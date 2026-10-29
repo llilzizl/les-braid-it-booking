@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var timesBox = form.querySelector('.cr-times');
   var submitBtn = form.querySelector('[type="submit"]');
   var successBox = document.querySelector('.cr-success');
+  var accountLink = document.querySelector('.cr-account-link');
   var modal = document.querySelector('.custom-modal');
   function field(id) { return form.querySelector('#cr-' + id); }
 
@@ -509,6 +510,8 @@ document.addEventListener('DOMContentLoaded', function () {
       submitBtn.textContent = 'Send request';
       if (out.ok) {
         form.hidden = true;
+        // Members also get a button to see the request on their My account page
+        if (accountLink) db.auth.getSession().then(function (r) { accountLink.hidden = !(r.data && r.data.session); });
         successBox.hidden = false;
         successBox.scrollIntoView({ block: 'nearest' });
         return;
