@@ -292,6 +292,12 @@ infoToggles.forEach(function (btn) {
     ] }
   };
 
+  // Blow dry add-on on every service except the classes and takedowns
+  Object.keys(SERVICES).forEach(function (name) {
+    if (/Classes|Takedown/.test(name)) return;
+    SERVICES[name].addons.push({ label: 'Blow dry', extra: '+£10 · +30 mins' });
+  });
+
   /* ---------------- Booking page: sort + filter services ---------------- */
   var serviceGrid = document.querySelector('.booking-service-grid');
   var serviceSort = document.getElementById('serviceSort');
