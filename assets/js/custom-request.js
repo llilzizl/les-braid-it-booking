@@ -43,7 +43,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var lengthText = form.querySelector('#cr-length-text');
   var priceHint = form.querySelector('#cr-price-hint');
   var slotsStatus = form.querySelector('.cr-slots-status');
-  var daysBox = form.querySelector('.cr-days');
+  // The calendar uses its own class names (cr-cal-...) so the main booking calendar
+  // script on the same page never mistakes it for its own calendar
+  var calendarBox = form.querySelector('.cr-calendar');
+  var calMonthLabel = form.querySelector('.cr-cal-month');
+  var calGrid = form.querySelector('.cr-cal-grid');
+  var calNavBtns = Array.prototype.slice.call(form.querySelectorAll('.cr-cal-nav'));
+  var timesHeading = form.querySelector('.cr-times-heading');
   var timesBox = form.querySelector('.cr-times');
   var submitBtn = form.querySelector('[type="submit"]');
   var successBox = document.querySelector('.cr-success');
@@ -51,6 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
   function field(id) { return form.querySelector('#cr-' + id); }
 
   var DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var openDays = {};     // 'YYYY-MM-DD' -> start times that fit the chosen length
+  var calMonth = null;   // first day of the month the calendar is showing
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -252,43 +261,97 @@ document.addEventListener('DOMContentLoaded', function () {
     return b;
   }
 
+  // Works out which days have room for the chosen length, using the same live data
+  // and the same rules as before (nothing about holds or double booking changes here)
   function renderSlots() {
     var w = bookingWindow();
-    var days = [];
+    openDays = {};
+    var firstOpen = null;
     for (var d = new Date(w.first); d <= w.last; d.setDate(d.getDate() + 1)) {
       var times = slotsFor(d);
-      if (times.length) days.push({ date: new Date(d), key: dateKey(d), times: times });
+      if (times.length) {
+        openDays[dateKey(d)] = times;
+        if (!firstOpen) firstOpen = new Date(d);
+      }
     }
-    daysBox.textContent = '';
-    timesBox.textContent = '';
-    if (!days.length) {
+    if (!firstOpen) {
       slotsStatus.textContent = 'No times have room for ' + lengthWords(duration) + ' in the next month. Try a shorter length, or send the request anyway on the contact page.';
       chosenDate = chosenTime = null;
-      timesBox.hidden = true;
+      calendarBox.hidden = true;
+      renderTimes();
       return;
     }
-    if (!days.some(function (x) { return x.key === chosenDate; })) { chosenDate = null; chosenTime = null; }
-    slotsStatus.textContent = 'Days with room for ' + lengthWords(duration) + '. Pick a day, then a start time.';
-    days.forEach(function (x) {
-      var label = DAY_NAMES[x.date.getDay()] + ' ' + x.date.getDate() + ' ' + MONTHS[x.date.getMonth()];
-      daysBox.appendChild(choiceButton(label, x.times.length + (x.times.length === 1 ? ' time' : ' times'), x.key, x.key === chosenDate));
-    });
-    renderTimes(days);
+    if (!openDays[chosenDate]) { chosenDate = null; chosenTime = null; }
+    slotsStatus.textContent = 'Pink days have room for ' + lengthWords(duration) + '. Pick a day, then a start time.';
+    // Show the month of the chosen day, or of the first free day
+    var focus = chosenDate ? keyToDate(chosenDate) : firstOpen;
+    if (!calMonth || !chosenDate) calMonth = new Date(focus.getFullYear(), focus.getMonth(), 1);
+    calendarBox.hidden = false;
+    renderCalendar();
+    renderTimes();
   }
 
-  function renderTimes(days) {
-    timesBox.textContent = '';
-    var day = (days || []).filter(function (x) { return x.key === chosenDate; })[0];
-    if (!day && chosenDate && rules) {
-      var p = chosenDate.split('-');
-      var times = slotsFor(new Date(+p[0], +p[1] - 1, +p[2]));
-      day = times.length ? { times: times } : null;
+  function keyToDate(key) {
+    var p = key.split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+
+  // Draws one month, like the booking calendar: pink days are free, the rest are greyed out
+  function renderCalendar() {
+    var w = bookingWindow();
+    var year = calMonth.getFullYear(), month = calMonth.getMonth();
+    calMonthLabel.textContent = MONTH_NAMES[month] + ' ' + year;
+    calGrid.textContent = '';
+    DAY_NAMES.forEach(function (name) {
+      var head = document.createElement('span');
+      head.className = 'cr-cal-weekday';
+      head.textContent = name;
+      calGrid.appendChild(head);
+    });
+    var blanks = new Date(year, month, 1).getDay();
+    for (var i = 0; i < blanks; i++) calGrid.appendChild(document.createElement('span'));
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    for (var day = 1; day <= daysInMonth; day++) {
+      var date = new Date(year, month, day);
+      var key = dateKey(date);
+      var times = openDays[key];
+      var cell;
+      if (times) {
+        cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'is-available' + (key === chosenDate ? ' is-selected' : '');
+        cell.setAttribute('data-value', key);
+        cell.setAttribute('aria-pressed', key === chosenDate ? 'true' : 'false');
+        cell.setAttribute('aria-label', DAY_NAMES[date.getDay()] + ' ' + day + ' ' + MONTH_NAMES[month] + ', ' + times.length + (times.length === 1 ? ' start time' : ' start times'));
+      } else {
+        cell = document.createElement('span');
+      }
+      cell.textContent = day;
+      calGrid.appendChild(cell);
     }
-    if (!day) { timesBox.hidden = true; chosenTime = null; return; }
-    if (day.times.indexOf(chosenTime) === -1) chosenTime = null;
-    day.times.forEach(function (t) {
+    // Only allow moving to months inside the booking window
+    var firstMonth = new Date(w.first.getFullYear(), w.first.getMonth(), 1);
+    var lastMonth = new Date(w.last.getFullYear(), w.last.getMonth(), 1);
+    calNavBtns[0].disabled = calMonth <= firstMonth;
+    calNavBtns[1].disabled = calMonth >= lastMonth;
+  }
+
+  function renderTimes() {
+    timesBox.textContent = '';
+    var times = chosenDate && rules ? (openDays[chosenDate] || slotsFor(keyToDate(chosenDate))) : null;
+    if (!times || !times.length) {
+      timesBox.hidden = true;
+      timesHeading.hidden = true;
+      chosenTime = null;
+      return;
+    }
+    if (times.indexOf(chosenTime) === -1) chosenTime = null;
+    var d = keyToDate(chosenDate);
+    timesHeading.textContent = 'Start times on ' + DAY_NAMES[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()];
+    times.forEach(function (t) {
       timesBox.appendChild(choiceButton(niceTime(t), null, t, t === chosenTime));
     });
+    timesHeading.hidden = false;
     timesBox.hidden = false;
   }
 
@@ -319,12 +382,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     onPick(chip.getAttribute('data-value'));
   }
-  daysBox.addEventListener('click', function (e) {
-    pick(daysBox, e, function (v) {
-      chosenDate = v;
-      chosenTime = null;
-      renderTimes();
-      timesBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  calGrid.addEventListener('click', function (e) {
+    var dayBtn = e.target.closest('button[data-value]');
+    if (!dayBtn) return;
+    chosenDate = dayBtn.getAttribute('data-value');
+    chosenTime = null;
+    renderCalendar();
+    renderTimes();
+    timesBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  calNavBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + Number(btn.getAttribute('data-step')), 1);
+      renderCalendar();
     });
   });
   timesBox.addEventListener('click', function (e) { pick(timesBox, e, function (v) { chosenTime = v; }); });

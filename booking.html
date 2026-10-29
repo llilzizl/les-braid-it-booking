@@ -419,7 +419,15 @@ Note: this form isn&rsquo;t a confirmed booking, it&rsquo;s a request. I&rsquo;l
         <div class="field">
           <span class="field-label" id="cr-slot-label">Choose a time that works for you</span>
           <p class="field-hint cr-slots-status" aria-live="polite">Loading available times&hellip;</p>
-          <div class="cr-days" role="radiogroup" aria-labelledby="cr-slot-label"></div>
+          <div class="cr-calendar" hidden>
+            <div class="cr-cal-heading">
+              <button class="cr-cal-nav" type="button" data-step="-1" aria-label="Previous month">&#8249;</button>
+              <h4 class="cr-cal-month" aria-live="polite"></h4>
+              <button class="cr-cal-nav" type="button" data-step="1" aria-label="Next month">&#8250;</button>
+            </div>
+            <div class="cr-cal-grid" role="group" aria-labelledby="cr-slot-label"></div>
+          </div>
+          <p class="cr-times-heading" hidden></p>
           <div class="cr-times" role="radiogroup" aria-label="Available start times" hidden></div>
         </div>
 
