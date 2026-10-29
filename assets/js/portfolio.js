@@ -51,7 +51,7 @@
   var widths = [176, 150, 190, 160, 170];
   var drops = [12, 54, 0, 34, 20];
   var tilts = [-6, 5, -2, 7, -8, 3];
-  var tapes = ['rgba(232, 85, 143, 0.8)', 'rgba(255, 252, 249, 0.75)', 'rgba(245, 230, 0, 0.7)'];
+  var tapes = ['rgba(232, 85, 143, 0.8)', 'rgba(255, 252, 249, 0.75)', 'rgba(13, 13, 13, 0.85)'];
 
   // Laptop slots: [left %, top %, width %, tilt]. Top is a % of the board's height.
   var slots = [
