@@ -2105,3 +2105,7 @@ body[data-members-only]:not(.is-member-ready) main {
 /* Contact page: when a link jumps to the About section, stop it just below the sticky
    header (about 110px tall) instead of hiding the top of the section behind it */
 #about { scroll-margin-top: 124px; }
+
+/* "Photo coming soon" image for styles without photos yet: not clickable, so no zoom cursor */
+img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the height, not the 900px in the HTML */
+.service-gallery img.photo-coming-soon { cursor: default; }

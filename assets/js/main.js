@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   /* ---------------- Service detail page: click image to enlarge ---------------- */
-  var serviceGalleryImgs = Array.prototype.slice.call(document.querySelectorAll('.service-gallery img'));
+  var serviceGalleryImgs = Array.prototype.slice.call(document.querySelectorAll('.service-gallery img:not(.photo-coming-soon)'));
   var serviceLightbox = document.querySelector('.lightbox');
   if (serviceGalleryImgs.length && serviceLightbox) {
     var slImg = serviceLightbox.querySelector('.lightbox-img');
