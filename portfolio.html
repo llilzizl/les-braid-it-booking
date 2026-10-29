@@ -8,6 +8,10 @@
   <!-- Fonts: Playfair Display and Montserrat, provided by Google Fonts (fonts.google.com) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Portfolio scrapbook fonts: Permanent Marker (handwriting) and Special Elite (typewriter) for the page,
+       and five display fonts loaded only for the letters of the heading (text=...) so they download tiny -->
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bungee&family=Rubik+Dirt&family=Rubik+Glitch&family=Rubik+Wet+Paint&text=PORTFLIO&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -31,286 +35,290 @@
     </nav>
   </header>
 
-  <main>
+  <main class="scrapbook">
 
-    <section class="portfolio-hero">
-      <h1>LBI Portfolio</h1>
-      <p>Swipe through - tap any style for a closer look</p>
+    <div class="scrap-hazard" aria-hidden="true"></div>
+
+    <section class="scrap-hero">
+      <!-- Background doodles: drawn in code (SVG), hidden from screen readers -->
+      <div class="scrap-doodle scrap-dots" aria-hidden="true"></div>
+      <svg class="scrap-doodle scrap-star-big" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 0 C54 36 64 46 100 50 C64 54 54 64 50 100 C46 64 36 54 0 50 C36 46 46 36 50 0Z"/></svg>
+      <svg class="scrap-doodle scrap-star-small" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 0 C54 36 64 46 100 50 C64 54 54 64 50 100 C46 64 36 54 0 50 C36 46 46 36 50 0Z"/></svg>
+      <svg class="scrap-doodle scrap-bolt" viewBox="0 0 60 100" aria-hidden="true"><path d="M34 0 L6 56 L28 56 L18 100 L56 36 L32 36 L44 0 Z"/></svg>
+      <svg class="scrap-doodle scrap-squiggle" viewBox="0 0 220 80" aria-hidden="true"><path d="M4 50 C30 10 50 70 74 34 S118 6 132 44 S170 70 186 30 S212 20 216 40"/></svg>
+      <svg class="scrap-doodle scrap-heart" viewBox="0 0 100 90" aria-hidden="true"><path d="M50 84 C10 56 2 34 10 18 C20 0 44 4 50 22 C56 4 80 0 90 18 C98 34 90 56 50 84 Z"/><path d="M30 30 L40 40 M62 26 L70 36"/></svg>
+      <span class="scrap-doodle scrap-wow" aria-hidden="true">wow!</span>
+      <span class="scrap-doodle scrap-fresh" aria-hidden="true">fresh sets</span>
+
+      <p class="scrap-kicker">LBI<svg viewBox="0 0 120 20" aria-hidden="true"><path d="M2 12 C30 2 60 18 118 6"/></svg></p>
+      <!-- The heading is real text: screen readers and Google read "LBI Portfolio", each letter is styled separately -->
+      <h1 class="ransom" aria-label="LBI Portfolio">
+        <span class="ransom-line" aria-hidden="true"><span class="rl rl-p">P</span><span class="rl rl-o1">O</span><span class="rl rl-r">R</span><span class="rl rl-t">T</span></span>
+        <span class="ransom-line" aria-hidden="true"><span class="rl rl-f">F</span><span class="rl rl-o2">O</span><span class="rl rl-l">L</span><span class="rl rl-i">I</span><span class="rl rl-o3">O</span></span>
+      </h1>
+      <p class="scrap-intro">Braids, sew ins and natural styles by Les Braid It, South East London. Tap any photo for a closer look.</p>
     </section>
 
-    <div class="portfolio-rail-wrap">
-      <div class="portfolio-rail">
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/perfect-sew-in-1.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
+    <div class="scrap-filters" role="group" aria-label="Filter by style">
+      <button type="button" class="scrap-chip" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="scrap-chip" data-filter="psi" aria-pressed="false">The &lsquo;Perfect&rsquo; Sew In</button>
+      <button type="button" class="scrap-chip" data-filter="fulani" aria-pressed="false">Fulani</button>
+      <button type="button" class="scrap-chip" data-filter="cassie" aria-pressed="false">Cassie</button>
+      <button type="button" class="scrap-chip" data-filter="natural" aria-pressed="false">Natural</button>
+      <button type="button" class="scrap-chip" data-filter="patewo" aria-pressed="false">Patewo &amp; Base</button>
+      <button type="button" class="scrap-chip" data-filter="boho" aria-pressed="false">Boho French Curl</button>
+      <button type="button" class="scrap-chip" data-filter="layered" aria-pressed="false">Layered Braids</button>
+    </div>
+
+    <div class="scrap-controls">
+      <p class="scrap-status" aria-live="polite"></p>
+      <button type="button" class="scrap-ctl scrap-shuffle" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+        Shuffle the pile
+      </button>
+      <button type="button" class="scrap-ctl scrap-pause" aria-pressed="false">Pause motion</button>
+    </div>
+
+    <div class="scrap-stage">
+      <div class="scrap-extras" aria-hidden="true">
+        <svg class="scrap-star-mid" viewBox="0 0 100 100"><path d="M50 0 C54 36 64 46 100 50 C64 54 54 64 50 100 C46 64 36 54 0 50 C36 46 46 36 50 0Z"/></svg>
+        <span class="scrap-note">hand braided<br>in SE London</span>
+        <svg class="scrap-squiggle-mid" viewBox="0 0 220 80"><path d="M4 50 C30 10 50 70 74 34 S118 6 132 44 S170 70 186 30 S212 20 216 40"/></svg>
+      </div>
+      <!-- All 39 photos. portfolio.js arranges them: messy rows on laptops, swipeable rows on phones -->
+      <div class="scrap-board">
+        <button class="portfolio-item" type="button" data-cat="psi" data-full="assets/images/portfolio/perfect-sew-in-1.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
 
 No Leave out. No Lace. No Glue.
 
 Human Hair and a small amount of synthetic used to create a realistic &lsquo;natural&rsquo; root look. This method works best with textured hair but all textures are welcome!">
-          
-            <img src="assets/images/portfolio/perfect-sew-in-1.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 1" loading="lazy">
-          
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/perfect-sew-in-1.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 1" loading="lazy">
           <span class="portfolio-caption">The &lsquo;Perfect&rsquo; Sew In</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/perfect-sew-in-2.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
+        <button class="portfolio-item" type="button" data-cat="psi" data-full="assets/images/portfolio/perfect-sew-in-2.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
 
 No Leave out. No Lace. No Glue.
 
 Human Hair and a small amount of synthetic used to create a realistic &lsquo;natural&rsquo; root look. This method works best with textured hair but all textures are welcome!">
-          
-            <img src="assets/images/portfolio/perfect-sew-in-2.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 2" loading="lazy">
-          
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/perfect-sew-in-2.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 2" loading="lazy">
           <span class="portfolio-caption">The &lsquo;Perfect&rsquo; Sew In</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/perfect-sew-in-3.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
+        <button class="portfolio-item" type="button" data-cat="psi" data-full="assets/images/portfolio/perfect-sew-in-3.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
 
 No Leave out. No Lace. No Glue.
 
 Human Hair and a small amount of synthetic used to create a realistic &lsquo;natural&rsquo; root look. This method works best with textured hair but all textures are welcome!">
-          
-            <img src="assets/images/portfolio/perfect-sew-in-3.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 3" loading="lazy">
-          
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/perfect-sew-in-3.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 3" loading="lazy">
           <span class="portfolio-caption">The &lsquo;Perfect&rsquo; Sew In</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/perfect-sew-in-4.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
+        <button class="portfolio-item" type="button" data-cat="psi" data-full="assets/images/portfolio/perfect-sew-in-4.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
 
 No Leave out. No Lace. No Glue.
 
 Human Hair and a small amount of synthetic used to create a realistic &lsquo;natural&rsquo; root look. This method works best with textured hair but all textures are welcome!">
-          
-            <img src="assets/images/portfolio/perfect-sew-in-4.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 4" loading="lazy">
-          
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/perfect-sew-in-4.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 4" loading="lazy">
           <span class="portfolio-caption">The &lsquo;Perfect&rsquo; Sew In</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/perfect-sew-in-5.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
+        <button class="portfolio-item" type="button" data-cat="psi" data-full="assets/images/portfolio/perfect-sew-in-5.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
 
 No Leave out. No Lace. No Glue.
 
 Human Hair and a small amount of synthetic used to create a realistic &lsquo;natural&rsquo; root look. This method works best with textured hair but all textures are welcome!">
-          
-            <img src="assets/images/portfolio/perfect-sew-in-5.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 5" loading="lazy">
-          
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/perfect-sew-in-5.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 5" loading="lazy">
           <span class="portfolio-caption">The &lsquo;Perfect&rsquo; Sew In</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/perfect-sew-in-6.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
+        <button class="portfolio-item" type="button" data-cat="psi" data-full="assets/images/portfolio/perfect-sew-in-6.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
 
 No Leave out. No Lace. No Glue.
 
 Human Hair and a small amount of synthetic used to create a realistic &lsquo;natural&rsquo; root look. This method works best with textured hair but all textures are welcome!">
-          
-            <img src="assets/images/portfolio/perfect-sew-in-6.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 6" loading="lazy">
-          
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/perfect-sew-in-6.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 6" loading="lazy">
           <span class="portfolio-caption">The &lsquo;Perfect&rsquo; Sew In</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/perfect-sew-in-7.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
+        <button class="portfolio-item" type="button" data-cat="psi" data-full="assets/images/portfolio/perfect-sew-in-7.jpg" data-caption="The &lsquo;Perfect&rsquo; Sew In" data-info="The &lsquo;perfect&rsquo; sew in is a no leave out sew in method inspired by the magic part sew in created by &#64;curlupanddyejanet_.
 
 No Leave out. No Lace. No Glue.
 
 Human Hair and a small amount of synthetic used to create a realistic &lsquo;natural&rsquo; root look. This method works best with textured hair but all textures are welcome!">
-          
-            <img src="assets/images/portfolio/perfect-sew-in-7.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 7" loading="lazy">
-          
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/perfect-sew-in-7.jpg" alt="The &lsquo;Perfect&rsquo; Sew In example 7" loading="lazy">
           <span class="portfolio-caption">The &lsquo;Perfect&rsquo; Sew In</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/fulani-1.jpg" data-caption="Fulani Sew In / Crochet">
-          
-            <img src="assets/images/portfolio/fulani-1.jpg" alt="Fulani Sew In / Crochet example 1" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="fulani" data-full="assets/images/portfolio/fulani-1.jpg" data-caption="Fulani Sew In / Crochet">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/fulani-1.jpg" alt="Fulani Sew In / Crochet example 1" loading="lazy">
           <span class="portfolio-caption">Fulani Sew In / Crochet</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/fulani-2.jpg" data-caption="Fulani Sew In / Crochet">
-          
-            <img src="assets/images/portfolio/fulani-2.jpg" alt="Fulani Sew In / Crochet example 2" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="fulani" data-full="assets/images/portfolio/fulani-2.jpg" data-caption="Fulani Sew In / Crochet">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/fulani-2.jpg" alt="Fulani Sew In / Crochet example 2" loading="lazy">
           <span class="portfolio-caption">Fulani Sew In / Crochet</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/fulani-3.jpg" data-caption="Fulani Sew In / Crochet">
-          
-            <img src="assets/images/portfolio/fulani-3.jpg" alt="Fulani Sew In / Crochet example 3" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="fulani" data-full="assets/images/portfolio/fulani-3.jpg" data-caption="Fulani Sew In / Crochet">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/fulani-3.jpg" alt="Fulani Sew In / Crochet example 3" loading="lazy">
           <span class="portfolio-caption">Fulani Sew In / Crochet</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/fulani-4.jpg" data-caption="Fulani Sew In / Crochet">
-          
-            <img src="assets/images/portfolio/fulani-4.jpg" alt="Fulani Sew In / Crochet example 4" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="fulani" data-full="assets/images/portfolio/fulani-4.jpg" data-caption="Fulani Sew In / Crochet">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/fulani-4.jpg" alt="Fulani Sew In / Crochet example 4" loading="lazy">
           <span class="portfolio-caption">Fulani Sew In / Crochet</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/fulani-5.jpg" data-caption="Fulani Sew In / Crochet">
-          
-            <img src="assets/images/portfolio/fulani-5.jpg" alt="Fulani Sew In / Crochet example 5" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="fulani" data-full="assets/images/portfolio/fulani-5.jpg" data-caption="Fulani Sew In / Crochet">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/fulani-5.jpg" alt="Fulani Sew In / Crochet example 5" loading="lazy">
           <span class="portfolio-caption">Fulani Sew In / Crochet</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/fulani-6.jpg" data-caption="Fulani Sew In / Crochet">
-          
-            <img src="assets/images/portfolio/fulani-6.jpg" alt="Fulani Sew In / Crochet example 6" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="fulani" data-full="assets/images/portfolio/fulani-6.jpg" data-caption="Fulani Sew In / Crochet">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/fulani-6.jpg" alt="Fulani Sew In / Crochet example 6" loading="lazy">
           <span class="portfolio-caption">Fulani Sew In / Crochet</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/cassie-1.jpg" data-caption="Cassie Hairstyle">
-          
-            <img src="assets/images/portfolio/cassie-1.jpg" alt="Cassie Hairstyle example 1" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="cassie" data-full="assets/images/portfolio/cassie-1.jpg" data-caption="Cassie Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/cassie-1.jpg" alt="Cassie Hairstyle example 1" loading="lazy">
           <span class="portfolio-caption">Cassie Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/cassie-2.jpg" data-caption="Cassie Hairstyle">
-          
-            <img src="assets/images/portfolio/cassie-2.jpg" alt="Cassie Hairstyle example 2" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="cassie" data-full="assets/images/portfolio/cassie-2.jpg" data-caption="Cassie Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/cassie-2.jpg" alt="Cassie Hairstyle example 2" loading="lazy">
           <span class="portfolio-caption">Cassie Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/cassie-3.jpg" data-caption="Cassie Hairstyle">
-          
-            <img src="assets/images/portfolio/cassie-3.jpg" alt="Cassie Hairstyle example 3" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="cassie" data-full="assets/images/portfolio/cassie-3.jpg" data-caption="Cassie Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/cassie-3.jpg" alt="Cassie Hairstyle example 3" loading="lazy">
           <span class="portfolio-caption">Cassie Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/cassie-4.jpg" data-caption="Cassie Hairstyle">
-          
-            <img src="assets/images/portfolio/cassie-4.jpg" alt="Cassie Hairstyle example 4" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="cassie" data-full="assets/images/portfolio/cassie-4.jpg" data-caption="Cassie Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/cassie-4.jpg" alt="Cassie Hairstyle example 4" loading="lazy">
           <span class="portfolio-caption">Cassie Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/natural-1.jpg" data-caption="Natural Hairstyle">
-          
-            <img src="assets/images/portfolio/natural-1.jpg" alt="Natural Hairstyle example 1" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="natural" data-full="assets/images/portfolio/natural-1.jpg" data-caption="Natural Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/natural-1.jpg" alt="Natural Hairstyle example 1" loading="lazy">
           <span class="portfolio-caption">Natural Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/natural-2.jpg" data-caption="Natural Hairstyle">
-          
-            <img src="assets/images/portfolio/natural-2.jpg" alt="Natural Hairstyle example 2" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="natural" data-full="assets/images/portfolio/natural-2.jpg" data-caption="Natural Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/natural-2.jpg" alt="Natural Hairstyle example 2" loading="lazy">
           <span class="portfolio-caption">Natural Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/natural-3.jpg" data-caption="Natural Hairstyle">
-          
-            <img src="assets/images/portfolio/natural-3.jpg" alt="Natural Hairstyle example 3" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="natural" data-full="assets/images/portfolio/natural-3.jpg" data-caption="Natural Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/natural-3.jpg" alt="Natural Hairstyle example 3" loading="lazy">
           <span class="portfolio-caption">Natural Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/natural-4.jpg" data-caption="Natural Hairstyle">
-          
-            <img src="assets/images/portfolio/natural-4.jpg" alt="Natural Hairstyle example 4" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="natural" data-full="assets/images/portfolio/natural-4.jpg" data-caption="Natural Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/natural-4.jpg" alt="Natural Hairstyle example 4" loading="lazy">
           <span class="portfolio-caption">Natural Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/natural-5.jpg" data-caption="Natural Hairstyle">
-          
-            <img src="assets/images/portfolio/natural-5.jpg" alt="Natural Hairstyle example 5" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="natural" data-full="assets/images/portfolio/natural-5.jpg" data-caption="Natural Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/natural-5.jpg" alt="Natural Hairstyle example 5" loading="lazy">
           <span class="portfolio-caption">Natural Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/natural-6.jpg" data-caption="Natural Hairstyle">
-          
-            <img src="assets/images/portfolio/natural-6.jpg" alt="Natural Hairstyle example 6" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="natural" data-full="assets/images/portfolio/natural-6.jpg" data-caption="Natural Hairstyle">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/natural-6.jpg" alt="Natural Hairstyle example 6" loading="lazy">
           <span class="portfolio-caption">Natural Hairstyle</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/patewo-1.jpg" data-caption="Patewo and Base">
-          
-            <img src="assets/images/portfolio/patewo-1.jpg" alt="Patewo and Base example 1" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="patewo" data-full="assets/images/portfolio/patewo-1.jpg" data-caption="Patewo and Base">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/patewo-1.jpg" alt="Patewo and Base example 1" loading="lazy">
           <span class="portfolio-caption">Patewo and Base</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/patewo-2.jpg" data-caption="Patewo and Base">
-          
-            <img src="assets/images/portfolio/patewo-2.jpg" alt="Patewo and Base example 2" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="patewo" data-full="assets/images/portfolio/patewo-2.jpg" data-caption="Patewo and Base">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/patewo-2.jpg" alt="Patewo and Base example 2" loading="lazy">
           <span class="portfolio-caption">Patewo and Base</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/patewo-3.jpg" data-caption="Patewo and Base">
-          
-            <img src="assets/images/portfolio/patewo-3.jpg" alt="Patewo and Base example 3" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="patewo" data-full="assets/images/portfolio/patewo-3.jpg" data-caption="Patewo and Base">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/patewo-3.jpg" alt="Patewo and Base example 3" loading="lazy">
           <span class="portfolio-caption">Patewo and Base</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/patewo-4.jpg" data-caption="Patewo and Base">
-          
-            <img src="assets/images/portfolio/patewo-4.jpg" alt="Patewo and Base example 4" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="patewo" data-full="assets/images/portfolio/patewo-4.jpg" data-caption="Patewo and Base">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/patewo-4.jpg" alt="Patewo and Base example 4" loading="lazy">
           <span class="portfolio-caption">Patewo and Base</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/boho-french-curl-1.jpg" data-caption="Boho French Curl">
-          
-            <img src="assets/images/portfolio/boho-french-curl-1.jpg" alt="Boho French Curl example 1" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="boho" data-full="assets/images/portfolio/boho-french-curl-1.jpg" data-caption="Boho French Curl">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/boho-french-curl-1.jpg" alt="Boho French Curl example 1" loading="lazy">
           <span class="portfolio-caption">Boho French Curl</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/boho-french-curl-2.jpg" data-caption="Boho French Curl">
-          
-            <img src="assets/images/portfolio/boho-french-curl-2.jpg" alt="Boho French Curl example 2" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="boho" data-full="assets/images/portfolio/boho-french-curl-2.jpg" data-caption="Boho French Curl">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/boho-french-curl-2.jpg" alt="Boho French Curl example 2" loading="lazy">
           <span class="portfolio-caption">Boho French Curl</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/boho-french-curl-3.jpg" data-caption="Boho French Curl">
-          
-            <img src="assets/images/portfolio/boho-french-curl-3.jpg" alt="Boho French Curl example 3" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="boho" data-full="assets/images/portfolio/boho-french-curl-3.jpg" data-caption="Boho French Curl">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/boho-french-curl-3.jpg" alt="Boho French Curl example 3" loading="lazy">
           <span class="portfolio-caption">Boho French Curl</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/boho-french-curl-4.jpg" data-caption="Boho French Curl">
-          
-            <img src="assets/images/portfolio/boho-french-curl-4.jpg" alt="Boho French Curl example 4" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="boho" data-full="assets/images/portfolio/boho-french-curl-4.jpg" data-caption="Boho French Curl">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/boho-french-curl-4.jpg" alt="Boho French Curl example 4" loading="lazy">
           <span class="portfolio-caption">Boho French Curl</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/extra-small-layered-1.jpg" data-caption="Extra Small Layered Braids">
-          
-            <img src="assets/images/portfolio/extra-small-layered-1.jpg" alt="Extra Small Layered Braids example 1" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="layered" data-full="assets/images/portfolio/extra-small-layered-1.jpg" data-caption="Extra Small Layered Braids">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/extra-small-layered-1.jpg" alt="Extra Small Layered Braids example 1" loading="lazy">
           <span class="portfolio-caption">Extra Small Layered Braids</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/extra-small-layered-2.jpg" data-caption="Extra Small Layered Braids">
-          
-            <img src="assets/images/portfolio/extra-small-layered-2.jpg" alt="Extra Small Layered Braids example 2" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="layered" data-full="assets/images/portfolio/extra-small-layered-2.jpg" data-caption="Extra Small Layered Braids">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/extra-small-layered-2.jpg" alt="Extra Small Layered Braids example 2" loading="lazy">
           <span class="portfolio-caption">Extra Small Layered Braids</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/extra-small-layered-3.jpg" data-caption="Extra Small Layered Braids">
-          
-            <img src="assets/images/portfolio/extra-small-layered-3.jpg" alt="Extra Small Layered Braids example 3" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="layered" data-full="assets/images/portfolio/extra-small-layered-3.jpg" data-caption="Extra Small Layered Braids">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/extra-small-layered-3.jpg" alt="Extra Small Layered Braids example 3" loading="lazy">
           <span class="portfolio-caption">Extra Small Layered Braids</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/extra-small-layered-4.jpg" data-caption="Extra Small Layered Braids">
-          
-            <img src="assets/images/portfolio/extra-small-layered-4.jpg" alt="Extra Small Layered Braids example 4" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="layered" data-full="assets/images/portfolio/extra-small-layered-4.jpg" data-caption="Extra Small Layered Braids">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/extra-small-layered-4.jpg" alt="Extra Small Layered Braids example 4" loading="lazy">
           <span class="portfolio-caption">Extra Small Layered Braids</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/extra-small-layered-5.jpg" data-caption="Extra Small Layered Braids">
-          
-            <img src="assets/images/portfolio/extra-small-layered-5.jpg" alt="Extra Small Layered Braids example 5" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="layered" data-full="assets/images/portfolio/extra-small-layered-5.jpg" data-caption="Extra Small Layered Braids">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/extra-small-layered-5.jpg" alt="Extra Small Layered Braids example 5" loading="lazy">
           <span class="portfolio-caption">Extra Small Layered Braids</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/pick-and-drop-1.jpg" data-caption="Pick and Drop Boho Layered Braids">
-          
-            <img src="assets/images/portfolio/pick-and-drop-1.jpg" alt="Pick and Drop Boho Layered Braids example 1" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="layered" data-full="assets/images/portfolio/pick-and-drop-1.jpg" data-caption="Pick and Drop Boho Layered Braids">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/pick-and-drop-1.jpg" alt="Pick and Drop Boho Layered Braids example 1" loading="lazy">
           <span class="portfolio-caption">Pick and Drop Boho Layered Braids</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/pick-and-drop-2.jpg" data-caption="Pick and Drop Boho Layered Braids">
-          
-            <img src="assets/images/portfolio/pick-and-drop-2.jpg" alt="Pick and Drop Boho Layered Braids example 2" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="layered" data-full="assets/images/portfolio/pick-and-drop-2.jpg" data-caption="Pick and Drop Boho Layered Braids">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/pick-and-drop-2.jpg" alt="Pick and Drop Boho Layered Braids example 2" loading="lazy">
           <span class="portfolio-caption">Pick and Drop Boho Layered Braids</span>
         </button>
-        <button class="portfolio-item" type="button" data-full="assets/images/portfolio/pick-and-drop-3.jpg" data-caption="Pick and Drop Boho Layered Braids">
-          
-            <img src="assets/images/portfolio/pick-and-drop-3.jpg" alt="Pick and Drop Boho Layered Braids example 3" loading="lazy">
-          
+        <button class="portfolio-item" type="button" data-cat="layered" data-full="assets/images/portfolio/pick-and-drop-3.jpg" data-caption="Pick and Drop Boho Layered Braids">
+          <span class="scrap-tape-bit" aria-hidden="true"></span>
+          <img src="assets/images/portfolio/pick-and-drop-3.jpg" alt="Pick and Drop Boho Layered Braids example 3" loading="lazy">
           <span class="portfolio-caption">Pick and Drop Boho Layered Braids</span>
         </button>
       </div>
-
-      <p class="rail-arrow-hint">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="12" x2="3" y2="12"></line><polyline points="10 5 3 12 10 19"></polyline></svg>
-        Swipe to see more
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><polyline points="14 5 21 12 14 19"></polyline></svg>
-      </p>
     </div>
 
+    <section class="scrap-cta">
+      <p>seen a look you love?</p>
+      <a href="booking.html" class="scrap-book">Book this style</a>
+    </section>
+
+    <div class="scrap-hazard scrap-hazard-bottom" aria-hidden="true"></div>
   </main>
 
   <footer class="site-footer">
@@ -338,5 +346,6 @@ Human Hair and a small amount of synthetic used to create a realistic &lsquo;nat
   <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/nav-auth.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/portfolio.js"></script>
 </body>
 </html>
