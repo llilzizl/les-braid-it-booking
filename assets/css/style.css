@@ -2155,3 +2155,9 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
 .ref-thumbs { margin-top: 8px; }
 .ref-thumb-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 .ref-thumb img { display: block; width: 64px; height: 64px; object-fit: cover; border: 1px solid var(--pink-light); border-radius: 8px; }
+
+/* Custom request sent: "View my request in My account" button above Done (members only) */
+.cr-account-link { display: block; margin-bottom: 12px; text-align: center; text-decoration: none; }
+.cr-account-link[hidden] { display: none; }
+/* My account page: stop below the sticky header when linked to the requests */
+#custom-requests { scroll-margin-top: 124px; }
