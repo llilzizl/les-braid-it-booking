@@ -272,7 +272,13 @@ export function createHandler(deps: Deps) {
     /* ----- submit: multipart form with the photo ----- */
     if ((req.headers.get("content-type") || "").includes("multipart/form-data")) {
       let form: FormData;
-      try { form = await req.formData(); } catch { return reply(400, { error: "Invalid request." }); }
+      try {
+        form = await req.formData();
+      } catch (err) {
+        // Shows in Supabase > Edge Functions > custom-requests > Logs, so the real reason can be seen
+        console.error("Could not read the request form", (err as Error).message, "size:", req.headers.get("content-length"));
+        return reply(400, { error: "Sorry, your request couldn't be read. Please try again with a smaller photo, or a screenshot of it.", code: "unreadable_form" });
+      }
 
       const photo = form.get("photo");
       if (!(photo instanceof File) || photo.size === 0) return reply(400, { error: "Please add a photo of the style.", code: "missing_photo" });
@@ -318,7 +324,12 @@ export function createHandler(deps: Deps) {
     }
 
     let input: any;
-    try { input = await req.json(); } catch { return reply(400, { error: "Invalid request." }); }
+    try {
+      input = await req.json();
+    } catch (err) {
+      console.error("Could not read the request", (err as Error).message, "type:", req.headers.get("content-type"));
+      return reply(400, { error: "Sorry, your request couldn't be read. Please refresh the page and try again.", code: "unreadable_request" });
+    }
 
     const owner = { email: deps.env("OWNER_EMAIL") || deps.env("EMAIL_FROM") || "" };
     const linkFor = (tokenValue: string) => `${site}/my-request.html?token=${tokenValue}`;

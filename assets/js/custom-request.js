@@ -399,6 +399,31 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   timesBox.addEventListener('click', function (e) { pick(timesBox, e, function (v) { chosenTime = v; }); });
 
+  /* ---------- Photo: shrink before sending ---------- */
+  // Draws the photo at no more than 1600px on a white background (so see-through PNGs
+  // don't turn black) and saves it as a JPG. If the browser can't read it (e.g. some
+  // HEIC photos), the original is sent instead.
+  function shrinkPhoto(file) {
+    return new Promise(function (resolve) {
+      var img = new Image();
+      var url = URL.createObjectURL(file);
+      img.onload = function () {
+        var scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(function (blob) { resolve(blob ? new File([blob], 'style-photo.jpg', { type: 'image/jpeg' }) : file); }, 'image/jpeg', 0.85);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); resolve(file); };
+      img.src = url;
+    });
+  }
+
   /* ---------- Opening the form ---------- */
   var started = false;
   function start() {
@@ -454,7 +479,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!phone) return showStatus('Please enter your phone number.');
 
     var data = new FormData();
-    data.append('photo', file);
     data.append('description', description);
     data.append('duration', String(duration));
     data.append('price', price);
@@ -467,7 +491,11 @@ document.addEventListener('DOMContentLoaded', function () {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
 
-    db.auth.getSession().then(function (r) {
+    // Shrink the photo first (big phone photos and PNG logos can be several MB), then send
+    shrinkPhoto(file).then(function (photo) {
+      data.append('photo', photo, photo === file ? file.name : 'style-photo.jpg');
+      return db.auth.getSession();
+    }).then(function (r) {
       var s = r.data && r.data.session;
       return fetch(cfg.url + '/functions/v1/custom-requests', {
         method: 'POST',

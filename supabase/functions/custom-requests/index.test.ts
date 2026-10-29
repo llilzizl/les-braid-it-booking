@@ -183,3 +183,13 @@ Deno.test("emails: lengths and escaping", () => {
   assert(!m.html.includes("<script>"));
   assert(!m.html.includes("<b>Eve</b>"));
 });
+
+Deno.test("submit: a form that can't be read gets a clear message", async () => {
+  const { deps } = fakeDeps();
+  const bad = new Request("https://x/functions/v1/custom-requests", { method: "POST", headers: { origin: ORIGIN, "content-type": "multipart/form-data; boundary=nothing" }, body: "not really a form" });
+  const res = await createHandler(deps)(bad);
+  assertEquals(res.status, 400);
+  const body = await res.json();
+  assertEquals(body.code, "unreadable_form");
+  assertStringIncludes(body.error, "smaller photo");
+});
