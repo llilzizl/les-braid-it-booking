@@ -720,6 +720,7 @@ img {
 .service-features li { position: relative; padding-left: 26px; color: var(--white); font-size: 14px; line-height: 1.5; }
 .service-features li::before { content: '\2713'; position: absolute; left: 0; color: var(--pink); font-weight: 700; }
 
+.service-ref-note { margin: 0 0 14px; color: var(--pink); font-size: 14px; line-height: 1.75; text-align: left; }
 .service-description { margin: 0 0 30px; color: var(--grey); font-size: 14px; line-height: 1.75; text-align: left; }
 
 .service-kit { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--pink); border-radius: 20px; padding: 24px; margin: 0 0 30px; text-align: left; }
@@ -1096,6 +1097,13 @@ body.lightbox-active .portfolio-rail .portfolio-item {
 }
 .tab-info-panel.is-open {
   display: block;
+}
+/* Contact page: the panel tucks up under the frosted tabs, so lift it above
+   them (otherwise the frost covers its first lines) and keep it off the edges */
+.tabs ~ .tab-info-panel {
+  position: relative;
+  z-index: 1;
+  width: 88%;
 }
 
 /* ---------- form sections ---------- */
