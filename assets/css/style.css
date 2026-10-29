@@ -2475,6 +2475,10 @@ img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the
   .scrap-stage { padding: 0; margin-top: 10px; }
   .scrap-board { display: block; padding: 0; }
   .scrap-row { position: relative; margin-top: 8px; }
+  /* One style picked: the two rows sit straight on top of each other, no titles */
+  .scrap-row-plain { margin-top: 0; }
+  .scrap-row-plain .scrap-strip { padding-bottom: 24px; }
+  .scrap-row-plain + .scrap-row-plain .scrap-strip { padding-top: 6px; }
   .scrap-row-head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 16px; }
   .scrap-row-head span { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--grey); }
   .scrap-row-title {
