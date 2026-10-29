@@ -101,19 +101,22 @@
         ['more styles', mix([byCat.natural || [], byCat.patewo || []])]
       ];
     } else {
-      // Share this style's photos across up to 3 rows
-      var rowCount = Math.min(3, Math.ceil(list.length / 2));
-      groups = [];
-      for (var g = 0; g < rowCount; g++) groups.push([['pile one', 'pile two', 'pile three'][g], []]);
-      list.forEach(function (item, i) { groups[i % rowCount][1].push(item); });
+      // One style: two rows with no titles, photos split evenly (the first row gets the odd one)
+      var styleName = page.querySelector('.scrap-chip[aria-pressed="true"]').textContent;
+      var half = Math.ceil(list.length / 2);
+      groups = [[styleName + ', row 1', list.slice(0, half)]];
+      if (list.length > half) groups.push([styleName + ', row 2', list.slice(half)]);
     }
+    var showTitles = current === 'all';
 
     groups.forEach(function (group, r) {
       var row = document.createElement('section');
-      row.className = 'scrap-row scrap-row-' + (r + 1);
+      row.className = 'scrap-row scrap-row-' + (r + 1) + (showTitles ? '' : ' scrap-row-plain');
       row.setAttribute('aria-label', group[0] + ' photos');
-      row.innerHTML = '<div class="scrap-row-head"><h2 class="scrap-row-title"></h2><span aria-hidden="true">swipe &#8594;</span></div>';
-      row.querySelector('.scrap-row-title').textContent = group[0];
+      if (showTitles) {
+        row.innerHTML = '<div class="scrap-row-head"><h2 class="scrap-row-title"></h2><span aria-hidden="true">swipe &#8594;</span></div>';
+        row.querySelector('.scrap-row-title').textContent = group[0];
+      }
 
       var strip = document.createElement('div');
       strip.className = 'scrap-strip';
