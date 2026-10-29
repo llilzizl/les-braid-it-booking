@@ -1891,7 +1891,6 @@ body[data-members-only]:not(.is-member-ready) main {
 }
 
 /* Day and time choices */
-.cr-days,
 .cr-times {
   display: flex;
   gap: 8px;
@@ -1900,7 +1899,6 @@ body[data-members-only]:not(.is-member-ready) main {
   scrollbar-width: thin;
   scrollbar-color: var(--pink) transparent;
 }
-.cr-days { margin-top: 10px; }
 .cr-times { flex-wrap: wrap; overflow: visible; margin-top: 6px; }
 
 .cr-chip {
@@ -1926,7 +1924,24 @@ body[data-members-only]:not(.is-member-ready) main {
 .cr-chip:focus-visible { outline: 2px solid var(--pink-light); outline-offset: 2px; }
 
 .cr-success { text-align: center; padding: 20px 0 4px; }
-.cr-success[hidden], .custom-request-form[hidden], .cr-times[hidden] { display: none; }
+.cr-success[hidden], .custom-request-form[hidden], .cr-times[hidden], .cr-calendar[hidden], .cr-times-heading[hidden] { display: none; }
+
+/* Custom request calendar: same look as the booking calendar on the style pages */
+.cr-calendar { margin-top: 10px; padding: 16px; border: 1px solid var(--pink-light); border-radius: 18px; background: var(--card); }
+.cr-cal-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.cr-cal-month { margin: 0; color: var(--white); font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; font-weight: 600; }
+.cr-cal-nav { width: 34px; height: 34px; border: 0; border-radius: 50%; background: transparent; color: var(--white); font-size: 28px; line-height: 1; cursor: pointer; }
+.cr-cal-nav:disabled { opacity: 0.25; cursor: default; }
+.cr-cal-nav:not(:disabled):hover { color: var(--pink); }
+.cr-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+.cr-cal-grid span, .cr-cal-grid button { min-height: 40px; padding: 5px; border: 0; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--black); color: var(--grey); font: inherit; font-size: 11px; text-align: right; }
+.cr-cal-grid .cr-cal-weekday { min-height: auto; color: var(--pink-light); font-size: 9px; font-weight: 600; text-align: center; }
+.cr-cal-grid button.is-available { background: rgba(232, 85, 143, 0.42); color: var(--white); cursor: pointer; transition: background 0.15s ease; }
+.cr-cal-grid button.is-available:hover,
+.cr-cal-grid button.is-selected { background: rgba(232, 85, 143, 0.22); }
+.cr-cal-grid button.is-selected { outline: 2px solid var(--pink-light); outline-offset: -2px; }
+.cr-cal-grid button:focus-visible { outline: 2px solid var(--white); outline-offset: -2px; }
+.cr-times-heading { margin: 16px 0 0; color: var(--pink-light); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; }
 
 /* A more solid background, so page text never shows through the longer form */
 .custom-modal-panel { background: #6e1037; }
