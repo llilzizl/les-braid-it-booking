@@ -742,7 +742,8 @@ infoToggles.forEach(function (btn) {
 
   /* ---------------- Booking: your details + save to Supabase ---------------- */
   if (bookingForm) {
-    var bookingStatus = bookingForm.querySelector('.member-status');
+    // The details panel's message box (the login panel has its own)
+    var bookingStatus = bookingForm.querySelector('.booking-details-panel .member-status') || bookingForm.querySelector('.member-status');
     var lbiConfig = window.LBI_SUPABASE || {};
     var bookingDb = null;
     var bookingMemberId = null;
@@ -757,6 +758,159 @@ infoToggles.forEach(function (btn) {
     };
 
     var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+
+    /* ----- Log in or Continue as guest ----- */
+    var authBox = bookingForm.querySelector('.booking-auth');
+    var authTabs = Array.prototype.slice.call(bookingForm.querySelectorAll('[data-auth-tab]'));
+    var authBodies = Array.prototype.slice.call(bookingForm.querySelectorAll('[data-auth-body]'));
+    var signedInNote = bookingForm.querySelector('.booking-signed-in');
+    var loginStatus = bookingForm.querySelector('.booking-login-status');
+    var loginEmail = bookingForm.querySelector('#booking-login-email');
+    var loginPassword = bookingForm.querySelector('#booking-login-password');
+    var loginBtn = bookingForm.querySelector('.booking-login-btn');
+
+    // Shows one panel (login or guest) and hides the other, like the tabs on the login page
+    var showAuthPanel = function (name) {
+      authBodies.forEach(function (body) { body.hidden = body.getAttribute('data-auth-body') !== name; });
+      authTabs.forEach(function (tab) { tab.setAttribute('aria-pressed', tab.getAttribute('data-auth-tab') === name ? 'true' : 'false'); });
+    };
+    authTabs.forEach(function (tab) {
+      tab.addEventListener('click', function () { showAuthPanel(tab.getAttribute('data-auth-tab')); });
+    });
+
+    // A logged in member: link the booking to their account, fill in their details, skip the tabs
+    var useMember = function (session) {
+      var details = session.user.user_metadata || {};
+      bookingMemberId = session.user.id;
+      if (!bookingForm.fullname.value) bookingForm.fullname.value = details.full_name || '';
+      if (!bookingForm.email.value) bookingForm.email.value = session.user.email || '';
+      if (!bookingForm.phone.value) bookingForm.phone.value = details.phone || '';
+      if (authBox) authBox.hidden = true;
+      if (signedInNote) {
+        signedInNote.textContent = 'Logged in as ' + (details.full_name || session.user.email) + '. This booking will count towards your loyalty card.';
+        signedInNote.hidden = false;
+      }
+      showAuthPanel('guest');
+    };
+
+    var showLoginStatus = function (message) {
+      loginStatus.textContent = message;
+      loginStatus.className = 'member-status booking-login-status is-error';
+      loginStatus.hidden = false;
+    };
+    var logIn = function () {
+      if (!bookingDb) return;
+      var email = loginEmail.value.trim();
+      if (!/^\S+@\S+\.\S+$/.test(email)) return showLoginStatus('Please enter the email address you signed up with.');
+      if (!loginPassword.value) return showLoginStatus('Please enter your password.');
+      loginStatus.hidden = true;
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in…';
+      bookingDb.auth.signInWithPassword({ email: email, password: loginPassword.value }).then(function (result) {
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Log in and continue';
+        if (result.error) {
+          var msg = /confirm/i.test(result.error.message)
+            ? 'Please confirm your email first. Check your inbox for the link.'
+            : 'That email and password don’t match. Try again, or continue as a guest.';
+          return showLoginStatus(msg);
+        }
+        loginPassword.value = '';
+        useMember(result.data.session);
+      });
+    };
+    if (loginBtn) {
+      loginBtn.addEventListener('click', logIn);
+      // Pressing Enter in the login boxes logs in, instead of sending the booking form
+      [loginEmail, loginPassword].forEach(function (input) {
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') { e.preventDefault(); logIn(); }
+        });
+      });
+    }
+    // Start on Log in, to encourage member accounts (or on the details if booking isn't set up)
+    showAuthPanel(bookingDb && authBox ? 'login' : 'guest');
+
+    /* ----- Reference photos: up to 4 ----- */
+    var MAX_REFS = 4;
+    var refInput = bookingForm.querySelector('.ref-upload-input');
+    var refList = bookingForm.querySelector('.ref-previews');
+    var refMessage = bookingForm.querySelector('.ref-upload-message');
+    var refUploadBtn = bookingForm.querySelector('.ref-upload-btn');
+    var refFiles = [];   // the photos chosen so far
+
+    var renderRefs = function () {
+      refList.textContent = '';
+      refFiles.forEach(function (file, i) {
+        var item = document.createElement('li');
+        var img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.alt = 'Reference photo ' + (i + 1);
+        img.onload = function () { URL.revokeObjectURL(img.src); };
+        var remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'ref-remove';
+        remove.setAttribute('aria-label', 'Remove reference photo ' + (i + 1));
+        remove.textContent = '×';
+        remove.addEventListener('click', function () {
+          refFiles.splice(i, 1);
+          refMessage.hidden = true;
+          renderRefs();
+        });
+        item.appendChild(img);
+        item.appendChild(remove);
+        refList.appendChild(item);
+      });
+      // Hide the Add button once there are 4 photos
+      if (refUploadBtn) refUploadBtn.hidden = refFiles.length >= MAX_REFS;
+    };
+    if (refInput) {
+      refInput.addEventListener('change', function () {
+        var chosen = Array.prototype.slice.call(refInput.files).filter(function (f) { return /^image\//.test(f.type) || /\.(heic|heif)$/i.test(f.name); });
+        var room = MAX_REFS - refFiles.length;
+        refFiles = refFiles.concat(chosen.slice(0, room));
+        refMessage.hidden = chosen.length <= room;
+        refMessage.textContent = 'You can add up to ' + MAX_REFS + ' photos, so only the first ' + MAX_REFS + ' were kept.';
+        refInput.value = '';   // so the same photo can be picked again after removing it
+        renderRefs();
+      });
+    }
+
+    // Phone photos can be huge, so shrink them to at most 1600px before uploading
+    var shrinkImage = function (file) {
+      return new Promise(function (resolve) {
+        var img = new Image();
+        var url = URL.createObjectURL(file);
+        img.onload = function () {
+          var scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+          var canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          URL.revokeObjectURL(url);
+          canvas.toBlob(function (blob) { resolve(blob || file); }, 'image/jpeg', 0.85);
+        };
+        img.onerror = function () { URL.revokeObjectURL(url); resolve(file); };   // e.g. HEIC on some browsers: send as it is
+        img.src = url;
+      });
+    };
+
+    // Saves the photos in a private folder named after the booking (only Lilian can see them)
+    var uploadRefs = function (bookingId) {
+      var done = 0;
+      return refFiles.reduce(function (chain, file, i) {
+        return chain.then(function () {
+          return shrinkImage(file).then(function (blob) {
+            var ext = blob.type === 'image/jpeg' ? 'jpg' : (file.name.split('.').pop() || 'jpg').toLowerCase();
+            return bookingDb.storage.from('booking-references')
+              .upload(bookingId + '/photo-' + (i + 1) + '.' + ext, blob, { contentType: blob.type || 'image/jpeg', upsert: false });
+          }).then(function (res) {
+            if (res.error) console.warn('Reference photo not saved', res.error.message);
+            else done += 1;
+          });
+        });
+      }, Promise.resolve()).then(function () { return done; });
+    };
 
     // Button text shows the deposit for the chosen style, e.g. "Pay £20 deposit"
     var submitLabel = function () {
@@ -790,13 +944,7 @@ infoToggles.forEach(function (btn) {
     } else {
       // Logged in members: fill in their details and link the booking to their account
       bookingDb.auth.getSession().then(function (result) {
-        var session = result.data.session;
-        if (!session) return;
-        var details = session.user.user_metadata || {};
-        bookingMemberId = session.user.id;
-        if (!bookingForm.fullname.value) bookingForm.fullname.value = details.full_name || '';
-        if (!bookingForm.email.value) bookingForm.email.value = session.user.email || '';
-        if (!bookingForm.phone.value) bookingForm.phone.value = details.phone || '';
+        if (result.data.session) useMember(result.data.session);
       });
     }
 
@@ -852,8 +1000,17 @@ infoToggles.forEach(function (btn) {
         return res.json().catch(function () { return {}; }).then(function (body) { return { ok: res.ok, body: body }; });
       }).then(function (out) {
         if (out.ok && out.body.url) {
-          submitBtn.textContent = 'Taking you to payment…';
-          window.location.href = out.body.url;
+          var goToPayment = function () {
+            submitBtn.textContent = 'Taking you to payment…';
+            window.location.href = out.body.url;
+          };
+          // Reference photos go up first, then payment. A failed photo never stops the booking.
+          if (refFiles.length && out.body.bookingId) {
+            submitBtn.textContent = 'Uploading your photos…';
+            uploadRefs(out.body.bookingId).then(goToPayment, goToPayment);
+          } else {
+            goToPayment();
+          }
           return;
         }
         resetSubmit();

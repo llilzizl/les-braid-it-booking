@@ -576,7 +576,34 @@
         who.appendChild(mail);
       }
       card.appendChild(who);
+      if (b.source !== 'wix') addReferencePhotos(card, b.id);
       return card;
+    }
+
+    // Reference photos the client added when booking, from the private booking-references folder
+    function addReferencePhotos(card, bookingId) {
+      db.storage.from('booking-references').list(bookingId).then(function (res) {
+        var files = (res.data || []).filter(function (f) { return f.name && f.name.charAt(0) !== '.'; });
+        if (!files.length) return;
+        var box = make('div', 'ref-thumbs');
+        box.appendChild(make('div', 'muted', 'Reference photos:'));
+        var row = make('div', 'ref-thumb-row');
+        files.forEach(function (f, i) {
+          var link = make('a', 'ref-thumb');
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.setAttribute('aria-label', 'Open reference photo ' + (i + 1) + ' full size');
+          var img = document.createElement('img');
+          img.alt = 'Reference photo ' + (i + 1);
+          link.appendChild(img);
+          row.appendChild(link);
+          db.storage.from('booking-references').createSignedUrl(bookingId + '/' + f.name, 3600).then(function (s) {
+            if (s.data && s.data.signedUrl) { img.src = s.data.signedUrl; link.href = s.data.signedUrl; }
+          });
+        });
+        box.appendChild(row);
+        card.appendChild(box);
+      });
     }
 
     function renderBookings() {

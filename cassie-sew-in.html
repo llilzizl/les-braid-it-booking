@@ -159,6 +159,28 @@
           <p class="time-options-heading">Select a date to see available times</p>
           <div class="time-options" aria-label="Available times"></div>
           <form class="booking-details-form" novalidate hidden>
+            <div class="booking-auth">
+              <div class="member-tabs booking-auth-tabs" role="group" aria-label="Log in or continue as a guest">
+                <button class="tab" type="button" data-auth-tab="login" aria-pressed="true">Log in</button>
+                <button class="tab" type="button" data-auth-tab="guest" aria-pressed="false">Continue as guest</button>
+              </div>
+              <p class="form-note booking-member-note">Have a member account? Log in first so this visit counts towards your loyalty card.</p>
+              <div class="booking-login" data-auth-body="login">
+                <p class="member-status booking-login-status" role="status" aria-live="polite" hidden></p>
+                <div class="field">
+                  <label for="booking-login-email">Email address</label>
+                  <input type="email" id="booking-login-email" autocomplete="email" placeholder="name@example.com">
+                </div>
+                <div class="field">
+                  <label for="booking-login-password">Password</label>
+                  <input type="password" id="booking-login-password" autocomplete="current-password" placeholder="Your password">
+                </div>
+                <button class="submit-btn booking-login-btn" type="button">Log in and continue</button>
+                <p class="form-note"><a href="login.html#forgot">Forgot your password?</a> No account yet? <a href="login.html#signup">Create one</a> to start collecting loyalty stamps.</p>
+              </div>
+            </div>
+            <p class="member-status is-success booking-signed-in" role="status" hidden></p>
+            <div class="booking-details-panel" data-auth-body="guest" hidden>
             <h3 class="booking-details-title">Your details</h3>
             <p class="member-status" role="status" aria-live="polite" hidden></p>
             <div class="field">
@@ -173,15 +195,26 @@
               <label for="booking-phone">Phone number</label>
               <input type="tel" id="booking-phone" name="phone" autocomplete="tel" placeholder="07123 456789" required>
             </div>
+            <div class="field ref-upload-field">
+              <span class="field-label" id="booking-references-label">Reference photos (optional)</span>
+              <p class="field-hint">Show me the look you want. Add up to 4 photos.</p>
+              <input class="ref-upload-input" type="file" id="booking-references" accept="image/*" multiple aria-labelledby="booking-references-label">
+              <label class="ref-upload-btn" for="booking-references">
+                <span aria-hidden="true">+</span> Add photos
+              </label>
+              <ul class="ref-previews" aria-live="polite"></ul>
+              <p class="field-hint ref-upload-message" aria-live="polite" hidden></p>
+            </div>
             <fieldset class="field consent-field">
               <legend>Photos and videos</legend>
               <p class="consent-note">Content is never expected. Choose whether I can share photos or videos of your finished style on my portfolio and social media.</p>
-              <label class="consent-option"><input type="radio" name="consent" value="Yes" required> Yes, you can share them</label>
-              <label class="consent-option"><input type="radio" name="consent" value="No"> No, please don&rsquo;t share them</label>
+              <label class="consent-option"><input type="radio" name="consent" value="Yes" required> Yes, I give permission to share photos and videos of my style</label>
+              <label class="consent-option"><input type="radio" name="consent" value="Yes (without my face)"> Yes, but please don&rsquo;t show my face</label>
+              <label class="consent-option"><input type="radio" name="consent" value="No"> No, I don&rsquo;t give permission</label>
             </fieldset>
             <button class="submit-btn" type="submit">Continue to payment</button>
             <p class="form-note">You pay a small deposit by card to secure your time. It comes off the price of your appointment, and your time is held for 30 minutes while you pay. See the <a href="policies.html">policies</a> for rescheduling and refunds.</p>
-            <p class="form-note">Have a member account? <a href="login.html">Log in</a> first so this visit counts towards your loyalty card.</p>
+            </div>
           </form>
         </div>
       </div>
