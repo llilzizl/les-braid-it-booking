@@ -2101,3 +2101,7 @@ body[data-members-only]:not(.is-member-ready) main {
 .site-footer a:hover, .site-footer a:focus-visible { color: var(--pink); }
 .privacy-page .policies-intro { padding-top: 40px; }
 .privacy-page .policy-section h2 { margin-bottom: 14px; }
+
+/* Contact page: when a link jumps to the About section, stop it just below the sticky
+   header (about 110px tall) instead of hiding the top of the section behind it */
+#about { scroll-margin-top: 124px; }
