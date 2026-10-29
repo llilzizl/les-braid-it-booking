@@ -128,7 +128,8 @@ export function createHandler(deps: Deps) {
 
       if (!session.url) throw new Error("Stripe returned no checkout address");
       await deps.attachSession(bookingId, session.id);
-      return reply(200, { url: session.url });
+      // bookingId lets the booking form attach reference photos before going to payment
+      return reply(200, { url: session.url, bookingId });
     } catch (err) {
       console.error("Stripe checkout failed", (err as Error).message);
       await deps.expireBooking(bookingId).catch(() => {});   // free the slot straight away

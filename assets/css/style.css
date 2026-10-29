@@ -2124,3 +2124,34 @@ body[data-members-only]:not(.is-member-ready) main {
 /* "Photo coming soon" image for styles without photos yet: not clickable, so no zoom cursor */
 img.photo-coming-soon { height: auto; } /* let the card or gallery shape set the height, not the 900px in the HTML */
 .service-gallery img.photo-coming-soon { cursor: default; }
+
+/* ---------- Booking form: Log in or Continue as guest ---------- */
+.booking-auth { margin-bottom: 8px; }
+.booking-auth-tabs { margin-bottom: 12px; }
+.booking-auth-tabs .tab { padding: 10px 8px; font-size: 12px; }
+.booking-member-note { margin: 0 0 18px; text-align: center; }
+.booking-login .submit-btn { margin-top: 4px; }
+.booking-login .form-note a, .booking-member-note a { color: var(--pink); }
+.booking-auth[hidden], .booking-details-panel[hidden], .booking-login[hidden], .booking-signed-in[hidden] { display: none; }
+.booking-signed-in { margin-bottom: 16px; }
+
+/* ---------- Booking form: reference photos ---------- */
+.ref-upload-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.ref-upload-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; padding: 12px 18px; border: 1px dashed var(--pink); border-radius: 12px; background: var(--black); color: var(--pink-light); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: none; cursor: pointer; }
+.field .ref-upload-btn { display: inline-flex; font-size: 13px; letter-spacing: 0.5px; text-transform: none; color: var(--pink-light); margin-bottom: 0; }
+.ref-upload-btn span { font-size: 20px; line-height: 1; color: var(--pink); }
+.ref-upload-btn:hover { border-style: solid; }
+.ref-upload-input:focus-visible + .ref-upload-btn { outline: 2px solid var(--pink-light); outline-offset: 2px; }
+.ref-upload-btn[hidden], .field .ref-upload-btn[hidden] { display: none; }
+.ref-previews { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.ref-previews:empty { display: none; }
+.ref-previews li { position: relative; }
+.ref-previews img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border: 1px solid var(--pink-light); border-radius: 10px; }
+.ref-remove { position: absolute; top: -8px; right: -8px; width: 26px; height: 26px; border: 1px solid var(--pink); border-radius: 50%; background: var(--black); color: var(--white); font-size: 16px; line-height: 1; cursor: pointer; }
+.ref-remove:hover, .ref-remove:focus-visible { background: var(--pink); color: var(--black); }
+.ref-upload-message[hidden] { display: none; }
+
+/* Admin: reference photos on a booking */
+.ref-thumbs { margin-top: 8px; }
+.ref-thumb-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.ref-thumb img { display: block; width: 64px; height: 64px; object-fit: cover; border: 1px solid var(--pink-light); border-radius: 8px; }

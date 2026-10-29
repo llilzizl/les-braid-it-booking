@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     if (window.location.hash === '#signup') showPanel('signup');
+    if (window.location.hash === '#forgot') showPanel('forgot');
 
     // Log in
     var loginForm = document.getElementById('login-form');
